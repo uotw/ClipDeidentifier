@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Clip Deidentifier</title>
+	<!-- Auth0 Lock script -->
+
+<!-- Setting the right viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="flatbuttons.css">
+<link rel="stylesheet" type="text/css" href="ui.css">
+  </head>
+<body>
+ <div id="maintitle"><img src="logo.png" id="logo" draggable=false></img><h1>Clip Deidentifier</h1><div id="copyright">Copyright 2020 Ben C. Smith, MD, FACEP <a href="https://twitter.com/UltrasoundJelly" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a> <a href="mailto:bensmith.md@gmail.com" target="_self"><i class="fa fa-envelope" aria-hidden="true"></i></a></div></div>
+    <div id="profilestatus">
+      <h3 id="name"></h3>
+      <h3 id="email"></h3>
+    </div>
+	<div id="tn"></div>
+	<div id="home"><img src="restart.png" style="width:100px" draggable=false></img></div>
+	<input type="submit" class="btn-login" />
+	<div id="filelistwrap">
+		<div id="filelist"></div>
+		<div id="addfilestatus"></div>
+		<div id="drag">Drop your clips and stills here</div>
+	</div>
+	<div id="croppedlistwrap">
+		<div id="croplist"></div>
+	</div>
+	<div id="loading-container">
+    		<div class="loading"></div>
+    		<div id="loading-text">Generating Previews</div>
+	</div>
+	<div id="progressmsg">de-identifying your scans</div>
+	<div id="myProgress">
+  		<div id="myBar">
+    			<div id="label">0%</div>
+  		</div>
+	</div>
+	<div id="progressmsgUL">uploading your scans</div>
+        <div id="myProgressUL">
+                <div id="myBarUL">
+                        <div id="labelUL">0%</div>
+                </div>
+        </div>
+	<div id="finallinkwrap">
+                <div>Click here to visit your archive and add comments</div>
+                <div id="finallink"></div>
+        </div>
+
+	<div id="activefile"></div>
+<div id="previewsizetext">preview size</div>
+<div class="range" id="previewsize"></div>
+	<div id="preview">
+		<div id="img-grid"></div>
+	</div>
+	<button type="button" class="leftbtn btn btn-outlined btn-black btn-lg" id="clearbtn">Clear</button>
+	<button type="button" class=" rightbtn btn btn-outlined btn-black btn-lg" id="previewbtn">Next</button>
+	<button type="button" class="rightbtn btn btn-outlined btn-black btn-lg" id="cropbtn">Go</button>
+	<button type="button" class="leftbtn btn btn-outlined btn-black btn-lg" id="manualbtn">Change Crop</button>
+	<button type="button" class="rightbtn btn btn-outlined btn-black btn-lg" id="manualOKbtn">OK</button>
+
+	<div id="canvaswrap"><canvas id="myCanvas" width="500" height="200"></canvas></div>
+	<div id="highlight"><span>click/drag to highlight what you want to keep</span></div>
+	<div id="confirm"><span>confirm all patient info is removed</span></div>
+	<div id="done"><span>All done! Here's a summary of what we did.</span></div>
+</body>
+<script src="./renderer.js"></script>
+  <script>
+    // You can also require other files to run in this process
+    //require('./cropselect.js')
+    //window.$ = window.jQuery = window.jquery = require("./scripts/jquery.min.js");
+    window.$ = window.jQuery = require('jquery');
+    //window.$ = window.jQuery = require(./scripts/jquery.min.js);
+    //require('./renderer.js')
+    //var $ = require('jQuery');
+    //require('./chosen/chosen.jquery.min.js');
+    //require('chosen-jquery-browserify');
+    require('./cropselect.js');
+  </script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script>if (window.module) module = window.module; var $ = require('jQuery');</script>
+</html>
