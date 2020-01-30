@@ -21,6 +21,7 @@ function createWindow () {
     'x': mainWindowState.x,
     'y': mainWindowState.y,
     backgroundColor: '#fff',
+    'resizable':true,
     'width': mainWindowState.width,
     'height': mainWindowState.height,
     'show':false,
