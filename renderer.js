@@ -1,12 +1,8 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
+
 var remote = require('electron').remote;
 var $ = require('jQuery');
 var jQuery = $;
 require('shelljs/global');
-//require('jquery-ui');
-//require('shelljs/global');
 const {
     shell
 } = require('electron');
@@ -60,9 +56,7 @@ const spawn = require('child_process').spawn;
 const spawnsync = require('child_process').spawnSync;
 const Store = require('electron-store');
 const store = new Store();
-//store.set('unicorn', '🦄');
-//console.log(store.get('unicorn'));
-//store.delete('cropWidth');
+
 if (store.get('cropWidth')) {
     window.cropW = store.get('cropWidth');
     window.cropH = store.get('cropHeight');
@@ -71,50 +65,6 @@ if (store.get('cropWidth')) {
 } else {
 
 }
-/*
-var namepath =  appRootDir + '\\name.bat';
-var thisclippath='C:\\Users\\\Ben\\Desktop\\Janus 2\\98765432_Janus_20140127_124547_0009.mp4';
-ffprobe = spawn('cmd.exe', ['/c', '"'+ffmpegpath+'"', thisclippath], { windowsVerbatimArguments: true });
-ffprobe.stdout.on('data', (data) => {
-  console.log(`stdout: ${data}`);
-});
-ffprobe.stderr.on('data', (data) => {
-  console.log(`stderr: ${data}`);
-});
-*/
-
-//ffprobeOb = JSON.parse(ffprobe.stdout);
-//console.log(ffprobe.stdout.toString());
-
-//fs.createReadStream("c:/Users/Ben/Desktop/Janus/98765432_Janus_20140127_124547_0001 - Copy.jpg").pipe(fs.createWriteStream(temp + '\\1.jpg'));
-//THIS IS IT.  NEED TO COPY ALL FILES TO TEMP DIRECTORY, THEN CREATE PREVIEWS
-
-/*
-var outfile = 'c:\Users\Ben\Desktop\2.mp4';
-var file = 'c:\Users\Ben\Desktop\1.mp4';
-var croppixel =50;
-var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=in_w:in_h-' + croppixel + ':0:' + croppixel + ',scale=300:-1';
-ffprobe = spawnsync('cmd.exe', ['/c', ffmpegpath,'-i', file, '-vf', cropvftext, '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-y', outfile]);
-
-//ffprobe = spawnsync('cmd.exe', ['/c', ffmpegpath, 'i']);
-  //ffprobeOb = JSON.parse(ffprobe.stdout);
-  console.log(ffprobe.stderr.toString());
-
-ffprobe.stdout.on('data', (data) => {
-  //console.log(`stdout: ${data}`);
-  ffprobeOb = JSON.parse(`${data}`);
-  console.log(ffprobeOb.streams[0].width);
-});
-ffprobe.stderr.on('data', (data) => {
-  console.log(`stderr: ${data}`);
-});
-
-ffprobe.on('close', (code) => {
-  console.log(`child process exited with code ${code}`);
-});
-//ffprobeOb = JSON.parse(ffprobe.stdout);
-//console.log(ffprobeOb.streams[0].width);
-*/
 
 function maketemp() {
     var text = "";

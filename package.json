@@ -5,7 +5,8 @@
   "description": "Deidentify your clips and stills.",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build-mac": "electron-packager . 'ClipDeidentifier' --platform=darwin --arch=x64 --icon='icon.icns' --overwrite && open ClipDeidentifier-darwin-x64"
   },
   "keywords": [
     "Electron"
