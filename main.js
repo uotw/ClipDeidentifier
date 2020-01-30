@@ -20,20 +20,27 @@ function createWindow () {
    mainWindow = new BrowserWindow({
     'x': mainWindowState.x,
     'y': mainWindowState.y,
+    backgroundColor: '#fff',
     'width': mainWindowState.width,
     'height': mainWindowState.height,
+    'show':false,
     'minWidth':800,
     'minHeight':590,
     webPreferences: {
-            nodeIntegration: true
+        nodeIntegration: true,
+        nodeIntegrationInWorker: true
         }
   });
+
+   mainWindow.webContents.on('did-finish-load', function() {
+    mainWindow.show();
+});
 
   // Let us register listeners on the window, so we can update the state
   // automatically (the listeners will be removed when the window is closed)
   // and restore the maximized or full screen state
   mainWindowState.manage(mainWindow);
-/*
+/*å
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1100, height: 750})
 */
@@ -87,6 +94,8 @@ function sethtmlsize() {
         //console.log(newheight);
         mainWindow.webContents.executeJavaScript("$('body').css('height','"+newheight+"px');");
          mainWindow.webContents.executeJavaScript("$('html').css('height','"+newheight+"px');");
+          mainWindow.webContents.executeJavaScript("$('html').css('width','"+width+"px');");
+  mainWindow.webContents.executeJavaScript("$('body').css('width','"+width+"px');");
 }
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

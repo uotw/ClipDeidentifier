@@ -126,10 +126,10 @@ text-align:center;
 margin:auto;
 font-size: 1.5em;
     margin-bottom: 10px;
- 
+
 
 }
-#or{    
+#or{
     display: table-cell;
     text-align: center;
     width: 10px;
@@ -140,7 +140,7 @@ font-size: 1.5em;
     height: 60px;
     font-size: 2em;
     margin-top: 5px;
-	
+
 }
 
 #newtitle {
@@ -285,7 +285,7 @@ display:none;
 th, td {
     padding: 15px;
 }
-#highlight {	
+#highlight {
 	line-height:1em !important;
 	font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     	width: 500px;
@@ -296,7 +296,7 @@ th, td {
 	display:none;
 }
 #confirm{
-		
+
         font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 /*
         width: 500px;
@@ -333,7 +333,7 @@ th, td {
 
 }
 #done{
-		
+
         font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
         width: 500px;
         margin:auto;
@@ -436,10 +436,10 @@ float:left;
     background-color: rgba(0, 0, 0, .5);
 }
 
-#filelist::-webkit-scrollbar-track { 
-    background-color: #fff; 
-    border-radius: 8px; 
-} 
+#filelist::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 8px;
+}
 #preview{
 	display:none;
 	height: calc(100% - 290px);
@@ -464,10 +464,10 @@ float:left;
     background-color: rgba(0, 0, 0, .5);
 }
 
-#preview::-webkit-scrollbar-track { 
-    background-color: #fff; 
-    border-radius: 8px; 
-} 
+#preview::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 8px;
+}
 
 #canvaswrap{
 	display:none;
@@ -513,7 +513,7 @@ float:left;
 display:none !important;
 }
 #maintitle {
-	
+
 }
 
 #link {color: #E45635;display:block;font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;text-align:center; text-decoration: none;}
@@ -632,7 +632,7 @@ display:none !important;
             -webkit-animation: loading-text-opacity 2s linear 0s infinite normal;
             animation: loading-text-opacity 2s linear 0s infinite normal;
             color: #00000;
-            font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif; 
+            font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
             font-size: 16px;
             opacity: 0;
             position: relative;
@@ -677,7 +677,7 @@ display:none !important;
     background-color: rgba(0, 0, 0, .5);
 }
 
-#croplist::-webkit-scrollbar-track { 
-    background-color: #fff; 
-    border-radius: 8px; 
+#croplist::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 8px;
 }

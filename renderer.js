@@ -2,7 +2,6 @@
 var remote = require('electron').remote;
 var $ = require('jQuery');
 var jQuery = $;
-require('shelljs/global');
 const {
     shell
 } = require('electron');
@@ -378,19 +377,11 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
     croppedfilelist = [];
     var filename = filepaths[0].replace(/^.*[\\\/]/, '')
     $('#activefile').html('creating: ' + filename);
-    //$('#croplist').append(originals[0]+'=>'+filepaths[0]+'<br>');
     myqueue.push(setupcrop(1));
     //BUILD CROP AND DIM ARRAY
     for (var i = 0; i < filelist.length; i++) {
         nexti = i + 1;
         myqueue.push(updatetn(i));
-        //var nameonly = filelist[i].split("/");
-        //var path = nameonly.splice(-1,1);
-        //path = path.join('/');
-        //nameonly = nameonly.slice(-1);
-        //nameonly = nameonly.join();
-        //var ext = nameonly.split(".").slice(-1);
-        //var basename = nameonly.split(".").splice(-1,1);
         var croppath = path.dirname(filelist[i]);
         console.log("PATH: " + croppath);
         var basename = path.basename(filelist[i]);
