@@ -25,6 +25,22 @@ if (ismac) {
     var sendkeysbatpath = appRootDir + '\\bin\\win\\endKeys.bat';
     var temporiginal = workdir + '\\temp.mp4';
 }
+function focusThisApp() {
+    if (ismac) {
+        var focus = spawn(appswitchpath, ['-p', pid]);
+    } else {
+        var focus = spawn('cmd.exe', ['/c', 'call', '"' + sendkeysbatpath + '"', '"vidSmooth"', '""'], {
+            windowsVerbatimArguments: true
+        });
+    }
+    focus.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+    });
+    focus.stderr.on('data', (data) => {
+        console.log(`stderr: ${data}`);
+    });
+}
+
 var filelist = [];
 var widtharr = [];
 var heightarr = [];
@@ -151,13 +167,9 @@ $("#filelistwrap").on('dragover', function(event) {
 $("#filelistwrap").on('drop', function(event) {
     event.preventDefault();
     //var focus = spawn('cmd.exe', ['/c', 'call', '"'+sendkeysbatpath+'"', '"Clip Deidentifier"', '""'],{windowsVerbatimArguments: true});
-    var focus = spawn(appswitchpath, ['-a', 'Clip Deidentifier']);
-    focus.stdout.on('data', (data) => {
-        console.log(`stdout: ${data}`);
-    });
-    focus.stderr.on('data', (data) => {
-        console.log(`stderr: ${data}`);
-    });
+    //var focus = spawn(appswitchpath, ['-a', 'Clip Deidentifier']);
+    focusThisApp();
+
     var path = require('path');
     var files = event.originalEvent.dataTransfer.files;
     for (var i = 0; i < files.length; i++) {
