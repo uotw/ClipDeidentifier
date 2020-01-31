@@ -2,10 +2,12 @@
   "name": "ClipDeidentifier",
   "version": "0.0.6",
   "private": true,
-  "description": "remove PHI from any ultrasound image.",
+  "description": "remove PHI from any ultrasound media",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build-mac": "electron-packager . 'vidSmooth' --platform=darwin --arch=x64 --icon='icon.icns' --overwrite --ignore=bin/win && open vidSmooth-darwin-x64",
+    "build-win": "electron-packager . vidSmooth --platform=win32 --arch=ia32  --icon=icon.icns --overwrite --ignore=bin/mac"
   },
   "keywords": [
     "Electron"

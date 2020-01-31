@@ -14,10 +14,10 @@ if (os.platform() == "darwin") {
     var ismac = 0;
 }
 if (ismac) {
-    var ffmpegpath = appRootDir + '/bin/osx/ffmpeg';
-    var ffprobepath = appRootDir + '/bin/osx/ffprobe';
-    var appswitchpath = appRootDir + '/bin/osx/appswitch';
-    var magickpath = appRootDir + '/bin/osx/magick';
+    var ffmpegpath = appRootDir + '/bin/mac/ffmpeg';
+    var ffprobepath = appRootDir + '/bin/mac/ffprobe';
+    var appswitchpath = appRootDir + '/bin/mac/appswitch';
+    var magickpath = appRootDir + '/bin/mac/magick';
 } else {
     var winoriginal;
     var ffmpegpath = appRootDir + '\\bin\\win\\ffmpeg.exe';
