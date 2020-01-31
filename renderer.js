@@ -598,7 +598,9 @@ function preview() {
 
 function previewdump(i) {
     return () => new Promise((resolve, reject) => {
-        outfile = workdir + '/' + i + '.' + previewindex + '.png';
+        var time = new Date().toLocaleString();
+        var timestamp=encodeURI(time);
+        outfile = workdir + '/' + i + '.' + previewindex + '.png?'+timestamp;
         //heightcrop = Math.round((heightarr[i - 1] - croppixelarr[i - 1]) * 300 / widtharr[i - 1]);
         //var imagehtml = '<div class="previewimg"><img class="previewstill" src="' + outfile + '" draggable=false></img></div>';
         var imagehtml = '<div class="previewimg"><img class="previewstill" src="' + outfile + '" draggable=false style="width:' + previewimgpx + '"></img></div>';

@@ -72,17 +72,7 @@ sethtmlsize();
     mainWindow = null
   });
    mainWindow.on('resize', function (event) {
-/*
-	var size=mainWindow.getSize();
-	var height=size[1];
-	var newheight=height-52;
-	var width=size[0];
-	//console.log("$('body').css('height',"+height+"px');");
-	//console.log(newheight);
-	mainWindow.webContents.executeJavaScript("$('body').css('height','"+newheight+"px');");
-	 mainWindow.webContents.executeJavaScript("$('html').css('height','"+newheight+"px');");
-	//resizecall();
-*/
+
 	sethtmlsize();
   });
 }
