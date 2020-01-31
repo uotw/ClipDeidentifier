@@ -6,8 +6,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build-mac": "electron-packager . 'vidSmooth' --platform=darwin --arch=x64 --icon='icon.icns' --overwrite --ignore=bin/win && open vidSmooth-darwin-x64",
-    "build-win": "electron-packager . vidSmooth --platform=win32 --arch=ia32  --icon=icon.icns --overwrite --ignore=bin/mac"
+    "build-mac": "electron-packager . 'Clip Deidentifier' --platform=darwin --arch=x64 --icon=./img/icon.icns --out=build --overwrite --ignore='(build|bin/win)' && open \"build/Clip Deidentifier-darwin-x64\"",
+    "build-win": "electron-packager . \"Clip Deidentifier\" --platform=win32 --arch=ia32  --icon=./img/icon.icns --out=build --overwrite --ignore='(build|bin/mac)'"
   },
   "keywords": [
     "Electron"
