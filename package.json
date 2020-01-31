@@ -1,12 +1,11 @@
 {
-  "name": "vidSmooth",
-  "version": "0.0.1",
+  "name": "ClipDeidentifier",
+  "version": "0.0.6",
   "private": true,
-  "description": "Smooth out video motion.",
+  "description": "remove PHI from any ultrasound image.",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "build-mac": "electron-packager . 'vidSmooth' --platform=darwin --arch=x64 --icon='icon.icns' --overwrite && open vidSmooth-darwin-x64"
+    "start": "electron ."
   },
   "keywords": [
     "Electron"
@@ -14,9 +13,9 @@
   "author": "Ben C. Smith, MD, FACEP",
   "license": "CC0-1.0",
   "bugs": {
-    "url": "https://www.ultrasoundoftheweek.com/vidSmooth"
+    "url": "https://www.ultrasoundoftheweek.com/ClipDeidentifier"
   },
-  "homepage": "https://www.ultrasoundoftheweek.com/vidSmooth",
+  "homepage": "https://www.ultrasoundoftheweek.com/ClipDeidentifier",
   "devDependencies": {
     "electron": "^7.1.7",
     "electron-packager": "^14.1.1"
@@ -35,5 +34,5 @@
     "shelljs": "^0.7.6",
     "tree-kill": "^1.2.2"
   },
-  "productName": "vidSmooth"
+  "productName": "ClipDeidentifier"
 }
