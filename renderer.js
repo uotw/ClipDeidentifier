@@ -8,6 +8,7 @@ const {
 } = require('electron');
 var appRootDir = require('app-root-dir').get();
 var os = require("os");
+var pid = remote.process.pid;
 if (os.platform() == "darwin") {
     var ismac = 1;
 } else {
@@ -29,7 +30,7 @@ function focusThisApp() {
     if (ismac) {
         var focus = spawn(appswitchpath, ['-p', pid]);
     } else {
-        var focus = spawn('cmd.exe', ['/c', 'call', '"' + sendkeysbatpath + '"', '"vidSmooth"', '""'], {
+        var focus = spawn('cmd.exe', ['/c', 'call', '"' + sendkeysbatpath + '"', '"Clip Deidentifier"', '""'], {
             windowsVerbatimArguments: true
         });
     }
