@@ -13,7 +13,6 @@ if (os.platform() == "darwin") {
 } else {
     var ismac = 0;
 }
-var osTmpdir = require('os-tmpdir');
 if (ismac) {
     var ffmpegpath = appRootDir + '/bin/mac/ffmpeg';
     var ffprobepath = appRootDir + '/bin/mac/ffprobe';
@@ -25,13 +24,13 @@ if (ismac) {
     var ffprobepath = appRootDir + '\\bin\\win\\fprobe.exe';
     var sendkeysbatpath = appRootDir + '\\bin\\win\\endKeys.bat';
     var temporiginal = workdir + '\\temp.mp4';
-    var workdir = ostemp + '\\' + maketemp();
 }
 var filelist = [];
 var widtharr = [];
 var heightarr = [];
 var croppixelarr = [];
 var canvasaspect;
+var osTmpdir = require('os-tmpdir');
 var temp = osTmpdir();
 var workdir = temp + '/' + maketemp();
 remote.getGlobal('workdirObj').prop1 = workdir;
