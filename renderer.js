@@ -619,7 +619,9 @@ $('#manualbtn').click(function() {
     width = dim.streams[0].width;
     height = dim.streams[0].height;
     canvasaspect = height / width;
-    $('#myCanvas').css("background-image", "url(" + previewfile + ")");
+    var time = new Date().toLocaleString();
+    var timestamp=encodeURI(time);
+    $('#myCanvas').css("background-image", "url(" + previewfile + "?"+timestamp+")");
     canvasheight = 500 * canvasaspect;
     //$('#highlight').css("line-height",canvasheight+"px");
     $('#myCanvas').attr('height', canvasheight);

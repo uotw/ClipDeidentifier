@@ -45,7 +45,6 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1100, height: 750})
 */
-  mainWindow.setResizable(true);
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`)
 sethtmlsize();
@@ -80,7 +79,7 @@ function sethtmlsize() {
 	var size=mainWindow.getSize();
         var height=size[1];
         var newheight=height-52;
-        var width=size[0];
+        var width=size[0]-20;
         //console.log("$('body').css('height',"+height+"px');");
         //console.log(newheight);
         mainWindow.webContents.executeJavaScript("$('body').css('height','"+newheight+"px');");
