@@ -1,5 +1,6 @@
 
 var remote = require('electron').remote;
+//window.devicePixelRatio=2;
 var $ = require('jQuery');
 var jQuery = $;
 const {

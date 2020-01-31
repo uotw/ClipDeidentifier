@@ -1,6 +1,7 @@
 html,
 body {
     height: 698px;
+    -webkit-font-smoothing: subpixel-antialiased;
 }
 .btn {
     z-index: 999;
