@@ -22,7 +22,7 @@ if (ismac) {
     var winoriginal;
     var ffmpegpath = appRootDir + '\\bin\\win\\ffmpeg.exe';
     var ffprobepath = appRootDir + '\\bin\\win\\fprobe.exe';
-    var sendkeysbatpath = appRootDir + '\\bin\\win\\endKeys.bat';
+    var sendkeysbatpath = appRootDir + '\\bin\\win\\sendKeys.bat';
     var temporiginal = workdir + '\\temp.mp4';
 }
 function focusThisApp() {
