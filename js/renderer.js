@@ -25,6 +25,8 @@ if (ismac) {
     var ffprobepath = appRootDir + '\\bin\\win\\ffprobe.exe';
     var sendkeysbatpath = appRootDir + '\\bin\\win\\sendKeys.bat';
     var temporiginal = workdir + '\\temp.mp4';
+    var convertpath = appRootDir + '\\bin\\win\\convert.exe';
+    var identifypath = appRootDir + '\\bin\\win\\identify.exe';
 }
 function focusThisApp() {
     if (ismac) {
@@ -291,6 +293,19 @@ function queue(tasks) {
 
 function customSpawn(command, args) {
     return () => new Promise((resolve, reject) => {
+        if (!ismac) {
+            var newargs = args.slice(0);
+            newargs.unshift('"' + command + '"');
+            newargs.unshift('/c');
+            console.log(newargs);
+            child = spawn('cmd.exe', newargs, {
+                windowsVerbatimArguments: true
+            });
+        } else {
+            child = spawn(command, args, {
+                windowsVerbatimArguments: true
+            });
+        }
         const child = spawn(command, args, {
             windowsVerbatimArguments: true
         });
@@ -470,13 +485,6 @@ function preview() {
         nameonly = nameonly.slice(-1);
         nameonly = nameonly.join();
         var ext = nameonly.split(".").slice(-1);
-        //fs.writeFileSync(workdir + '\\' + 'original_'+i + '.' + ext, fs.readFileSync(filelist[i]));
-
-        var nameonly = filelist[i].split("\\");
-        nameonly = nameonly.slice(-1);
-        nameonly = nameonly.join();
-        var ext = nameonly.split(".").slice(-1);
-
         var basename = nameonly.split(".");
         basename.pop();
         basename = basename.join(".");
@@ -485,20 +493,22 @@ function preview() {
         folderonly = folderonly.join("\\");
         filecrop = folderonly + '\\' + basename + '_crop.' + ext;
         filepaths.push(filecrop);
+        if(!ismac){
+            fs.writeFileSync(workdir + '\\' + 'original_'+i + '.' + ext, fs.readFileSync(filelist[i]));
+            filelist[i] = workdir + '\\' + 'original_'+i + '.' + ext;
+        }
         //filelist[i] = workdir + '\\' + 'original_'+i + '.' + ext;
         var nexti = i + 1;
         var outfile = workdir + '/' + nexti + '.' + previewindex + '.png';
         if (isstill(filelist[i])) {
-            //console.log(filelist[i]);
-            var identify = spawnsync(magickpath, ['convert', filelist[i], '-ping', '-format', '%w:%h', 'info:']);
-            /*
-            identify = spawnsync('cmd.exe', ['/c',  '"'+identifypath+'"', '-ping' ,'-format','%w:%h', filelist[i]], {
-              stdio: ['pipe', 'pipe', 'pipe'],
-              windowsVerbatimArguments: true
-            });
-            */
-            //console.log(identify.stderr.toString());
-
+            if(ismac) {
+                var identify = spawnsync(magickpath, ['convert', filelist[i], '-ping', '-format', '%w:%h', 'info:']);
+            } else {
+               var identify = spawnsync('cmd.exe', ['/c',  '"'+identifypath+'"', '-ping' ,'-format','%w:%h', filelist[i]], {
+                    stdio: ['pipe', 'pipe', 'pipe'],
+                    windowsVerbatimArguments: true
+                });
+            }
             if (identify.status.toString() == 0) {
                 //console.log(filelist[i] + ' passed as image');
                 var imageinfo = identify.stdout.toString();
@@ -532,14 +542,22 @@ function preview() {
                     if (!window.cropW) {
                         var percent = window.croppixelperc * 100;
                         var croppixels = '0x' + percent + '%';
-                        myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-interlace', 'line', '-chop', croppixels, '-resize', '650', '-strip', outfile]));
+                        if(ismac){
+                            myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-interlace', 'line', '-chop', croppixels, '-resize', '650', '-strip', outfile]));
+                        } else {
+                            myqueue.push(customSpawn('cmd.exe', ['/c', '"'+convertpath+'"', filelist[i], '-interlace', 'line', '-chop', croppixels, '-resize', '650', '-strip', outfile]));
+                        }
                     } else {
                         var cropWidth = Math.round(widtharr[i] * window.cropW);
                         var cropHeight = Math.round(heightarr[i] * window.cropH);
                         var cropXstart = Math.round(widtharr[i] * window.cropX);
                         var cropYstart = Math.round(heightarr[i] * window.cropY);
                         var cropgeo = cropWidth + 'x' + cropHeight + '+' + cropXstart + '+' + cropYstart;
-                        myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-crop', cropgeo, '-resize', '650', '-strip', outfile]));
+                        if(ismac){
+                            myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-crop', cropgeo, '-resize', '650', '-strip', outfile]));
+                        } else{
+                            myqueue.push(customSpawn(convertpath+'"', [filelist[i], '-interlace', 'line', '-chop', croppixels, '-resize', '650', outfile]));
+                        }
                     }
                     //      myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-interlace', 'line', '-chop',croppixels , '-resize', '650', outfile]));
                 }
