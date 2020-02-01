@@ -302,13 +302,11 @@ function customSpawn(command, args) {
                 windowsVerbatimArguments: true
             });
         } else {
-            child = spawn(command, args, {
-                windowsVerbatimArguments: true
-            });
+            child = spawn(command, args);
         }
-        const child = spawn(command, args, {
-            windowsVerbatimArguments: true
-        });
+        // const child = spawn(command, args, {
+        //     windowsVerbatimArguments: true
+        // });
         child.stderr.on('data', (data) => {
             console.log(command + args + `stderr: ${data}`);
         });
