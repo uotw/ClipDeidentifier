@@ -57,8 +57,14 @@ function createWindow() {
     mainWindow.on('close', function(event) {
         if (global.workdirObj.prop1) {
             console.log('removing the ' + global.workdirObj.prop1 + ' directory.');
-            const spawnsync = require('child_process').spawnSync;
-            spawnsync('cmd.exe', ['/c', 'rd', '/s', '/q', global.workdirObj.prop1]);
+            var dir = global.workdirObj.prop1;
+            if(dir.length>10){
+                console.log('do it');
+                //fs.rmdir(dir, { recursive: true });
+            }
+            //fs.rmdir(dir, { recursive: true });
+            // const spawnsync = require('child_process').spawnSync;
+            // spawnsync('cmd.exe', ['/c', 'rd', '/s', '/q', global.workdirObj.prop1]);
         }
     });
 
