@@ -554,7 +554,7 @@ function preview() {
                         if(ismac){
                             myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-crop', cropgeo, '-resize', '650', '-strip', outfile]));
                         } else{
-                            myqueue.push(customSpawn('"'+convertpath+'"', [filelist[i], '-interlace', 'line', '-chop', croppixels, '-resize', '650', outfile]));
+                            myqueue.push(customSpawn('"'+convertpath+'"', [filelist[i], '-crop', cropgeo, '-resize', '650', '-strip', outfile]));
                         }
                     }
                     //      myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-interlace', 'line', '-chop',croppixels , '-resize', '650', outfile]));
