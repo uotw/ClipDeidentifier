@@ -338,7 +338,9 @@ function updatetn(i) {
 
 function progress(i) {
     return () => new Promise((resolve, reject) => {
-        //fs.writeFileSync(filepaths[i], fs.readFileSync(croppedfilelist[i]));
+        if(!ismac){
+            fs.writeFileSync(filepaths[i], fs.readFileSync(croppedfilelist[i]));
+        }
         //console.log("trying to write: "+croppedfilelist[i]+" => "+ filepaths[i]);
         stop = Math.round(100 * (i + 1) / filelist.length);
         var elem = document.getElementById("myBar");
