@@ -339,7 +339,7 @@ function updatetn(i) {
 function progress(i) {
     return () => new Promise((resolve, reject) => {
         if(!ismac){
-            //fs.writeFileSync(filepaths[i], fs.readFileSync(croppedfilelist[i]));
+            fs.writeFileSync(filepaths[i], fs.readFileSync(croppedfilelist[i]));
         }
         //console.log("trying to write: "+croppedfilelist[i]+" => "+ filepaths[i]);
         stop = Math.round(100 * (i + 1) / filelist.length);
@@ -435,7 +435,7 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
             if(ismac){
                 myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]));
             } else{
-                myqueue.push(customSpawn('"'+ffmpegpath+ '"', ['-i', filelist[i],  '-map_metadata','-1','-vf', cropvftext, '-vcodec', 'libx264', '-pix_fmt', 'yuv420p', '-y', outfile]));
+                myqueue.push(customSpawn('"'+ffmpegpath+ '"', ['-i', filelist[i],  '-map_metadata','-1','-vf', cropvftext, '-vcodec', 'libx264', '-pix_fmt', 'yuv420p', '-y', cropfile]));
             }
         } else {
             var cropfile = croppath + '/' + basename + '_crop.jpg';
