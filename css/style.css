@@ -2,6 +2,7 @@ html,
 body {
     height: 698px;
     -webkit-font-smoothing: subpixel-antialiased;
+    overflow:hidden;
 }
 .btn {
     z-index: 999;
