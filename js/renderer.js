@@ -430,20 +430,32 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
                 var cropYstart = Math.round(heightarr[i] * window.cropY);
                 var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=' + cropWidth + ':' + cropHeight + ':' + cropXstart + ':' + cropYstart;
             }
-            myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]));
+            if(ismac){
+                myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]));
+            } else{
+                myqueue.push(customSpawn('"'+ffmpegpath+ '"', ['-i', filelist[i],  '-map_metadata','-1','-vf', cropvftext, '-vcodec', 'libx264', '-pix_fmt', 'yuv420p', '-y', outfile]));
+            }
         } else {
             var cropfile = croppath + '/' + basename + '_crop.jpg';
             if (!window.cropW) {
                 var percent = window.croppixelperc * 100;
                 var croppixels = '0x' + percent + '%';
-                myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-interlace', 'line', '-chop', '0x' + croppixels, '-strip', cropfile]));
+                if(ismac){
+                    myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-interlace', 'line', '-chop', '0x' + croppixels, '-strip', cropfile]));
+                } else {
+                    myqueue.push(customSpawn('"'+convertpath+ '"', [filelist[i], '-interlace', 'line', '-chop', '0x' + croppixels, '-strip', cropfile]));
+                }
             } else {
                 var cropWidth = Math.round(widtharr[i] * window.cropW);
                 var cropHeight = Math.round(heightarr[i] * window.cropH);
                 var cropXstart = Math.round(widtharr[i] * window.cropX);
                 var cropYstart = Math.round(heightarr[i] * window.cropY);
                 var cropgeo = cropWidth + 'x' + cropHeight + '+' + cropXstart + '+' + cropYstart;
-                myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-interlace', 'line', '-crop', cropgeo, '-strip', cropfile]));
+                if(ismac){
+                    myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-interlace', 'line', '-crop', cropgeo, '-strip', cropfile]));
+                } else{
+                    myqueue.push(customSpawn('"'+convertpath+ '"', [filelist[i], '-interlace', 'line', '-crop', cropgeo, '-strip', cropfile]));
+                }
             }
 
 
