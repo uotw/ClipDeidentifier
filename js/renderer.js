@@ -339,7 +339,7 @@ function updatetn(i) {
 function progress(i) {
     return () => new Promise((resolve, reject) => {
         if(!ismac){
-            //fs.writeFileSync(filepaths[i], fs.readFileSync(croppedfilelist[i]));
+            fs.writeFileSync(filepaths[i], fs.readFileSync(croppedfilelist[i]));
         }
         //console.log("trying to write: "+croppedfilelist[i]+" => "+ filepaths[i]);
         stop = Math.round(100 * (i + 1) / filelist.length);
@@ -462,7 +462,7 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
 
 
             //EXAMPLE: convert 1.jpg -interlace line -chop 0x9% out.still.jpg
-            //croppedfilelist.push(outfile);
+            croppedfilelist.push(cropfile);
         }
         $('#croplist').append(filelist[i] + '=>' + cropfile + '<br>');
         myqueue.push(progress(i));
