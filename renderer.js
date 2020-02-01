@@ -25,6 +25,8 @@ if (ismac) {
     var ffprobepath = appRootDir + '\\bin\\win\\ffprobe.exe';
     var sendkeysbatpath = appRootDir + '\\bin\\win\\sendKeys.bat';
     var temporiginal = workdir + '\\temp.mp4';
+    var convertpath = appRootDir + '\\bin\\win\\convert.exe';
+    var identifypath = appRootDir + '\\bin\\win\\identify.exe';
 }
 function focusThisApp() {
     if (ismac) {
@@ -499,16 +501,14 @@ function preview() {
         var nexti = i + 1;
         var outfile = workdir + '/' + nexti + '.' + previewindex + '.png';
         if (isstill(filelist[i])) {
-            //console.log(filelist[i]);
-            var identify = spawnsync(magickpath, ['convert', filelist[i], '-ping', '-format', '%w:%h', 'info:']);
-            /*
-            identify = spawnsync('cmd.exe', ['/c',  '"'+identifypath+'"', '-ping' ,'-format','%w:%h', filelist[i]], {
-              stdio: ['pipe', 'pipe', 'pipe'],
-              windowsVerbatimArguments: true
-            });
-            */
-            //console.log(identify.stderr.toString());
-
+            if(ismac) {
+                var identify = spawnsync(magickpath, ['convert', filelist[i], '-ping', '-format', '%w:%h', 'info:']);
+            } else {
+               var identify = spawnsync('cmd.exe', ['/c',  '"'+identifypath+'"', '-ping' ,'-format','%w:%h', filelist[i]], {
+                    stdio: ['pipe', 'pipe', 'pipe'],
+                    windowsVerbatimArguments: true
+                });
+            }
             if (identify.status.toString() == 0) {
                 //console.log(filelist[i] + ' passed as image');
                 var imageinfo = identify.stdout.toString();
@@ -549,7 +549,11 @@ function preview() {
                         var cropXstart = Math.round(widtharr[i] * window.cropX);
                         var cropYstart = Math.round(heightarr[i] * window.cropY);
                         var cropgeo = cropWidth + 'x' + cropHeight + '+' + cropXstart + '+' + cropYstart;
-                        myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-crop', cropgeo, '-resize', '650', '-strip', outfile]));
+                        if(ismac){
+                            myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-crop', cropgeo, '-resize', '650', '-strip', outfile]));
+                        } else{
+                            myqueue.push(customSpawn(convertpath+'"', filelist[i], '-interlace', 'line', '-chop', croppixels, '-resize', '650', outfile]));
+                        }
                     }
                     //      myqueue.push(customSpawn(magickpath, ['convert', filelist[i], '-interlace', 'line', '-chop',croppixels , '-resize', '650', outfile]));
                 }
