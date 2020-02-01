@@ -297,7 +297,7 @@ function customSpawn(command, args) {
             var newargs = args.slice(0);
             newargs.unshift('"' + command + '"');
             newargs.unshift('/c');
-            console.log(newargs);
+            console.log(newargs.join(" "));
             child = spawn('cmd.exe', newargs, {
                 windowsVerbatimArguments: true
             });
