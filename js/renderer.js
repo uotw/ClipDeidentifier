@@ -339,7 +339,7 @@ function updatetn(i) {
 function progress(i) {
     return () => new Promise((resolve, reject) => {
         if(!ismac){
-            fs.writeFileSync(filepaths[i], fs.readFileSync(croppedfilelist[i]));
+            //fs.writeFileSync(filepaths[i], fs.readFileSync(croppedfilelist[i]));
         }
         //console.log("trying to write: "+croppedfilelist[i]+" => "+ filepaths[i]);
         stop = Math.round(100 * (i + 1) / filelist.length);
