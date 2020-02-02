@@ -344,7 +344,8 @@ function progress(i) {
             var ext = path.extname(fullpath);
             var basename = path.basename(fullpath,"ext");
             var finalcroppedfile = dir + basename + "_crop" +ext;
-            fs.writeFileSync(finalcroppedfile, fs.readFileSync(croppedfilelist[i]));
+            console.log("trying to write: "+croppedfilelist[i]+" => "+finalcroppedfile);
+            //fs.writeFileSync(finalcroppedfile, fs.readFileSync(croppedfilelist[i]));
         }
         //console.log("trying to write: "+croppedfilelist[i]+" => "+ filepaths[i]);
         stop = Math.round(100 * (i + 1) / filelist.length);
