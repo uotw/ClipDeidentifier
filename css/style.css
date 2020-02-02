@@ -376,11 +376,9 @@ td {
 }
 #filelistwrap {
     border: 3px dashed #999;
-    margin-left: 3%;
-    margin-right: 3%;
-    height: calc(100% - 250px);
-    width: 94%;
-    float: left;
+    height: calc(100% - 270px);
+    width: 95%;
+    margin: auto;
     margin-top: 10px;
 }
 #croplist {
