@@ -61,7 +61,7 @@ function createWindow() {
             var dir = global.workdirObj.prop1;
             if(dir.length>10){
                 //console.log('do it');
-                fs.rmdir(dir, { recursive: true });
+                fs.rmdirSync(dir, { recursive: true });
             }
             //fs.rmdir(dir, { recursive: true });
             // const spawnsync = require('child_process').spawnSync;
