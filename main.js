@@ -1,7 +1,7 @@
 const electron = require('electron')
 // Module to control application life.
 const app = electron.app
-const fs = require('fs')
+const rimraf = require('rimraf')
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 const windowStateKeeper = require('electron-window-state');
@@ -61,7 +61,7 @@ function createWindow() {
             var dir = global.workdirObj.prop1;
             if(dir.length>10){
                 //console.log('do it');
-                fs.rmdirSync(dir, { recursive: true });
+                rimraf.sync(dir);
             }
             //fs.rmdir(dir, { recursive: true });
             // const spawnsync = require('child_process').spawnSync;
