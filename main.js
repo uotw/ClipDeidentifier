@@ -86,7 +86,8 @@ function createWindow() {
 }
 
 function sethtmlsize() {
-    var size = mainWindow.getSize();
+    var size = mainWindow.getContentSize();
+
     console.log(size);
     var height = size[1];
     var newheight = height - 52;
