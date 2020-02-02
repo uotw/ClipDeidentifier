@@ -339,7 +339,12 @@ function updatetn(i) {
 function progress(i) {
     return () => new Promise((resolve, reject) => {
         if(!ismac){
-            //fs.writeFileSync(filepaths[i], fs.readFileSync(croppedfilelist[i]));
+            var fullpath = originals[i];
+            var dir = path.dirname(fullpath);
+            var ext = path.extname(fullpath);
+            var basename = path.basename(fullpath,"ext");
+            var finalcroppedfile = dir + basename + "_crop" +ext;
+            fs.writeFileSync(finalcroppedfile, fs.readFileSync(croppedfilelist[i]));
         }
         //console.log("trying to write: "+croppedfilelist[i]+" => "+ filepaths[i]);
         stop = Math.round(100 * (i + 1) / filelist.length);
@@ -614,7 +619,7 @@ function preview() {
             } else {
                 var filename = filepaths[i].replace(/^.*[\\\/]/, '');
                 $('#croplist').append(originals[i].toString() + ' was ignored because it was not an image file' + '<br>');
-                console.log(originals[i].toString());
+                //console.log(originals[i].toString());
                 originals.splice(i, 1);
                 filelist.splice(i, 1);
                 filepaths.splice(i, 1);
