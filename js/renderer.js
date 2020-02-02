@@ -485,9 +485,7 @@ function preview() {
         if (ismac) {
             var ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-select_streams', 'v', '-i', filelist[i]]);
         } else {
-            var ffprobe = spawnsync('"' + ffprobepath + '"', ['-print_format', 'json', '-show_streams', '-select_streams', 'v', '-i', filelist[i]], {
-                windowsVerbatimArguments: true
-            });
+                ffprobe = spawnsync('cmd.exe', ['/c', ffprobepath, '-print_format', 'json', '-show_streams', '-i', filelist[i]]);
         }
         if (ffprobe.status.toString() == 0) {
             var ffprobeOb = JSON.parse(ffprobe.stdout);
