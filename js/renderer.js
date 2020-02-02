@@ -222,7 +222,7 @@ $(document).on('drop', function(e) {
 function canvasbg(filelist) {
 
     ffmpeg = spawnsync(ffmpegpath, ['-i', filelist[0], '-an', '-vf', 'scale=500:-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-map_metadata', '-1', '-y', previewfile]);
-    ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-i', filelist[0]]);
+    ffprobe = spawnsync('cmd.exe', ['/c', ffprobepath, '-print_format', 'json', '-show_streams', '-i', filelist[0]]);
     ffprobeOb = JSON.parse(ffprobe.stdout);
     return (ffprobeOb);
 
@@ -482,7 +482,6 @@ function preview() {
             filelist[i] = workdir + '\\' + 'original_' + i + '.' + ext;
         }
         var nexti = i + 1;
-
         if (ismac) {
             var ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-select_streams', 'v', '-i', filelist[i]]);
         } else {
