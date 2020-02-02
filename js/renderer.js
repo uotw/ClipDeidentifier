@@ -339,10 +339,11 @@ function updatetn(i) {
 function progress(i) {
     return () => new Promise((resolve, reject) => {
         if(!ismac){
+            console.log(croppedfilelist);
             var fullpath = originals[i];
             var dir = path.dirname(fullpath);
             var ext = path.extname(fullpath);
-            var basename = path.basename(fullpath,"ext");
+            var basename = path.basename(fullpath, ext);
             var finalcroppedfile = dir + basename + "_crop" +ext;
             console.log("trying to write: "+croppedfilelist[i]+" => "+finalcroppedfile);
             //fs.writeFileSync(finalcroppedfile, fs.readFileSync(croppedfilelist[i]));
