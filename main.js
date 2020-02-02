@@ -59,8 +59,8 @@ function createWindow() {
             console.log('removing the ' + global.workdirObj.prop1 + ' directory.');
             var dir = global.workdirObj.prop1;
             if(dir.length>10){
-                console.log('do it');
-                //fs.rmdir(dir, { recursive: true });
+                //console.log('do it');
+                fs.rmdir(dir, { recursive: true });
             }
             //fs.rmdir(dir, { recursive: true });
             // const spawnsync = require('child_process').spawnSync;
