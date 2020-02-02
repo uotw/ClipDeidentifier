@@ -334,6 +334,9 @@ function progress(i) {
             var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
             console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
             fs.writeFileSync(finalcroppedfile, fs.readFileSync(croppedfilelist[i]));
+            $('#croplist').append(originals[i] + '=>' + finalcroppedfile + '<br>');
+        } else {
+            $('#croplist').append(filelist[i] + '=>' + cropfile + '<br>');
         }
         stop = Math.round(100 * (i + 1) / filelist.length);
         var elem = document.getElementById("myBar");
@@ -453,7 +456,6 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
             }
         }
         croppedfilelist.push(cropfile);
-        $('#croplist').append(filelist[i] + '=>' + cropfile + '<br>');
         myqueue.push(progress(i));
     }
     //LAST ITEM IN QUEUE, CALL FINISH
