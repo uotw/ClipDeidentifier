@@ -376,7 +376,7 @@ td {
 }
 #filelistwrap {
     border: 3px dashed #999;
-    height: calc(100% - 270px);
+    height: calc(100% - 230px);
     width: 95%;
     margin: auto;
     margin-top: 10px;
