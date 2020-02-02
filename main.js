@@ -87,13 +87,10 @@ function createWindow() {
 
 function sethtmlsize() {
     var size = mainWindow.getContentSize();
-
-    console.log(size);
     var height = size[1];
-    var newheight = height - 52;
-    var width = size[0] - 20;
-    mainWindow.webContents.executeJavaScript("$('body').css('height','" + newheight + "px');");
-    mainWindow.webContents.executeJavaScript("$('html').css('height','" + newheight + "px');");
+    var width = size[0];
+    mainWindow.webContents.executeJavaScript("$('body').css('height','" + height + "px');");
+    mainWindow.webContents.executeJavaScript("$('html').css('height','" + height + "px');");
     mainWindow.webContents.executeJavaScript("$('html').css('width','" + width + "px');");
     mainWindow.webContents.executeJavaScript("$('body').css('width','" + width + "px');");
 }

@@ -3,6 +3,8 @@ body {
     height: 698px;
     -webkit-font-smoothing: subpixel-antialiased;
     overflow:hidden;
+    margin:0;
+    height:100%;
 }
 .btn {
     z-index: 999;
@@ -216,7 +218,7 @@ div#copyright {
     line-height: 1em;
     /* padding-bottom: 40px; */
     margin-left: 3px;
-    margin-top: -60px;
+    margin-top: -52px;
     margin-bottom: -10px;
     padding-bottom: 30px;
 }
@@ -376,8 +378,8 @@ td {
 }
 #filelistwrap {
     border: 3px dashed #999;
-    height: calc(100% - 230px);
-    width: 95%;
+    height: calc(100% - 285px);
+    width: calc(100% - 65px);
     margin: auto;
     margin-top: 10px;
 }
@@ -428,7 +430,7 @@ td {
 }
 #preview {
     display: none;
-    height: calc(100% - 290px);
+    height: calc(100% - 330px);
     overflow: scroll;
     border: 1px solid black;
 }
