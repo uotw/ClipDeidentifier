@@ -88,17 +88,17 @@ function maketemp() {
     return text;
 }
 
-function run_cmd(cmd, args, callBack) {
-    var spawn = require('child_process').spawn;
-    var child = spawn(cmd, args);
-    var resp = "";
-    child.stdout.on('data', function(buffer) {
-        resp += buffer.toString()
-    });
-    child.stdout.on('end', function() {
-        callBack(resp)
-    });
-} // ()
+// function run_cmd(cmd, args, callBack) {
+//     var spawn = require('child_process').spawn;
+//     var child = spawn(cmd, args);
+//     var resp = "";
+//     child.stdout.on('data', function(buffer) {
+//         resp += buffer.toString()
+//     });
+//     child.stdout.on('end', function() {
+//         callBack(resp)
+//     });
+// } // ()
 function isclip(filename) {
     var clipext = ['mp4', 'm4v', 'avi', 'wmv', 'mov', 'flv', 'mpg', 'mpeg'];
     for (var i = 0; i < clipext.length; i++) {
@@ -165,7 +165,6 @@ $("#filelistwrap").on('dragover', function(event) {
 $("#filelistwrap").on('drop', function(event) {
     event.preventDefault();
     focusThisApp();
-
     var path = require('path');
     var files = event.originalEvent.dataTransfer.files;
     for (var i = 0; i < files.length; i++) {
@@ -293,7 +292,7 @@ function customSpawn(command, args) {
         //     windowsVerbatimArguments: true
         // });
         child.stderr.on('data', (data) => {
-            console.log(command +" "+ args.join(" ") + `stderr: ${data}`);
+            console.log(command + " " + args.join(" ") + `stderr: ${data}`);
         });
         child.stdout.on('data', (data) => {
             console.log(`stdout: ${data}`);
@@ -439,15 +438,11 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
                 myqueue.push(customSpawn('"' + ffmpegpath + '"', ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-pix_fmt', 'rgb24', '-y', cropfile]));
             }
         }
-
-
-
         croppedfilelist.push(cropfile);
         myqueue.push(progress(i));
     }
     //LAST ITEM IN QUEUE, CALL FINISH
-    queue(myqueue).then(([cmd, args]) => {
-    }).catch(TypeError, function(e) {}).catch(err => console.log(err));
+    queue(myqueue).then(([cmd, args]) => {}).catch(TypeError, function(e) {}).catch(err => console.log(err));
 
 
 });
@@ -455,6 +450,7 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
 var originals = [];
 var filelist = [];
 var filepaths = [];
+
 function preview() {
     var myqueue = [];
     previewindex = previewindex + 1;
@@ -488,13 +484,15 @@ function preview() {
         if (ismac) {
             var ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-select_streams', 'v', '-i', filelist[i]]);
         } else {
-            var ffprobe = spawnsync('"'+ffprobepath+'"', ['-print_format', 'json', '-show_streams', '-select_streams', 'v', '-i', filelist[i]], { windowsVerbatimArguments: true });
+            var ffprobe = spawnsync('"' + ffprobepath + '"', ['-print_format', 'json', '-show_streams', '-select_streams', 'v', '-i', filelist[i]], {
+                windowsVerbatimArguments: true
+            });
         }
         if (ffprobe.status.toString() == 0) {
             var ffprobeOb = JSON.parse(ffprobe.stdout);
             width = ffprobeOb.streams[0].width;
             height = ffprobeOb.streams[0].height;
-            if(isstill(filelist[i])) {
+            if (isstill(filelist[i])) {
                 if (width < 50 || height < 50) {
                     var filename = filepaths[i].replace(/^.*[\\\/]/, '');
                     $('#croplist').append(originals[i].toString() + ' was removed because it was a tiny image' + '<br>');
@@ -506,21 +504,21 @@ function preview() {
                     skip = 1;
                 }
             }
-                var outfile = workdir + '/' + nexti + '.' + previewindex + '.png';
-                var croppixel = 2 * Math.round(height * window.croppixelperc / 2);
-                widtharr.push(width);
-                heightarr.push(height);
-                croppixelarr.push(croppixel);
-                if (!window.cropW) {
-                    var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=in_w:in_h-' + croppixel + ':0:' + croppixel + ',scale=650:-1';
-                } else {
-                    var cropWidth = Math.round(widtharr[i] * window.cropW);
-                    var cropHeight = Math.round(heightarr[i] * window.cropH);
-                    var cropXstart = Math.round(widtharr[i] * window.cropX);
-                    var cropYstart = Math.round(heightarr[i] * window.cropY);
-                    var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=' + cropWidth + ':' + cropHeight + ':' + cropXstart + ':' + cropYstart + ',scale=650:-1';
-                }
-                myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-vf', cropvftext, '-map_metadata', '-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-y', outfile]));
+            var outfile = workdir + '/' + nexti + '.' + previewindex + '.png';
+            var croppixel = 2 * Math.round(height * window.croppixelperc / 2);
+            widtharr.push(width);
+            heightarr.push(height);
+            croppixelarr.push(croppixel);
+            if (!window.cropW) {
+                var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=in_w:in_h-' + croppixel + ':0:' + croppixel + ',scale=650:-1';
+            } else {
+                var cropWidth = Math.round(widtharr[i] * window.cropW);
+                var cropHeight = Math.round(heightarr[i] * window.cropH);
+                var cropXstart = Math.round(widtharr[i] * window.cropX);
+                var cropYstart = Math.round(heightarr[i] * window.cropY);
+                var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=' + cropWidth + ':' + cropHeight + ':' + cropXstart + ':' + cropYstart + ',scale=650:-1';
+            }
+            myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-vf', cropvftext, '-map_metadata', '-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-y', outfile]));
         } else {
             var filename = filepaths[i].replace(/^.*[\\\/]/, '');
             $('#croplist').append(originals[i].toString() + ' was ignored because it was not an image file' + '<br>');
@@ -594,8 +592,7 @@ $('#manualOKbtn').click(function() {
         $('#loading-container').hide();
     }, 10);
 });
-$('#myCanvas').click(function() {
-});
+$('#myCanvas').click(function() {});
 $('#filelistbtn').click(function() {
     $('#filelistwrap').hide();
     for (var i = 0; i < filelist.length; i++) {
