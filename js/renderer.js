@@ -314,8 +314,8 @@ function updatetn(i) {
         var outfile = workdir + '/' + thisindex + '.' + previewindex + '.png';
         //widthcrop = 300;
         //heightcrop = Math.round((heightarr[i - 1] - croppixelarr[i - 1]) * 300 / widtharr[i - 1]);
-        var imagehtml = '<img src="' + outfile + '" draggable=false class=tnimage></img>';
-        $('#tn').html(imagehtml);
+        //var imagehtml = '<img src="' + outfile + '" draggable=false class=tnimage></img>';
+        $('#tn img').attr("src", outfile);
         resolve(i);
     });
 }
@@ -350,6 +350,7 @@ function progress(i) {
                     $('#myBar').css('width', '0%');
                     document.getElementById("label").innerHTML = "0%";
                     lastperc = 0;
+                    $('#cropview').hide();
                     $('#activefile').hide();
                     $('#progressmsg').hide();
                     $('#myProgress').hide();
@@ -384,6 +385,7 @@ function setupcrop(i) {
         $('#cropbtn').hide();
         $('#manualbtn').hide();
         $('#progressmsg').fadeIn();
+        $('#cropview').fadeIn();
         $('#activefile').fadeIn();
         $('#myProgress').fadeIn();
         $('#tn').fadeIn();

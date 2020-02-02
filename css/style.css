@@ -13,6 +13,10 @@ body {
     height: 280px;
     width: auto;
 }
+#cropview{
+    margin: 25px;
+    display: none;
+}
 #previewsizetext {
     width: 200px;
     text-align: center;
@@ -88,6 +92,7 @@ div:hover {
     right: 50px;
     display: none;
     float: right;
+    margin-right:25px;
 }
 #home:hover {
     cursor: pointer;
@@ -433,6 +438,7 @@ td {
     height: calc(100% - 330px);
     overflow: scroll;
     border: 1px solid black;
+    margin: 10px;
 }
 #preview::-webkit-scrollbar {
     -webkit-appearance: none;
