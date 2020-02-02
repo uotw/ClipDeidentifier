@@ -332,15 +332,13 @@ function progress(i) {
             var ext = path.extname(fullpath);
             var basename = path.basename(fullpath, ext);
             var finalcroppedfile = dir + basename + "_crop" + ext;
-            console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
-            //fs.writeFileSync(finalcroppedfile, fs.readFileSync(croppedfilelist[i]));
+            //console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
+            fs.writeFileSync(finalcroppedfile, fs.readFileSync(croppedfilelist[i]));
         }
-        //console.log("trying to write: "+croppedfilelist[i]+" => "+ filepaths[i]);
         stop = Math.round(100 * (i + 1) / filelist.length);
         var elem = document.getElementById("myBar");
         start = lastperc;
         var width = start;
-        //$('#myBar').animate({width:stop+'%'});
         var id = setInterval(frame, 30);
 
         function frame() {
