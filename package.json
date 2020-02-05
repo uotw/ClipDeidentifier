@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron .",
     "build-mac": "electron-packager . 'Clip Deidentifier' --platform=darwin --arch=x64 --icon=./img/icon.icns --out=build --overwrite --ignore='(build|bin/win)' && open \"build/Clip Deidentifier-darwin-x64\"",
-    "build-win": "electron-packager . \"Clip Deidentifier\" --platform=win32 --arch=ia32  --icon=./img/icon.icns --out=build --overwrite --ignore=\"(build|bin/mac)\""
+    "build-win": "electron-packager . \"ClipDeidentifier\" --platform=win32 --arch=ia32  --icon=./img/icon.icns --out=build --overwrite --ignore=\"(build|bin/mac)\""
   },
   "keywords": [
     "Electron"
