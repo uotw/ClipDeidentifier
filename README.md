@@ -3,8 +3,8 @@ This is an [Electron application](https://electronjs.org/) written as a frontend
 
 ## Install (v0.0.0.6)
 Download and install for your OS:
-- [MacOS](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.6.dmg) (dmg, 140MB)
-- [Windows](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.6.exe) (exe, 96 MB)
+- [MacOS](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.6.dmg) (dmg, 94.9 MB)
+- [Windows](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.6.exe) (exe, 79.2 MB)
 
 
 ## Disclaimer
