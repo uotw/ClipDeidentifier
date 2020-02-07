@@ -1,3 +1,5 @@
+The Clip Deidentifier is released under a [GNU General Public License (GPL) v3](http://www.gnu.org/licenses/gpl-3.0.html). This software uses code of <a href=http://ffmpeg.org>FFmpeg</a> licensed under the <a href=http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html>LGPLv2.1</a> and its source can be downloaded <a href=link_to_your_sources>here</a>" to every page in your website where there is a download link to your application.
+
 CC0 1.0 Universal
 ==================
 
