@@ -16,6 +16,7 @@ This software uses code of <a href=http://ffmpeg.org>FFmpeg</a> licensed under t
 - you must first [install Node 12](https://nodejs.org/en/download/)
 - `git clone https://github.com/uotw/ClipDeidentifier.git`
 - `cd ClipDeidentifier`
+- download and install FFmpeg and FFprobe static binaries for your OS ([[MacOS](https://evermeet.cx/ffmpeg/)][[Windows](https://ffbinaries.com/downloads)]) in `bin/win` or `bin/mac`
 - `npm install`
 - `npm start`
 
