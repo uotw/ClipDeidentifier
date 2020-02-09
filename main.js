@@ -13,7 +13,7 @@ let win;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
-//store.set('firstrun','1');
+store.set('firstrun','1');
 function createWindow() {
     //Get previous state
     let mainWindowState = windowStateKeeper({
