@@ -2,6 +2,9 @@ const electron = require('electron')
 // Module to control application life.
 const app = electron.app
 const rimraf = require('rimraf')
+//const path = require('path');
+const Store = require('electron-store');
+const store = new Store();
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 const windowStateKeeper = require('electron-window-state');
@@ -10,7 +13,7 @@ let win;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
-
+store.set('firstrun','1');
 function createWindow() {
     //Get previous state
     let mainWindowState = windowStateKeeper({
@@ -48,7 +51,14 @@ function createWindow() {
       mainWindow = new BrowserWindow({width: 1100, height: 750})
     */
     // and load the index.html of the app.
-    mainWindow.loadURL(`file://${__dirname}/index.html`)
+    var firstrun = store.get('firstrun');
+    if(firstrun==0){
+            mainWindow.loadURL(`file://${__dirname}/index.html`);
+    } else {
+            mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
+    }
+
+
     sethtmlsize();
 
     //initialize GLOBAL WORKING DIR VARIABLE
@@ -63,9 +73,6 @@ function createWindow() {
                 //console.log('do it');
                 rimraf.sync(dir);
             }
-            //fs.rmdir(dir, { recursive: true });
-            // const spawnsync = require('child_process').spawnSync;
-            // spawnsync('cmd.exe', ['/c', 'rd', '/s', '/q', global.workdirObj.prop1]);
         }
     });
 

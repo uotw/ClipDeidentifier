@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <title>Clip Deidentifier</title>
+      <!-- Auth0 Lock script -->
+      <!-- Setting the right viewport -->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <link rel="stylesheet" type="text/css" href="css/flatbuttons.css">
+      <link rel="stylesheet" type="text/css" href="css/ui.css">
+   </head>
+   <body>
+      <div id="maintitle">
+         <img src="img/logo.png" id="logo" draggable=false></img>
+         <h1>Clip Deidentifier</h1>
+         <div id="copyright">Copyright 2020 Ben C. Smith, MD, FACEP <a href="https://twitter.com/UltrasoundJelly" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a> <a href="mailto:bensmith.md@gmail.com" target="_self"><i class="fa fa-envelope" aria-hidden="true"></i></a></div>
+      </div>
+      <div id=cropview>
+        <div id="progressmsg">getting started: downloading FFmpeg binaries now...</div>
+        <div id="myProgress">
+           <div id="myBar">
+              <div id="label">0%</div>
+           </div>
+        </div>
+</div>
+      <div id="highlight"><span>click/drag to highlight what you want to keep</span></div>
+      <div id="confirm"><span>confirm all patient info is removed</span></div>
+      <div id="done"><span>All done! Here's a summary of what we did.</span></div>
+   </body>
+   <script src="./js/renderer.js"></script>
+   <script>
+      window.$ = window.jQuery = require('jquery');
+   </script>
+   <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+   <script>if (window.module) module = window.module; var $ = require('jQuery');</script>
+</html>

@@ -1,6 +1,7 @@
 var remote = require('electron').remote;
 //window.devicePixelRatio=2;
 var $ = require('jQuery');
+var ffbinaries = require('ffbinaries');
 var jQuery = $;
 const {
     shell
@@ -14,15 +15,16 @@ if (os.platform() == "darwin") {
     var ismac = 0;
 }
 if (ismac) {
-    var ffmpegpath = appRootDir + '/bin/mac/ffmpeg';
-    var ffprobepath = appRootDir + '/bin/mac/ffprobe';
-    var appswitchpath = appRootDir + '/bin/mac/appswitch';
+    var ffmpegpath = appRootDir + '/bin/ff/ffmpeg';
+    var ffprobepath = appRootDir + '/bin/ff/ffprobe';
+    var appswitchpath = appRootDir + '/bin/appswitch';
+    var ffpath = appRootDir + '/bin/ff';
 } else {
     var winoriginal;
-    var ffmpegpath = appRootDir + '\\bin\\win\\ffmpeg.exe';
-    var ffprobepath = appRootDir + '\\bin\\win\\ffprobe.exe';
-    var sendkeysbatpath = appRootDir + '\\bin\\win\\sendKeys.bat';
-    var temporiginal = workdir + '\\temp.mp4';
+    var ffmpegpath = appRootDir + '\\bin\\ff\\ffmpeg.exe';
+    var ffprobepath = appRootDir + '\\bin\\ff\\ffprobe.exe';
+    var sendkeysbatpath = appRootDir + '\\bin\\sendKeys.bat';
+    var ffpath = appRootDir + '\\bin\\ff';
 }
 
 function focusThisApp() {
@@ -39,6 +41,90 @@ function focusThisApp() {
     focus.stderr.on('data', (data) => {
         console.log(`stderr: ${data}`);
     });
+}
+
+function downloadFFmpeg(callback) {
+  function tickerFn(data) {
+    //console.log('\x1b[2m' + data.filename + ': Downloading ' + (data.progress * 100).toFixed(1) + '%\x1b[0m');
+    var elem = document.getElementById("myBar");
+    var percnum = (data.progress * 100/2).toFixed(1);
+    var perc = percnum + '%';
+    elem.style.width = perc;
+    $('#label').html(Math.round(percnum)+'%');
+  }
+  ffbinaries.clearCache();
+
+  var plat = ffbinaries.detectPlatform();
+
+  var options = {
+    platform: plat,
+    quiet: false,
+    destination: ffpath,
+    tickerFn: tickerFn,
+    tickerInterval: 100
+  };
+
+  ffbinaries.downloadFiles(['ffmpeg'], options, function (err, data) {
+    console.log('Downloading ffmpeg binary to ' + ffpath + '.');
+    console.log('err', err);
+    console.log('data', data);
+
+    callback(err, data);
+  });
+}
+
+function downloadFFprobe(callback) {
+  function tickerFn(data) {
+    //console.log('\x1b[2m' + data.filename + ': Downloading ' + (data.progress * 100).toFixed(1) + '%\x1b[0m');
+    var elem = document.getElementById("myBar");
+    var percnum = (data.progress * 100/2 + 50).toFixed(1);
+    var perc = percnum + '%';
+    elem.style.width = perc;
+    $('#label').html(Math.round(percnum)+'%');
+  }
+  ffbinaries.clearCache();
+
+  var plat = ffbinaries.detectPlatform();
+
+  var options = {
+    platform: plat,
+    quiet: false,
+    destination: ffpath,
+    tickerFn: tickerFn,
+    tickerInterval: 100
+  };
+
+  ffbinaries.downloadFiles(['ffprobe'], options, function (err, data) {
+    console.log('Downloading ffmpeg binary to ' + ffpath + '.');
+    console.log('err', err);
+    console.log('data', data);
+
+    callback(err, data);
+  });
+}
+
+
+var url = window.location.pathname;
+var filename = url.substring(url.lastIndexOf('/')+1);
+if (filename=="firstrun.html"){
+    $('#myProgress, #cropview, #progressmsg').show();
+    downloadFFmpeg(function (err, data) {
+        if (err) {
+            console.log('Downloads failed.');
+          }
+              downloadFFprobe(function (err, data) {
+                if (err) {
+                console.log('Downloads failed.');
+                 }
+                var elem = document.getElementById("myBar");
+                var perc = '100%';
+                elem.style.width = perc;
+                $('#label').html('100%');
+                store.set('firstrun','0');
+                setTimeout(function(){ window.location.href = 'index.html';}, 1000);
+            });
+    });
+
 }
 
 var filelist = [];
@@ -319,7 +405,22 @@ function updatetn(i) {
         resolve(i);
     });
 }
+// function progressDL(perc){
+//         //stop = Math.round(100 * (i + 1) / filelist.length);
+//         var elem = document.getElementById("myBar");
+//         start = lastperc;
+//         var width = start;
+//         var id = setInterval(frame, 30);
 
+//         function frame() {
+//             if (width >= stop) {
+//                 clearInterval(id);
+//                 elem.style.width = width + '%';
+//                 document.getElementById("label").innerHTML = width * 1 + '%';
+//             }
+//         }
+//         lastperc = stop;
+// }
 function progress(i) {
     return () => new Promise((resolve, reject) => {
         if (!ismac) {
