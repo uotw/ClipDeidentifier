@@ -10,7 +10,7 @@ Download and install for your OS:
 ## Disclaimer
 This application provides no guarantee that all Protected Health Information (PHI) has been removed from its resultant images. It is the responsibility of the user to verify that all PHI has been removed from the ultrasound media, including but not limited to 1) hard coding of PHI into the images and 2) any PHI that has been placed in the images' metadata. For full liability and license information [go here](https://github.com/uotw/ClipDeidentifier/blob/master/LICENSE.md). 
 
-This software uses code of <a href=http://ffmpeg.org>FFmpeg</a> licensed under the <a href=http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html>LGPLv2.1</a> and its source can be downloaded <a href=link_to_your_sources>here</a>" to every page in your website where there is a download link to your application.
+This software uses code of <a href=http://ffmpeg.org>FFmpeg</a> licensed under the <a href=http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html>LGPLv2.1</a> and its source can be downloaded <a href=link_to_your_sources>here</a>.
 
 ## Development Environment
 - you must first [install Node 12](https://nodejs.org/en/download/)
