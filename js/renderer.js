@@ -82,7 +82,7 @@ function downloadFFprobe(callback) {
     elem.style.width = perc;
     $('#label').html(Math.round(percnum)+'%');
   }
-  ffbinaries.clearCache();
+  //ffbinaries.clearCache();
 
   var plat = ffbinaries.detectPlatform();
 
