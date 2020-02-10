@@ -2,6 +2,7 @@ var remote = require('electron').remote;
 //window.devicePixelRatio=2;
 var $ = require('jQuery');
 var ffbinaries = require('ffbinaries');
+ffbinaries.clearCache();
 var jQuery = $;
 const {
     shell
@@ -53,7 +54,6 @@ function downloadFFmpeg(callback) {
         elem.style.width = perc;
         $('#label').html(Math.round(percnum) + '%');
     }
-    //ffbinaries.clearCache();
 
     var plat = ffbinaries.detectPlatform();
 
