@@ -6,7 +6,7 @@ var ffpath = appRootDir + '/bin/ff';
 const Store = require('electron-store');
 const store = new Store();
 
-ffbinaries.clearCache();
+//ffbinaries.clearCache(); //SET IF DEBUGGING
 
 function downloadFFmpeg(callback) {
     $("#progressmsg").html('getting started: downloading FFmpeg binaries now...');
