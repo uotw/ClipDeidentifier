@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <title>About ClipDeidentifier</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <style>
+      body{
+         margin: 5px;
+      }
+      a {
+      text-decoration:none;
+      }
+      a:link { color: #0099ff; }
+   </style>
+   <script>
+      window.$ = window.jQuery = require('jquery');
+          var shell = require('electron').shell;
+    //open links externally by default
+    $(document).on('click', 'a[href^="http"]', function(event) {
+        event.preventDefault();
+        shell.openExternal(this.href);
+    });
+ </script>
+   </head>
+   <body>
+    <div>The Clip Deidentifier is now open source, and is released under a <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License (GPL) v3.</a></div>
+    <ul>
+      <li>Source code for ClipDeidentifier can be viewed or forked from <a href="https://github.com/uotw/ClipDeidentifier">here.</a></li>
+      <li>Complete license information can be viewed <a href="https://github.com/uotw/ClipDeidentifier/blob/master/LICENSE.md">here.</a></li>
+    </ul>
+      <div>I wish to give credit for the following icon used. This Noun Project icon is licensed under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></div>
+      <ul>
+      <li><a href="https://thenounproject.com/RareSloth/uploads/?i=218993">Undo</a> (modified) By RareSloth, US from the Noun Project</li>
+   </ul>
+      <div>Other important credits for ClipDeidentifier include:</div>
+      <ul>
+      <li>The slider in ClipDeidentifier is generated using <a href="https://refreshless.com/nouislider/">noUiSlider</a> under the terms of the <a href="http://www.wtfpl.net/about/">WTFPL</a></li>
+      <li>And most importantly, this software uses code of <a href=http://ffmpeg.org>FFmpeg</a> licensed under the <a href=http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html>LGPLv2.1</a> and its source can be downloaded <a href=https://github.com/FFmpeg/FFmpeg>here</a></li>
+   </ul>
+   </body>
+</html>

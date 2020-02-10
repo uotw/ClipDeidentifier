@@ -1,4 +1,5 @@
 const electron = require('electron')
+const Menu = electron.Menu
 // Module to control application life.
 const app = electron.app
 const rimraf = require('rimraf')
@@ -13,7 +14,7 @@ let win;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
-//store.set('firstrun','1'); //SET IF DEBUGGING
+store.set('firstrun','1'); //SET IF DEBUGGING
 function createWindow() {
     //Get previous state
     let mainWindowState = windowStateKeeper({
@@ -106,6 +107,49 @@ function sethtmlsize() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
     createWindow();
+    var menu = Menu.buildFromTemplate([
+    {
+        label: 'Menu',
+            submenu: [
+            {label:'About',
+            click() {
+                 aboutWindow = new BrowserWindow({
+                width: 600,
+                height: 400,
+                'resizable': true,
+                webPreferences: {
+                    nodeIntegration: true,
+                    nodeIntegrationInWorker: true
+                }
+              });
+                aboutWindow.loadURL(`file://${__dirname}/about.html`);
+                //aboutWindow.webContents.openDevTools();
+               }
+            },
+            {
+                label:'DevTools',
+                click() {
+                    mainWindow.webContents.openDevTools();
+                }
+            },
+            {
+              label:'Reload',
+              click(){
+                app.relaunch()
+                app.exit()
+              }
+            },
+            {type:'separator'},
+            {
+                label:'Exit',
+                click() {
+                    app.quit()
+                }
+            }
+        ]
+    }
+  ])
+  Menu.setApplicationMenu(menu);
 });
 
 // Quit when all windows are closed.

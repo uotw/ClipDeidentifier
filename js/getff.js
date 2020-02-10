@@ -5,8 +5,9 @@ var appRootDir = require('app-root-dir').get();
 var ffpath = appRootDir + '/bin/ff';
 const Store = require('electron-store');
 const store = new Store();
+var internetCheckInterval;
 
-//ffbinaries.clearCache(); //SET IF DEBUGGING
+ffbinaries.clearCache(); //SET IF DEBUGGING
 
 function downloadFFmpeg(callback) {
     $("#progressmsg").html('getting started: downloading FFmpeg binaries now...');
@@ -72,7 +73,7 @@ function downloadFFprobe(callback) {
     });
 }
 
-var internetCheckInterval;
+
 function noInternet(){
     $("#progressmsg").html('something went wrong, be sure you have internet access');
         internetCheckInterval = setInterval(internetCheck,1000);
