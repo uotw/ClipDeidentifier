@@ -7,7 +7,7 @@ const Store = require('electron-store');
 const store = new Store();
 var internetCheckInterval;
 
-ffbinaries.clearCache(); //SET IF DEBUGGING
+//ffbinaries.clearCache(); //SET IF DEBUGGING
 
 function downloadFFmpeg(callback) {
     $("#progressmsg").html('getting started: downloading FFmpeg binaries now...');
