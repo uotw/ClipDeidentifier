@@ -53,10 +53,10 @@ function createWindow() {
     */
     // and load the index.html of the app.
     var firstrun = store.get('firstrun');
-    if(firstrun==0){
-            mainWindow.loadURL(`file://${__dirname}/index.html`);
+    if (firstrun == 0) {
+        mainWindow.loadURL(`file://${__dirname}/index.html`);
     } else {
-            mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
+        mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
     }
 
 
@@ -70,7 +70,7 @@ function createWindow() {
         if (global.workdirObj.prop1) {
             console.log('removing the ' + global.workdirObj.prop1 + ' directory.');
             var dir = global.workdirObj.prop1;
-            if(dir.length>10){
+            if (dir.length > 10) {
                 //console.log('do it');
                 rimraf.sync(dir);
             }
@@ -107,49 +107,49 @@ function sethtmlsize() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
     createWindow();
-    var menu = Menu.buildFromTemplate([
-    {
+    var menu = Menu.buildFromTemplate([{
         label: 'Menu',
-            submenu: [
-            {label:'About',
-            click() {
-                 aboutWindow = new BrowserWindow({
-                width: 600,
-                height: 400,
-                'resizable': true,
-                webPreferences: {
-                    nodeIntegration: true,
-                    nodeIntegrationInWorker: true
+        submenu: [{
+                label: 'About',
+                click() {
+                    aboutWindow = new BrowserWindow({
+                        width: 600,
+                        height: 400,
+                        'resizable': true,
+                        webPreferences: {
+                            nodeIntegration: true,
+                            nodeIntegrationInWorker: true
+                        }
+                    });
+                    aboutWindow.loadURL(`file://${__dirname}/about.html`);
+                    //aboutWindow.webContents.openDevTools();
                 }
-              });
-                aboutWindow.loadURL(`file://${__dirname}/about.html`);
-                //aboutWindow.webContents.openDevTools();
-               }
             },
             {
-                label:'DevTools',
+                label: 'DevTools',
                 click() {
                     mainWindow.webContents.openDevTools();
                 }
             },
             {
-              label:'Reload',
-              click(){
-                app.relaunch()
-                app.exit()
-              }
+                label: 'Reload',
+                click() {
+                    app.relaunch()
+                    app.exit()
+                }
             },
-            {type:'separator'},
             {
-                label:'Exit',
+                type: 'separator'
+            },
+            {
+                label: 'Exit',
                 click() {
                     app.quit()
                 }
             }
         ]
-    }
-  ])
-  Menu.setApplicationMenu(menu);
+    }])
+    Menu.setApplicationMenu(menu);
 });
 
 // Quit when all windows are closed.

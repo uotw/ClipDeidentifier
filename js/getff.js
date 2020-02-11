@@ -29,7 +29,7 @@ function downloadFFmpeg(callback) {
         quiet: false,
         destination: ffpath,
         tickerFn: tickerFn,
-        tickerInterval: 100
+        tickerInterval: 500
     };
 
     ffbinaries.downloadFiles(['ffmpeg'], options, function(err, data) {
@@ -63,7 +63,7 @@ function downloadFFprobe(callback) {
         quiet: false,
         destination: ffpath,
         tickerFn: tickerFn,
-        tickerInterval: 100
+        tickerInterval: 500
     };
 
     ffbinaries.downloadFiles(['ffprobe'], options, function(err, data) {

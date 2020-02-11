@@ -252,7 +252,7 @@ div#copyright {
     width: 0;
     height: 100%;
     background-color: #0099ff;
-    transition:all 0.3s;
+    transition:width 0.5s;
 }
 #label {
     text-align: center;
