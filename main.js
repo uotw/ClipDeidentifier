@@ -24,7 +24,11 @@ function checkFF(os,file){
     function search(user){
       return Object.keys(this).every((key) => user[key] === this[key]);
     }
-    return result[0].cs;
+    if(result[0]){
+        return result[0].cs;
+    } else {
+        return null;
+    }
     //for(i<)
 
 }
@@ -84,6 +88,7 @@ function createWindow() {
         //file exists
         //console.log(checksum(ffprobe));
         var thisos=os.platform()+process.arch;
+        console.log(thisos);
         var ffmpegCS = checkFF(thisos,"ffmpeg");
         var ffprobeCS = checkFF(thisos,"ffprobe");
         //console.log(ffmpegCS==checksum(ffmpeg));
