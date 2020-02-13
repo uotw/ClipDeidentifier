@@ -10,7 +10,7 @@ const rimraf = require('rimraf')
 const BrowserWindow = electron.BrowserWindow
 const windowStateKeeper = require('electron-window-state');
 let win;
-var checksum = require('checksum');
+var checksum = require('sha256-file');
 var fs = require('fs');
 var os = require("os");
 var ffjson = require('./ffcs.json');
