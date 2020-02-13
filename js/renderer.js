@@ -1,8 +1,6 @@
 var remote = require('electron').remote;
 //window.devicePixelRatio=2;
 var $ = require('jQuery');
-var ffbinaries = require('ffbinaries');
-ffbinaries.clearCache();
 var jQuery = $;
 const {
     shell
@@ -19,13 +17,11 @@ if (ismac) {
     var ffmpegpath = appRootDir + '/bin/ff/ffmpeg';
     var ffprobepath = appRootDir + '/bin/ff/ffprobe';
     var appswitchpath = appRootDir + '/bin/appswitch';
-    var ffpath = appRootDir + '/bin/ff';
 } else {
     var winoriginal;
     var ffmpegpath = appRootDir + '\\bin\\ff\\ffmpeg.exe';
     var ffprobepath = appRootDir + '\\bin\\ff\\ffprobe.exe';
     var sendkeysbatpath = appRootDir + '\\bin\\sendKeys.bat';
-    var ffpath = appRootDir + '\\bin\\ff';
 }
 
 function focusThisApp() {
@@ -44,117 +40,6 @@ function focusThisApp() {
     });
 }
 
-function downloadFFmpeg(callback) {
-    $("#progressmsg").html('getting started: downloading FFmpeg binaries now...');
-    function tickerFn(data) {
-        //console.log('\x1b[2m' + data.filename + ': Downloading ' + (data.progress * 100).toFixed(1) + '%\x1b[0m');
-        var elem = document.getElementById("myBar");
-        var percnum = (data.progress * 100 / 2).toFixed(1);
-        var perc = percnum + '%';
-        elem.style.width = perc;
-        $('#label').html(Math.round(percnum) + '%');
-    }
-
-    var plat = ffbinaries.detectPlatform();
-
-    var options = {
-        platform: plat,
-        quiet: false,
-        destination: ffpath,
-        tickerFn: tickerFn,
-        tickerInterval: 100
-    };
-
-    ffbinaries.downloadFiles(['ffmpeg'], options, function(err, data) {
-        console.log('Downloading ffmpeg binary to ' + ffpath + '.');
-        console.log('err', err);
-        console.log('data', data);
-        if (err != null) {
-            console.log('err', err);
-        }
-        callback(err, data);
-    });
-}
-
-function downloadFFprobe(callback) {
-    function tickerFn(data) {
-        //console.log('\x1b[2m' + data.filename + ': Downloading ' + (data.progress * 100).toFixed(1) + '%\x1b[0m');
-        var elem = document.getElementById("myBar");
-        var percnum = (data.progress * 100 / 2 + 50).toFixed(1);
-        var perc = percnum + '%';
-        elem.style.width = perc;
-        $('#label').html(Math.round(percnum) + '%');
-    }
-    ffbinaries.clearCache();
-
-    var plat = ffbinaries.detectPlatform();
-
-    var options = {
-        platform: plat,
-        quiet: false,
-        destination: ffpath,
-        tickerFn: tickerFn,
-        tickerInterval: 100
-    };
-
-    ffbinaries.downloadFiles(['ffprobe'], options, function(err, data) {
-        console.log('Downloading ffmpeg binary to ' + ffpath + '.');
-        if (err != null) {
-            console.log('err', err);
-        }
-        console.log('data', data);
-
-        callback(err, data);
-    });
-}
-
-
-var url = window.location.pathname;
-var filename = url.substring(url.lastIndexOf('/') + 1);
-if (filename == "firstrun.html") {
-    firstRunFF();
-}
-var internetCheckInterval;
-function noInternet(){
-    $("#progressmsg").html('something went wrong, be sure you have internet access');
-        internetCheckInterval = setInterval(internetCheck,1000);
-}
-
-function internetCheck(){
-    console.log(navigator.onLine);
-    if(navigator.onLine){
-        firstRunFF();
-        clearInterval(internetCheckInterval);
-    } else {
-        console.log('checking internet');
-    }
-}
-
-function firstRunFF(){
-        $('#myProgress, #cropview, #progressmsg').show();
-    downloadFFmpeg(function(err, data) {
-        if (err) {
-            noInternet();
-            console.log('Downloads failed:'+err);
-
-        } else {
-            downloadFFprobe(function(err, data) {
-                if (err) {
-                    console.log('Downloads failed.');
-                } else {
-                    var elem = document.getElementById("myBar");
-                    var perc = '100%';
-                    elem.style.width = perc;
-                    $('#label').html('100%');
-                    store.set('firstrun', '0');
-                    setTimeout(function() {
-                        window.location.href = 'index.html';
-                    }, 1000);
-                }
-            });
-        }
-    });
-}
 
 var filelist = [];
 var widtharr = [];
@@ -335,9 +220,13 @@ $(document).on('drop', function(e) {
 });
 
 function canvasbg(filelist) {
-
-    ffmpeg = spawnsync(ffmpegpath, ['-i', filelist[0], '-an', '-vf', 'scale=500:-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-map_metadata', '-1', '-y', previewfile]);
-    ffprobe = spawnsync('cmd.exe', ['/c', ffprobepath, '-print_format', 'json', '-show_streams', '-i', filelist[0]]);
+    if(ismac){
+        ffmpeg = spawnsync(ffmpegpath, ['-i', filelist[0], '-an', '-vf', 'scale=500:-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-map_metadata', '-1', '-y', previewfile]);
+        ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-i', filelist[0]]);
+    } else {
+        ffmpeg = spawnsync('cmd.exe', ['/c', ffmpegpath, '-i', filelist[0], '-an', '-vf', 'scale=500:-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-map_metadata', '-1', '-y', previewfile]);
+        ffprobe = spawnsync('cmd.exe', ['/c', ffprobepath, '-print_format', 'json', '-show_streams', '-i', filelist[0]]);
+    }
     ffprobeOb = JSON.parse(ffprobe.stdout);
     return (ffprobeOb);
 
