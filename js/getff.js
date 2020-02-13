@@ -7,15 +7,16 @@ var ffpath = appRootDir + '/bin/ff';
 var internetCheckInterval;
 
 var checksum = require('sha256-file');
-var fs = require('fs');
+var appRootDir = require('app-root-dir').get();
+//var fs = require('fs');
 var os = require("os");
 var ffjson = require('./ffcs.json');
 if (os.platform() == "win32") {
-    var ffmpeg = "./bin/ff/ffmpeg.exe";
-    var ffprobe = "./bin/ff/ffprobe.exe";
+    var ffmpeg = appRootDir+"/bin/ff/ffmpeg.exe";
+    var ffprobe = appRootDir+"/bin/ff/ffprobe.exe";
 } else {
-    var ffmpeg = "./bin/ff/ffmpeg";
-    var ffprobe = "./bin/ff/ffprobe";
+    var ffmpeg = appRootDir+"/bin/ff/ffmpeg";
+    var ffprobe = appRootDir+"/bin/ff/ffprobe";
 }
 
 function checkFF(os, file) {
@@ -148,7 +149,6 @@ function firstRunFF() {
                             var perc = '100%';
                             elem.style.width = perc;
                             $('#label').html('100%');
-                            //store.set('firstrun', '0');
                             setTimeout(function() {
                                 window.location.href = 'index.html';
                             }, 1000);
