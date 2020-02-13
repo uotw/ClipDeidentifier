@@ -4,12 +4,30 @@ const Menu = electron.Menu
 const app = electron.app
 const rimraf = require('rimraf')
 //const path = require('path');
-const Store = require('electron-store');
-const store = new Store();
+// const Store = require('electron-store');
+// const store = new Store();
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 const windowStateKeeper = require('electron-window-state');
 let win;
+var checksum = require('checksum');
+var fs = require('fs');
+var os = require("os");
+var ffjson = require('./ffcs.json');
+const process = require('process');
+//console.log(ffjson[0]);
+function checkFF(os,file){
+    var query = {"os":os,"file":file};
+    //console.log(query);
+    var result = ffjson.filter(search, query);
+
+    function search(user){
+      return Object.keys(this).every((key) => user[key] === this[key]);
+    }
+    return result[0].cs;
+    //for(i<)
+
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -52,12 +70,42 @@ function createWindow() {
       mainWindow = new BrowserWindow({width: 1100, height: 750})
     */
     // and load the index.html of the app.
-    var firstrun = store.get('firstrun');
-    if (firstrun == 0) {
-        mainWindow.loadURL(`file://${__dirname}/index.html`);
+
+    // CHECK IF FF FILES EXIST AND CS IS CORRECT
+    if (os.platform() == "win32") {
+        var ffmpeg = "./bin/ff/ffmpeg.exe";
+        var ffprobe = "./bin/ff/ffprobe.exe";
     } else {
-        mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
+        var ffmpeg = "./bin/ff/ffmpeg";
+        var ffprobe = "./bin/ff/ffprobe";
     }
+    try {
+      if (fs.existsSync(ffmpeg) && fs.existsSync(ffprobe)) {
+        //file exists
+        //console.log(checksum(ffprobe));
+        var thisos=os.platform()+process.arch;
+        var ffmpegCS = checkFF(thisos,"ffmpeg");
+        var ffprobeCS = checkFF(thisos,"ffprobe");
+        //console.log(ffmpegCS==checksum(ffmpeg));
+        if(ffmpegCS==checksum(ffmpeg) && ffprobeCS == checksum(ffprobe)){
+            mainWindow.loadURL(`file://${__dirname}/index.html`);
+        } else {
+            mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
+        }
+      } else {
+         mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
+      }
+    } catch(err) {
+
+      console.error(err)
+    }
+
+    // var firstrun = store.get('firstrun');
+    // if (firstrun == 0) {
+    //     mainWindow.loadURL(`file://${__dirname}/index.html`);
+    // } else {
+    //     mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
+    // }
 
 
     sethtmlsize();

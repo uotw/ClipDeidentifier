@@ -7,8 +7,8 @@ const Store = require('electron-store');
 const store = new Store();
 var internetCheckInterval;
 
-//ffbinaries.clearCache(); //SET IF DEBUGGING
-
+ffbinaries.clearCache(); //SET IF DEBUGGING
+var version = "4.2.1";
 function downloadFFmpeg(callback) {
     $("#progressmsg").html('getting started: downloading FFmpeg binaries now...');
     function tickerFn(data) {
@@ -29,7 +29,8 @@ function downloadFFmpeg(callback) {
         quiet: false,
         destination: ffpath,
         tickerFn: tickerFn,
-        tickerInterval: 500
+        tickerInterval: 500,
+        version: version
     };
 
     ffbinaries.downloadFiles(['ffmpeg'], options, function(err, data) {
@@ -54,7 +55,6 @@ function downloadFFprobe(callback) {
             $('#label').html(Math.round(percnum) + '%');
         }
     }
-    ffbinaries.clearCache();
 
     var plat = ffbinaries.detectPlatform();
 
@@ -63,7 +63,8 @@ function downloadFFprobe(callback) {
         quiet: false,
         destination: ffpath,
         tickerFn: tickerFn,
-        tickerInterval: 500
+        tickerInterval: 500,
+        version: version
     };
 
     ffbinaries.downloadFiles(['ffprobe'], options, function(err, data) {
