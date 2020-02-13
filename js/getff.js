@@ -12,11 +12,11 @@ var appRootDir = require('app-root-dir').get();
 var os = require("os");
 var ffjson = require('./ffcs.json');
 if (os.platform() == "win32") {
-    var ffmpeg = appRootDir+"/bin/ff/ffmpeg.exe";
-    var ffprobe = appRootDir+"/bin/ff/ffprobe.exe";
+    var ffmpegpath = appRootDir+"/bin/ff/ffmpeg.exe";
+    var ffprobepath = appRootDir+"/bin/ff/ffprobe.exe";
 } else {
-    var ffmpeg = appRootDir+"/bin/ff/ffmpeg";
-    var ffprobe = appRootDir+"/bin/ff/ffprobe";
+    var ffmpegpath = appRootDir+"/bin/ff/ffmpeg";
+    var ffprobepath = appRootDir+"/bin/ff/ffprobe";
 }
 
 function checkFF(os, file) {
@@ -138,13 +138,13 @@ function firstRunFF() {
 
         } else {
             var ffmpegCS = checkFF(os.platform(), "ffmpeg");
-            if (ffmpegCS.search(checksum(ffmpeg)) > -1) {
+            if (ffmpegCS.search(checksum(ffmpegpath)) > -1) {
                 downloadFFprobe(function(err, data) {
                     if (err) {
                         console.log('Downloads failed.');
                     } else {
                         var ffprobeCS = checkFF(os.platform(), "ffprobe");
-                        if (ffprobeCS.search(checksum(ffprobe)) > -1) {
+                        if (ffprobeCS.search(checksum(ffprobepath)) > -1) {
                             var elem = document.getElementById("myBar");
                             var perc = '100%';
                             elem.style.width = perc;

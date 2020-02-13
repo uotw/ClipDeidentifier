@@ -13,16 +13,17 @@ if (os.platform() == "darwin") {
 } else {
     var ismac = 0;
 }
-if (ismac) {
-    var ffmpegpath = appRootDir + '/bin/ff/ffmpeg';
-    var ffprobepath = appRootDir + '/bin/ff/ffprobe';
-    var appswitchpath = appRootDir + '/bin/appswitch';
+if (os.platform() == "win32") {
+    var ffmpegpath = appRootDir+"/bin/ff/ffmpeg.exe";
+    var ffprobepath = appRootDir+"/bin/ff/ffprobe.exe";
 } else {
-    var winoriginal;
-    var ffmpegpath = appRootDir + '\\bin\\ff\\ffmpeg.exe';
-    var ffprobepath = appRootDir + '\\bin\\ff\\ffprobe.exe';
-    var sendkeysbatpath = appRootDir + '\\bin\\sendKeys.bat';
+    var ffmpegpath = appRootDir+"/bin/ff/ffmpeg";
+    var ffprobepath = appRootDir+"/bin/ff/ffprobe";
 }
+
+var appswitchpath = appRootDir + '/bin/appswitch';
+var sendkeysbatpath = appRootDir + '\\bin\\sendKeys.bat';
+
 
 function focusThisApp() {
     if (ismac) {
