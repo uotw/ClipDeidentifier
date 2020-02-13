@@ -48,6 +48,7 @@ function downloadFFmpeg(callback) {
         var elem = document.getElementById("myBar");
         var percnum = (data.progress * 100 / 2).toFixed(1);
         var perc = percnum + '%';
+        console.log(perc);
         if (elem.style.width < perc) {
             elem.style.width = perc;
             $('#label').html(Math.round(percnum) + '%');
@@ -82,6 +83,7 @@ function downloadFFprobe(callback) {
         var elem = document.getElementById("myBar");
         var percnum = (data.progress * 100 / 2 + 50).toFixed(1);
         var perc = percnum + '%';
+        console.log(perc);
         if (elem.style.width < perc) {
             elem.style.width = perc;
             $('#label').html(Math.round(percnum) + '%');
