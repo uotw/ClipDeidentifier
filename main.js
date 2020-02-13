@@ -83,7 +83,6 @@ function createWindow() {
       if (fs.existsSync(ffmpeg) && fs.existsSync(ffprobe)) {
         var ffmpegCS = checkFF(os.platform(),"ffmpeg");
         var ffprobeCS = checkFF(os.platform(),"ffprobe");
-        console.log(checksum(ffmpeg),checksum(ffprobe));
         if(ffmpegCS.search(checksum(ffmpeg))>-1 && ffprobeCS.search(checksum(ffprobe))>-1){
             mainWindow.loadURL(`file://${__dirname}/index.html`);
         } else {
@@ -97,14 +96,6 @@ function createWindow() {
       console.error(err)
     }
 
-    // var firstrun = store.get('firstrun');
-    // if (firstrun == 0) {
-    //     mainWindow.loadURL(`file://${__dirname}/index.html`);
-    // } else {
-    //     mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
-    // }
-
-
     sethtmlsize();
 
     //initialize GLOBAL WORKING DIR VARIABLE
@@ -116,7 +107,6 @@ function createWindow() {
             console.log('removing the ' + global.workdirObj.prop1 + ' directory.');
             var dir = global.workdirObj.prop1;
             if (dir.length > 10) {
-                //console.log('do it');
                 rimraf.sync(dir);
             }
         }

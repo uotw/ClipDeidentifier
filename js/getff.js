@@ -1,4 +1,3 @@
-
 var $ = require('jQuery');
 var ffbinaries = require('ffbinaries');
 var appRootDir = require('app-root-dir').get();
@@ -18,15 +17,19 @@ if (os.platform() == "win32") {
     var ffmpeg = "./bin/ff/ffmpeg";
     var ffprobe = "./bin/ff/ffprobe";
 }
-function checkFF(os,file){
-    var query = {"os":os,"file":file};
+
+function checkFF(os, file) {
+    var query = {
+        "os": os,
+        "file": file
+    };
     //console.log(query);
     var result = ffjson.filter(search, query);
 
-    function search(user){
-      return Object.keys(this).every((key) => user[key] === this[key]);
+    function search(user) {
+        return Object.keys(this).every((key) => user[key] === this[key]);
     }
-    if(result[0]){
+    if (result[0]) {
         return result[0].cs;
     } else {
         return null;
@@ -36,14 +39,16 @@ function checkFF(os,file){
 
 ffbinaries.clearCache(); //SET IF DEBUGGING
 var version = "4.2.1";
+
 function downloadFFmpeg(callback) {
     $("#progressmsg").html('getting started: downloading FFmpeg binaries now...');
+
     function tickerFn(data) {
         //console.log('\x1b[2m' + data.filename + ': Downloading ' + (data.progress * 100).toFixed(1) + '%\x1b[0m');
         var elem = document.getElementById("myBar");
         var percnum = (data.progress * 100 / 2).toFixed(1);
         var perc = percnum + '%';
-        if(elem.style.width < perc){
+        if (elem.style.width < perc) {
             elem.style.width = perc;
             $('#label').html(Math.round(percnum) + '%');
         }
@@ -77,7 +82,7 @@ function downloadFFprobe(callback) {
         var elem = document.getElementById("myBar");
         var percnum = (data.progress * 100 / 2 + 50).toFixed(1);
         var perc = percnum + '%';
-        if(elem.style.width < perc){
+        if (elem.style.width < perc) {
             elem.style.width = perc;
             $('#label').html(Math.round(percnum) + '%');
         }
@@ -106,14 +111,14 @@ function downloadFFprobe(callback) {
 }
 
 
-function noInternet(){
+function noInternet() {
     $("#progressmsg").html('something went wrong, be sure you have internet access');
-        internetCheckInterval = setInterval(internetCheck,1000);
+    internetCheckInterval = setInterval(internetCheck, 1000);
 }
 
-function internetCheck(){
+function internetCheck() {
     console.log(navigator.onLine);
-    if(navigator.onLine){
+    if (navigator.onLine) {
         firstRunFF();
         clearInterval(internetCheckInterval);
     } else {
@@ -121,22 +126,22 @@ function internetCheck(){
     }
 }
 
-function firstRunFF(){
-        $('#myProgress, #cropview, #progressmsg').show();
+function firstRunFF() {
+    $('#myProgress, #cropview, #progressmsg').show();
     downloadFFmpeg(function(err, data) {
         if (err) {
             noInternet();
-            console.log('Downloads failed:'+err);
+            console.log('Downloads failed:' + err);
 
         } else {
-            var ffmpegCS = checkFF(os.platform(),"ffmpeg");
-            if(ffmpegCS.search(checksum(ffmpeg))>-1){
+            var ffmpegCS = checkFF(os.platform(), "ffmpeg");
+            if (ffmpegCS.search(checksum(ffmpeg)) > -1) {
                 downloadFFprobe(function(err, data) {
                     if (err) {
                         console.log('Downloads failed.');
                     } else {
-                        var ffprobeCS = checkFF(os.platform(),"ffprobe");
-                        if(ffprobeCS.search(checksum(ffprobe))>-1){
+                        var ffprobeCS = checkFF(os.platform(), "ffprobe");
+                        if (ffprobeCS.search(checksum(ffprobe)) > -1) {
                             var elem = document.getElementById("myBar");
                             var perc = '100%';
                             elem.style.width = perc;
@@ -147,14 +152,14 @@ function firstRunFF(){
                             }, 1000);
                         } else {
                             //ERROR CS
-                            $("#myBar").hide();
+                            $("#myBar").css('background-color','red');
                             $("#progressmsg").html('the downloaded binary has been altered, contact bensmith.md@gmail.com');
                         }
                     }
                 });
             } else {
                 //ERROR CS
-                $("#myBar").hide();
+                $("#myBar").css('background-color','red');
                 $("#progressmsg").html('the downloaded binary has been altered, contact bensmith.md@gmail.com');
             }
         }
