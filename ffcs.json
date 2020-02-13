@@ -11,21 +11,21 @@
   {
     "os": "win32",
     "file": "ffmpeg",
-    "cs": "2ac89ee34933a72205de6e6ec6f3bbc65558d51fb6d64a5768f9138e3e1a1811"
+    "cs": "2ac89ee34933a72205de6e6ec6f3bbc65558d51fb6d64a5768f9138e3e1a1811,e79d9b4bd7b0420b974eb58eb15d6f072ee939f98acc93314a4cc750c6b7099d"
   },
   {
     "os": "win32",
     "file": "ffprobe",
-    "cs": "ad522b6a34da60c7e89950edada01ff02cac320242dc1b823ef0bb130e0f5b0f"
+    "cs": "ad522b6a34da60c7e89950edada01ff02cac320242dc1b823ef0bb130e0f5b0f,cdcf051213fcf87ca6193d01cf4419afceb3a1f9a867981c08136a26ac749f56"
   },
   {
     "os": "linux",
     "file": "ffmpeg",
-    "cs": ""
+    "cs": "ba82ce6e69fa4307fc2d6fabc8301033f8abcaf78914277a93c7ec350a141f91,66d1db01aa107f5155481967f38147cb193e74295338bf65488fec1c7d42fa65"
   },
   {
     "os": "linux",
     "file": "ffprobe",
-    "cs": ""
+    "cs": "7253a3d60cd2c9bb8646853c259c67129e76295a40a8eb987e31f49a7650594b,3a6738037dc6d283733596bc8b8518adbb92da8636ca1ab74b0b4b475c43b4ab"
   }
 ]
