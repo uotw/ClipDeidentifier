@@ -14,7 +14,7 @@
     "cs": "2ac89ee34933a72205de6e6ec6f3bbc65558d51fb6d64a5768f9138e3e1a1811"
   },
   {
-    "os": "winx32",
+    "os": "win32",
     "file": "ffprobe",
     "cs": "ad522b6a34da60c7e89950edada01ff02cac320242dc1b823ef0bb130e0f5b0f"
   },
