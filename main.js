@@ -18,7 +18,7 @@ const process = require('process');
 //console.log(ffjson[0]);
 function checkFF(os,file){
     var query = {"os":os,"file":file};
-    //console.log(query);
+    console.log(query);
     var result = ffjson.filter(search, query);
 
     function search(user){
