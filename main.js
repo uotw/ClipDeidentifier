@@ -87,12 +87,12 @@ function createWindow() {
       if (fs.existsSync(ffmpeg) && fs.existsSync(ffprobe)) {
         //file exists
         //console.log(checksum(ffprobe));
-        var thisos=os.platform()+process.arch;
-        console.log(thisos);
-        var ffmpegCS = checkFF(thisos,"ffmpeg");
-        var ffprobeCS = checkFF(thisos,"ffprobe");
-        //console.log(ffmpegCS==checksum(ffmpeg));
-        if(ffmpegCS==checksum(ffmpeg) && ffprobeCS == checksum(ffprobe)){
+        // var thisos=os.platform()+process.arch;
+        console.log(os.platform());
+        var ffmpegCS = checkFF(os.platform(),"ffmpeg");
+        var ffprobeCS = checkFF(os.platform(),"ffprobe");
+        console.log(checksum(ffmpeg),checksum(ffprobe));
+        if(ffmpegCS.search(checksum(ffmpeg))>-1 && ffprobeCS.search(checksum(ffprobe))>-1){
             mainWindow.loadURL(`file://${__dirname}/index.html`);
         } else {
             mainWindow.loadURL(`file://${__dirname}/firstrun.html`);

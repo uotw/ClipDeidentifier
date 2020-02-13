@@ -1,15 +1,15 @@
 [{
-    "os": "darwinx64",
+    "os": "darwin",
     "file": "ffmpeg",
     "cs": "a0c1a2ac83511412f4d5125342c31c4228b7a68d"
   },
   {
-    "os": "darwinx64",
+    "os": "darwin",
     "file": "ffprobe",
     "cs": "532b7bbdcc2c5d2ecfe1abe11162aea934fedf76"
   },
   {
-    "os": "winx32",
+    "os": "win32",
     "file": "ffmpeg",
     "cs": ""
   },
@@ -19,32 +19,12 @@
     "cs": ""
   },
   {
-    "os": "winx64",
+    "os": "linux",
     "file": "ffmpeg",
     "cs": ""
   },
   {
-    "os": "winx64",
-    "file": "ffprobe",
-    "cs": ""
-  },
-  {
-    "os": "linuxx32",
-    "file": "ffmpeg",
-    "cs": ""
-  },
-  {
-    "os": "linuxx32",
-    "file": "ffprobe",
-    "cs": ""
-  },
-  {
-    "os": "linuxx64",
-    "file": "ffmpeg",
-    "cs": ""
-  },
-  {
-    "os": "linuxx64",
+    "os": "linux",
     "file": "ffprobe",
     "cs": ""
   }
