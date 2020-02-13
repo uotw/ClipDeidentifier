@@ -3,9 +3,36 @@ var $ = require('jQuery');
 var ffbinaries = require('ffbinaries');
 var appRootDir = require('app-root-dir').get();
 var ffpath = appRootDir + '/bin/ff';
-const Store = require('electron-store');
-const store = new Store();
+// const Store = require('electron-store');
+// const store = new Store();
 var internetCheckInterval;
+
+var checksum = require('sha256-file');
+var fs = require('fs');
+var os = require("os");
+var ffjson = require('./ffcs.json');
+if (os.platform() == "win32") {
+    var ffmpeg = "./bin/ff/ffmpeg.exe";
+    var ffprobe = "./bin/ff/ffprobe.exe";
+} else {
+    var ffmpeg = "./bin/ff/ffmpeg";
+    var ffprobe = "./bin/ff/ffprobe";
+}
+function checkFF(os,file){
+    var query = {"os":os,"file":file};
+    //console.log(query);
+    var result = ffjson.filter(search, query);
+
+    function search(user){
+      return Object.keys(this).every((key) => user[key] === this[key]);
+    }
+    if(result[0]){
+        return result[0].cs;
+    } else {
+        return null;
+    }
+}
+
 
 ffbinaries.clearCache(); //SET IF DEBUGGING
 var version = "4.2.1";
@@ -102,20 +129,34 @@ function firstRunFF(){
             console.log('Downloads failed:'+err);
 
         } else {
-            downloadFFprobe(function(err, data) {
-                if (err) {
-                    console.log('Downloads failed.');
-                } else {
-                    var elem = document.getElementById("myBar");
-                    var perc = '100%';
-                    elem.style.width = perc;
-                    $('#label').html('100%');
-                    store.set('firstrun', '0');
-                    setTimeout(function() {
-                        window.location.href = 'index.html';
-                    }, 1000);
-                }
-            });
+            var ffmpegCS = checkFF(os.platform(),"ffmpeg");
+            if(ffmpegCS.search(checksum(ffmpeg))>-1){
+                downloadFFprobe(function(err, data) {
+                    if (err) {
+                        console.log('Downloads failed.');
+                    } else {
+                        var ffprobeCS = checkFF(os.platform(),"ffprobe");
+                        if(ffprobeCS.search(checksum(ffprobe))>-1){
+                            var elem = document.getElementById("myBar");
+                            var perc = '100%';
+                            elem.style.width = perc;
+                            $('#label').html('100%');
+                            //store.set('firstrun', '0');
+                            setTimeout(function() {
+                                window.location.href = 'index.html';
+                            }, 1000);
+                        } else {
+                            //ERROR CS
+                            $("#myBar").hide();
+                            $("#progressmsg").html('the downloaded binary has been altered, contact bensmith.md@gmail.com');
+                        }
+                    }
+                });
+            } else {
+                //ERROR CS
+                $("#myBar").hide();
+                $("#progressmsg").html('the downloaded binary has been altered, contact bensmith.md@gmail.com');
+            }
         }
     });
 }

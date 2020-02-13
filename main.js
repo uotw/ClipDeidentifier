@@ -14,11 +14,9 @@ var checksum = require('sha256-file');
 var fs = require('fs');
 var os = require("os");
 var ffjson = require('./ffcs.json');
-const process = require('process');
-//console.log(ffjson[0]);
 function checkFF(os,file){
     var query = {"os":os,"file":file};
-    console.log(query);
+    //console.log(query);
     var result = ffjson.filter(search, query);
 
     function search(user){
@@ -29,8 +27,6 @@ function checkFF(os,file){
     } else {
         return null;
     }
-    //for(i<)
-
 }
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -85,10 +81,6 @@ function createWindow() {
     }
     try {
       if (fs.existsSync(ffmpeg) && fs.existsSync(ffprobe)) {
-        //file exists
-        //console.log(checksum(ffprobe));
-        // var thisos=os.platform()+process.arch;
-        console.log(os.platform());
         var ffmpegCS = checkFF(os.platform(),"ffmpeg");
         var ffprobeCS = checkFF(os.platform(),"ffprobe");
         console.log(checksum(ffmpeg),checksum(ffprobe));
