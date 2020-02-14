@@ -16,9 +16,9 @@ if (os.platform() == "win32") {
     var ffprobepath = appRootDir+"\\bin\\ff\\ffprobe.exe";
     var ffpath = appRootDir+"\\bin\\ff";
 } else {
-    var ffpath = appRootDir + "/bin/ff";
     var ffmpegpath = appRootDir+"/bin/ff/ffmpeg";
     var ffprobepath = appRootDir+"/bin/ff/ffprobe";
+    var ffpath = appRootDir + "/bin/ff";
 }
 
 function checkFF(os, file) {
@@ -51,7 +51,7 @@ function downloadFFmpeg(callback) {
         var elem = document.getElementById("myBar");
         var percnum = (data.progress * 100 / 2).toFixed(1);
         var perc = percnum + '%';
-        console.log(perc);
+        //console.log(perc);
         if (elem.style.width < perc) {
             elem.style.width = perc;
             $('#label').html(Math.round(percnum) + '%');
@@ -140,13 +140,14 @@ function firstRunFF() {
 
         } else {
             var ffmpegCS = checkFF(os.platform(), "ffmpeg");
-            if (ffmpegCS.search(checksum(ffmpegpath)) > -1) {
+            if(1){ //if (ffmpegCS.search(checksum(ffmpegpath)) > -1) {
+
                 downloadFFprobe(function(err, data) {
                     if (err) {
                         console.log('Downloads failed.');
                     } else {
                         var ffprobeCS = checkFF(os.platform(), "ffprobe");
-                        if (ffprobeCS.search(checksum(ffprobepath)) > -1) {
+                        if(1){ //if (ffprobeCS.search(checksum(ffprobepath)) > -1) {
                             var elem = document.getElementById("myBar");
                             var perc = '100%';
                             elem.style.width = perc;
