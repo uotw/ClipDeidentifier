@@ -3,8 +3,10 @@ The purpose of ClipDeidentifier is to take a ultrasound media in a traditional f
 
 ## Install (v0.0.0.7)
 Download and install for your OS:
-- [MacOS](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.7.dmg) (dmg, 94.9 MB)
-- [Windows](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.7.exe) (exe, 79.2 MB)
+- [MacOS](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.7.dmg) (dmg, 79.1 MB)
+- [Windows](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.7.exe) (exe, 46.4 MB)
+
+On first launch, ClipDeidentifier will download additional necessary files, ~45MB. After initial launch, no internet connection is required to run ClipDeidentifier.
 
 
 ## Disclaimer
