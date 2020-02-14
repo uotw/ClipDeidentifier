@@ -143,7 +143,7 @@ function firstRunFF() {
 
         } else {
             var ffmpegCS = checkFF(os.platform(), "ffmpeg");
-                if(1){if (ffmpegCS.search(checksum(ffmpegpath)) > -1) {
+                if (ffmpegCS.search(checksum(ffmpegpath)) > -1) {
 
                 downloadFFprobe(function(err, data) {
                     if (err) {
