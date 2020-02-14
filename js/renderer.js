@@ -6,6 +6,10 @@ const {
     shell
 } = require('electron');
 var appRootDir = require('app-root-dir').get();
+const app = remote.app;
+var userdir =  app.getPath('userData');
+
+
 var os = require("os");
 var pid = remote.process.pid;
 if (os.platform() == "darwin") {
@@ -13,13 +17,23 @@ if (os.platform() == "darwin") {
 } else {
     var ismac = 0;
 }
+
 if (os.platform() == "win32") {
-    var ffmpegpath = appRootDir+"/bin/ff/ffmpeg.exe";
-    var ffprobepath = appRootDir+"/bin/ff/ffprobe.exe";
+    var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
+    var ffprobepath = userdir+"\\ff\\ffprobe.exe";
+    var ffpath = userdir+"\\ff";
 } else {
-    var ffmpegpath = appRootDir+"/bin/ff/ffmpeg";
-    var ffprobepath = appRootDir+"/bin/ff/ffprobe";
+    var ffmpegpath = userdir+"/ff/ffmpeg";
+    var ffprobepath = userdir+"/ff/ffprobe";
+    var ffpath = userdir + "/ff";
 }
+// if (os.platform() == "win32") {
+//     var ffmpegpath = appRootDir+"/bin/ff/ffmpeg.exe";
+//     var ffprobepath = appRootDir+"/bin/ff/ffprobe.exe";
+// } else {
+//     var ffmpegpath = appRootDir+"/bin/ff/ffmpeg";
+//     var ffprobepath = appRootDir+"/bin/ff/ffprobe";
+// }
 
 var appswitchpath = appRootDir + '/bin/appswitch';
 var sendkeysbatpath = appRootDir + '\\bin\\sendKeys.bat';

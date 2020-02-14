@@ -72,18 +72,22 @@ function createWindow() {
     // and load the index.html of the app.
 
     // CHECK IF FF FILES EXIST AND CS IS CORRECT
+    var userdir =  app.getPath('userData');
+
     if (os.platform() == "win32") {
-        var ffmpeg = "./bin/ff/ffmpeg.exe";
-        var ffprobe = "./bin/ff/ffprobe.exe";
+        var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
+        var ffprobepath = userdir+"\\ff\\ffprobe.exe";
+        var ffpath = userdir+"\\ff";
     } else {
-        var ffmpeg = "./bin/ff/ffmpeg";
-        var ffprobe = "./bin/ff/ffprobe";
+        var ffmpegpath = userdir+"/ff/ffmpeg";
+        var ffprobepath = userdir+"/ff/ffprobe";
+        var ffpath = userdir + "/ff";
     }
     try {
-      if (fs.existsSync(ffmpeg) && fs.existsSync(ffprobe)) {
+      if (fs.existsSync(ffmpegpath) && fs.existsSync(ffprobepath)) {
         var ffmpegCS = checkFF(os.platform(),"ffmpeg");
         var ffprobeCS = checkFF(os.platform(),"ffprobe");
-        if(ffmpegCS.search(checksum(ffmpeg))>-1 && ffprobeCS.search(checksum(ffprobe))>-1){
+        if(ffmpegCS.search(checksum(ffmpegpath))>-1 && ffprobeCS.search(checksum(ffprobepath))>-1){
             mainWindow.loadURL(`file://${__dirname}/index.html`);
         } else {
             mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
