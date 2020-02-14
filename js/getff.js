@@ -1,7 +1,7 @@
 var $ = require('jQuery');
 var ffbinaries = require('ffbinaries');
 var appRootDir = require('app-root-dir').get();
-var ffpath = appRootDir + '/bin/ff';
+
 // const Store = require('electron-store');
 // const store = new Store();
 var internetCheckInterval;
@@ -14,7 +14,9 @@ var ffjson = require('./ffcs.json');
 if (os.platform() == "win32") {
     var ffmpegpath = appRootDir+"\\bin\\ff\\ffmpeg.exe";
     var ffprobepath = appRootDir+"\\bin\\ff\\ffprobe.exe";
+    var ffpath = appRootDir+"\\bin\\ff";
 } else {
+    var ffpath = appRootDir + "/bin/ff";
     var ffmpegpath = appRootDir+"/bin/ff/ffmpeg";
     var ffprobepath = appRootDir+"/bin/ff/ffprobe";
 }
