@@ -473,8 +473,8 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
                 myqueue.push(customSpawn('"' + ffmpegpath + '"', ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-vcodec', 'libx264', '-pix_fmt', 'yuv420p', '-y', cropfile]));
             }
         } else {
-            var cropfile = croppath + '/' + basename + '_crop.png';
-            var outfile = workdir + '/' + nexti + '.png';
+            var cropfile = croppath + ds + basename + '_crop.png';
+            var outfile = workdir + ds + nexti + '.png';
             if (ismac) {
                 myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-y', '-pix_fmt', 'rgb24', cropfile]));
             } else {
