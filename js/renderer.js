@@ -207,6 +207,7 @@ $("#filelistwrap").on('drop', function(event) {
             console.log(name);
         }
     }
+    originals = filelist.slice();
     addfiledelay = 0;
     addfilestatus();
     $('#previewbtn').fadeIn();
@@ -363,7 +364,7 @@ function progress(i) {
             var ext = path.extname(fullpath);
             var basename = path.basename(fullpath, ext);
             var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
-            console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
+            console.log("trying to write: " + originals[i] + " => " + finalcroppedfile);
             fs.writeFileSync(finalcroppedfile, fs.readFileSync(croppedfilelist[i]));
             $('#croplist').append(originals[i] + '=>' + finalcroppedfile + '<br>');
         } else {
@@ -497,7 +498,6 @@ function preview() {
     croppixelarr = [];
     myqueue = [];
     var skip = 0;
-    originals = filelist.slice();
     for (var i = 0; i < filelist.length; i++) {
         var nameonly = filelist[i].split("\\");
         nameonly = nameonly.slice(-1);
