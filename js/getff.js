@@ -153,7 +153,7 @@ function firstRunFF() {
                             elem.style.width = perc;
                             $('#label').html('100%');
                             setTimeout(function() {
-                                window.location.href = 'index.html';
+                                //window.location.href = 'index.html';
                             }, 1000);
                         } else {
                             //ERROR CS
