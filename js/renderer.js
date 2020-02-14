@@ -365,7 +365,7 @@ function progress(i) {
             var basename = path.basename(fullpath, ext);
             var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
             console.log("trying to write: " + originals[i] + " => " + finalcroppedfile);
-            fs.writeFileSync(finalcroppedfile, fs.readFileSync(croppedfilelist[i]));
+            fs.copyFile(finalcroppedfile, fs.readFileSync(croppedfilelist[i]));
             $('#croplist').append(originals[i] + '=>' + finalcroppedfile + '<br>');
         } else {
             $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
