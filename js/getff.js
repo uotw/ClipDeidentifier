@@ -1,27 +1,27 @@
 var $ = require('jQuery');
 var ffbinaries = require('ffbinaries');
-var appRootDir = require('app-root-dir').get();
-
-
+//var appRootDir = require('app-root-dir').get();
 // const Store = require('electron-store');
 // const store = new Store();
 var internetCheckInterval;
 
 var checksum = require('sha256-file');
-var appRootDir = require('app-root-dir').get();
+//var appRootDir = require('app-root-dir').get();
 //var fs = require('fs');
 var os = require("os");
 var ffjson = require('./ffcs.json');
+const remote = require('electron').remote;
+const app = remote.app;
+var userdir =  app.getPath('userData');
+
 if (os.platform() == "win32") {
-    var app = require('electron').app;
-    var userdir =  app.getPath('userData');
     var ffmpegpath = userdir+"\\bin\\ff\\ffmpeg.exe";
     var ffprobepath = userdir+"\\bin\\ff\\ffprobe.exe";
     var ffpath = userdir+"\\bin\\ff";
 } else {
-    var ffmpegpath = appRootDir+"/bin/ff/ffmpeg";
-    var ffprobepath = appRootDir+"/bin/ff/ffprobe";
-    var ffpath = appRootDir + "/bin/ff";
+    var ffmpegpath = userdir+"/bin/ff/ffmpeg";
+    var ffprobepath = userdir+"/bin/ff/ffprobe";
+    var ffpath = userdir + "/bin/ff";
 }
 
 function checkFF(os, file) {
