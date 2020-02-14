@@ -372,7 +372,7 @@ function progress(i) {
             var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
             console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
             fs.unlinkSync(finalcroppedfile);
-            fs.copyFile(croppedfilelist[i],finalcroppedfile);
+            fs.copyFileSync(croppedfilelist[i],finalcroppedfile);
             $('#croplist').append(originals[i] + '=>' + finalcroppedfile + '<br>');
         } else {
             $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
