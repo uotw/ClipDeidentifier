@@ -31,6 +31,8 @@ if (os.platform() == "win32") {
     var ds ="/";
 }
 
+var osTmpdir = require('os-tmpdir');
+var temp = osTmpdir();
 var workdir = temp + ds + maketemp();
 remote.getGlobal('workdirObj').prop1 = workdir;
 console.log(workdir);
@@ -68,8 +70,7 @@ var widtharr = [];
 var heightarr = [];
 var croppixelarr = [];
 var canvasaspect;
-var osTmpdir = require('os-tmpdir');
-var temp = osTmpdir();
+
 
 
 var previewfile = workdir + '\\preview.png';
