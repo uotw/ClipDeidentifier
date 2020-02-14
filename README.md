@@ -1,10 +1,12 @@
 # ClipDeidentifier
 The purpose of ClipDeidentifier is to take a ultrasound media in a traditional format (mp4, mov, avi, jpg, bmp, png...) and output a clip (mp4) or still (png) void of Protected Health Information (PHI). ClipDeidentifier is built as an [Electron app](https://electronjs.org/) written as a frontend for [ffmpeg](https://www.ffmpeg.org/). In short, ClipDeidentifier crops the portion of the images containing the hard-coded PHI, and also strips metadata from the media, rendering it generally safe to distribute without exposing the patients' PHI.
 
-## Install (v0.0.0.6)
+## Install (v0.0.0.7)
 Download and install for your OS:
-- [MacOS](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.6.dmg) (dmg, 94.9 MB)
-- [Windows](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.6.exe) (exe, 79.2 MB)
+- [MacOS](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.7.dmg) (dmg, 79.1 MB)
+- [Windows](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.7.exe) (exe, 46.4 MB)
+
+On first launch, ClipDeidentifier will download additional necessary files, ~45MB. After initial launch, no internet connection is required to run ClipDeidentifier.
 
 
 ## Disclaimer
@@ -22,4 +24,14 @@ This software uses code of <a href=http://ffmpeg.org>FFmpeg</a> licensed under t
 To build for Windows and MacOS:
 - `npm run-script build-win`
 - `npm run-script build-mac`
+
+## Change Log
+### 0.0.0.7
+- fixed bug where crop preview wasn't working
+- added first run FF binaries download from ffbinaries.com
+- added sha256 checksum against malware checked files
+
+### 0.0.0.6
+- initial open source release
+- removed dependence on imagemagick binaries
 
