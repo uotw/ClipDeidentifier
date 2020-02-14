@@ -31,4 +31,5 @@ To build for Windows and MacOS:
 
 ### 0.0.0.6
 - initial open source release
+- removed dependence on imagemagick binaries
 
