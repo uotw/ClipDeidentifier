@@ -494,7 +494,9 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
             var ext = path.extname(fullpath);
             var basename = path.basename(fullpath, ext);
             var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
-            fs.unlinkSync(finalcroppedfile);
+            if (fs.existsSync(finalcroppedfile)) {
+                fs.unlinkSync(finalcroppedfile);
+            }
             fs.copyFileSync(croppedfilelist[i],finalcroppedfile);
     }, 5000);
 
