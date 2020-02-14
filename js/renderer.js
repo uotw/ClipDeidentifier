@@ -36,13 +36,6 @@ var temp = osTmpdir();
 var workdir = temp + ds + maketemp();
 remote.getGlobal('workdirObj').prop1 = workdir;
 console.log(workdir);
-// if (os.platform() == "win32") {
-//     var ffmpegpath = appRootDir+"/bin/ff/ffmpeg.exe";
-//     var ffprobepath = appRootDir+"/bin/ff/ffprobe.exe";
-// } else {
-//     var ffmpegpath = appRootDir+"/bin/ff/ffmpeg";
-//     var ffprobepath = appRootDir+"/bin/ff/ffprobe";
-// }
 
 var appswitchpath = appRootDir + '/bin/appswitch';
 var sendkeysbatpath = appRootDir + '\\bin\\sendKeys.bat';
@@ -345,22 +338,7 @@ function updatetn(i) {
         resolve(i);
     });
 }
-// function progressDL(perc){
-//         //stop = Math.round(100 * (i + 1) / filelist.length);
-//         var elem = document.getElementById("myBar");
-//         start = lastperc;
-//         var width = start;
-//         var id = setInterval(frame, 30);
 
-//         function frame() {
-//             if (width >= stop) {
-//                 clearInterval(id);
-//                 elem.style.width = width + '%';
-//                 document.getElementById("label").innerHTML = width * 1 + '%';
-//             }
-//         }
-//         lastperc = stop;
-// }
 function progress(i) {
     return () => new Promise((resolve, reject) => {
         if (!ismac) {
@@ -490,19 +468,6 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
     }
     //LAST ITEM IN QUEUE, CALL FINISH
     queue(myqueue).then(([cmd, args]) => {}).catch(TypeError, function(e) {}).catch(err => console.log(err));
-
-    // setTimeout(function(){
-    //         var fullpath = originals[0];
-    //         var dir = path.dirname(fullpath);
-    //         var ext = path.extname(fullpath);
-    //         var basename = path.basename(fullpath, ext);
-    //         var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
-    //         if (fs.existsSync(finalcroppedfile)) {
-    //             fs.unlinkSync(finalcroppedfile);
-    //         }
-    //         fs.copyFileSync(croppedfilelist[i],finalcroppedfile);
-    // }, 5000);
-
 
 });
 
