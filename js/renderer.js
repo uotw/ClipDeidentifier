@@ -9,7 +9,7 @@ var appRootDir = require('app-root-dir').get();
 const app = remote.app;
 var userdir =  app.getPath('userData');
 
-var ncp = require('ncp').ncp;
+
 var os = require("os");
 var pid = remote.process.pid;
 if (os.platform() == "darwin") {
@@ -22,10 +22,12 @@ if (os.platform() == "win32") {
     var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
     var ffprobepath = userdir+"\\ff\\ffprobe.exe";
     var ffpath = userdir+"\\ff";
+    var ds ="\\";
 } else {
     var ffmpegpath = userdir+"/ff/ffmpeg";
     var ffprobepath = userdir+"/ff/ffprobe";
     var ffpath = userdir + "/ff";
+    var ds ="/";
 }
 // if (os.platform() == "win32") {
 //     var ffmpegpath = appRootDir+"/bin/ff/ffmpeg.exe";
@@ -365,7 +367,7 @@ function progress(i) {
             var basename = path.basename(fullpath, ext);
             var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
             console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
-            ncp(croppedfilelist[i],finalcroppedfile);
+            fs.copyFile(croppedfilelist[i],finalcroppedfile);
             $('#croplist').append(originals[i] + '=>' + finalcroppedfile + '<br>');
         } else {
             $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
@@ -459,8 +461,8 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
             var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=' + cropWidth + ':' + cropHeight + ':' + cropXstart + ':' + cropYstart;
         }
         if (isclip(filelist[i])) {
-            var cropfile = croppath + '/' + basename + '_crop.mp4';
-            var outfile = workdir + '/' + nexti + '.mp4';
+            var cropfile = croppath + ds + basename + '_crop.mp4';
+            var outfile = workdir + ds + nexti + '.mp4';
             if (ismac) {
                 myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]));
             } else {
