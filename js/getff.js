@@ -13,7 +13,7 @@ var appRootDir = require('app-root-dir').get();
 var os = require("os");
 var ffjson = require('./ffcs.json');
 if (os.platform() == "win32") {
-    const { app } = require('electron');
+    const app  = require('electron');
     var userdir =  app.getPath('userData');
     var ffmpegpath = userdir+"\\bin\\ff\\ffmpeg.exe";
     var ffprobepath = userdir+"\\bin\\ff\\ffprobe.exe";
