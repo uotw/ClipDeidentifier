@@ -18,6 +18,7 @@ if (os.platform() == "darwin") {
     var ismac = 0;
 }
 
+
 if (os.platform() == "win32") {
     var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
     var ffprobepath = userdir+"\\ff\\ffprobe.exe";
@@ -29,6 +30,10 @@ if (os.platform() == "win32") {
     var ffpath = userdir + "/ff";
     var ds ="/";
 }
+
+var workdir = temp + ds + maketemp();
+remote.getGlobal('workdirObj').prop1 = workdir;
+console.log(workdir);
 // if (os.platform() == "win32") {
 //     var ffmpegpath = appRootDir+"/bin/ff/ffmpeg.exe";
 //     var ffprobepath = appRootDir+"/bin/ff/ffprobe.exe";
@@ -65,9 +70,7 @@ var croppixelarr = [];
 var canvasaspect;
 var osTmpdir = require('os-tmpdir');
 var temp = osTmpdir();
-var workdir = temp + '/' + maketemp();
-remote.getGlobal('workdirObj').prop1 = workdir;
-console.log(workdir);
+
 
 var previewfile = workdir + '\\preview.png';
 String.prototype.replaceAll = function(str1, str2, ignore) {
