@@ -372,7 +372,8 @@ function progress(i) {
             var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
             console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
             fs.unlinkSync(finalcroppedfile);
-            fs.copyFileSync(croppedfilelist[i],finalcroppedfile);
+            var sourcefile = croppedfilelist[i];
+            fs.copyFileSync(sourcefile,finalcroppedfile);
             $('#croplist').append(originals[i] + '=>' + finalcroppedfile + '<br>');
         } else {
             $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
@@ -488,17 +489,17 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
     //LAST ITEM IN QUEUE, CALL FINISH
     queue(myqueue).then(([cmd, args]) => {}).catch(TypeError, function(e) {}).catch(err => console.log(err));
 
-    setTimeout(function(){
-            var fullpath = originals[0];
-            var dir = path.dirname(fullpath);
-            var ext = path.extname(fullpath);
-            var basename = path.basename(fullpath, ext);
-            var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
-            if (fs.existsSync(finalcroppedfile)) {
-                fs.unlinkSync(finalcroppedfile);
-            }
-            fs.copyFileSync(croppedfilelist[i],finalcroppedfile);
-    }, 5000);
+    // setTimeout(function(){
+    //         var fullpath = originals[0];
+    //         var dir = path.dirname(fullpath);
+    //         var ext = path.extname(fullpath);
+    //         var basename = path.basename(fullpath, ext);
+    //         var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
+    //         if (fs.existsSync(finalcroppedfile)) {
+    //             fs.unlinkSync(finalcroppedfile);
+    //         }
+    //         fs.copyFileSync(croppedfilelist[i],finalcroppedfile);
+    // }, 5000);
 
 
 });
