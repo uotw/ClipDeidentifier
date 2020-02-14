@@ -9,7 +9,7 @@ var appRootDir = require('app-root-dir').get();
 const app = remote.app;
 var userdir =  app.getPath('userData');
 
-
+var ncp = require('ncp').ncp;
 var os = require("os");
 var pid = remote.process.pid;
 if (os.platform() == "darwin") {
@@ -365,7 +365,7 @@ function progress(i) {
             var basename = path.basename(fullpath, ext);
             var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
             console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
-            fs.copyFileSync(croppedfilelist[i],finalcroppedfile);
+            ncp(croppedfilelist[i],finalcroppedfile);
             $('#croplist').append(originals[i] + '=>' + finalcroppedfile + '<br>');
         } else {
             $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
