@@ -15,13 +15,13 @@ const app = remote.app;
 var userdir =  app.getPath('userData');
 
 if (os.platform() == "win32") {
-    var ffmpegpath = userdir+"\\bin\\ff\\ffmpeg.exe";
-    var ffprobepath = userdir+"\\bin\\ff\\ffprobe.exe";
-    var ffpath = userdir+"\\bin\\ff";
+    var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
+    var ffprobepath = userdir+"\\ff\\ffprobe.exe";
+    var ffpath = userdir+"\\ff";
 } else {
-    var ffmpegpath = userdir+"/bin/ff/ffmpeg";
-    var ffprobepath = userdir+"/bin/ff/ffprobe";
-    var ffpath = userdir + "/bin/ff";
+    var ffmpegpath = userdir+"/ff/ffmpeg";
+    var ffprobepath = userdir+"/ff/ffprobe";
+    var ffpath = userdir + "/ff";
 }
 
 function checkFF(os, file) {
