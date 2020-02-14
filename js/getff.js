@@ -14,7 +14,7 @@ var ffjson = require('./ffcs.json');
 if (os.platform() == "win32") {
     var ffmpegpath = appRootDir+"\\bin\\ff\\ffmpeg.exe";
     var ffprobepath = appRootDir+"\\bin\\ff\\ffprobe.exe";
-    var ffpath = appRootDir+"\\bin\\ff";
+    var ffpath = appRootDir+"\\bin\\ff\\";
 } else {
     var ffmpegpath = appRootDir+"/bin/ff/ffmpeg";
     var ffprobepath = appRootDir+"/bin/ff/ffprobe";
