@@ -3,10 +3,6 @@ const Menu = electron.Menu
 // Module to control application life.
 const app = electron.app
 const rimraf = require('rimraf')
-//const path = require('path');
-// const Store = require('electron-store');
-// const store = new Store();
-// Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 const windowStateKeeper = require('electron-window-state');
 let win;
@@ -32,7 +28,6 @@ function checkFF(os,file){
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
-//store.set('firstrun','1'); //SET IF DEBUGGING
 function createWindow() {
     //Get previous state
     let mainWindowState = windowStateKeeper({

@@ -1,13 +1,7 @@
 var $ = require('jQuery');
 var ffbinaries = require('ffbinaries');
-//var appRootDir = require('app-root-dir').get();
-// const Store = require('electron-store');
-// const store = new Store();
 var internetCheckInterval;
-
 var checksum = require('sha256-file');
-//var appRootDir = require('app-root-dir').get();
-//var fs = require('fs');
 var os = require("os");
 var ffjson = require('./ffcs.json');
 const remote = require('electron').remote;
