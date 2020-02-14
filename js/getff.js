@@ -2,6 +2,7 @@ var $ = require('jQuery');
 var ffbinaries = require('ffbinaries');
 var appRootDir = require('app-root-dir').get();
 
+
 // const Store = require('electron-store');
 // const store = new Store();
 var internetCheckInterval;
@@ -12,9 +13,11 @@ var appRootDir = require('app-root-dir').get();
 var os = require("os");
 var ffjson = require('./ffcs.json');
 if (os.platform() == "win32") {
-    var ffmpegpath = appRootDir+"\\bin\\ff\\ffmpeg.exe";
-    var ffprobepath = appRootDir+"\\bin\\ff\\ffprobe.exe";
-    var ffpath = appRootDir+"\\bin\\ff\\";
+    const { app } = require('electron');
+    var userdir =  app.getPath('userData');
+    var ffmpegpath = userdir+"\\bin\\ff\\ffmpeg.exe";
+    var ffprobepath = userdir+"\\bin\\ff\\ffprobe.exe";
+    var ffpath = userdir+"\\bin\\ff";
 } else {
     var ffmpegpath = appRootDir+"/bin/ff/ffmpeg";
     var ffprobepath = appRootDir+"/bin/ff/ffprobe";
@@ -140,20 +143,20 @@ function firstRunFF() {
 
         } else {
             var ffmpegCS = checkFF(os.platform(), "ffmpeg");
-            if(1){ //if (ffmpegCS.search(checksum(ffmpegpath)) > -1) {
+                if(1){if (ffmpegCS.search(checksum(ffmpegpath)) > -1) {
 
                 downloadFFprobe(function(err, data) {
                     if (err) {
                         console.log('Downloads failed.');
                     } else {
                         var ffprobeCS = checkFF(os.platform(), "ffprobe");
-                        if(1){ //if (ffprobeCS.search(checksum(ffprobepath)) > -1) {
+                        if (ffprobeCS.search(checksum(ffprobepath)) > -1) {
                             var elem = document.getElementById("myBar");
                             var perc = '100%';
                             elem.style.width = perc;
                             $('#label').html('100%');
                             setTimeout(function() {
-                                //window.location.href = 'index.html';
+                                window.location.href = 'index.html';
                             }, 1000);
                         } else {
                             //ERROR CS
