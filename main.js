@@ -48,7 +48,8 @@ function createWindow() {
         'minHeight': 590,
         webPreferences: {
             nodeIntegration: true,
-            nodeIntegrationInWorker: true
+            nodeIntegrationInWorker: true,
+	    enableRemoteModule: true
         }
     });
 
