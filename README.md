@@ -15,7 +15,7 @@ This application provides no guarantee that all Protected Health Information (PH
 This software uses code of <a href=http://ffmpeg.org>FFmpeg</a> licensed under the <a href=http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html>LGPLv2.1</a> and its source can be downloaded <a href=link_to_your_sources>here</a>.
 
 ## Development Environment
-- you must first [install Node 12](https://nodejs.org/en/download/)
+- you must first [install Node](https://nodejs.org/en/download/)
 - `git clone https://github.com/uotw/ClipDeidentifier.git`
 - `cd ClipDeidentifier`
 - `npm install`
