@@ -19,7 +19,7 @@
   },
   "homepage": "https://www.ultrasoundoftheweek.com/ClipDeidentifier",
   "devDependencies": {
-    "electron": "^11.0.3",
+    "electron": "^11.5.0",
     "electron-packager": "^15.1.0"
   },
   "directories.bin": "node_modules/.bin/",
