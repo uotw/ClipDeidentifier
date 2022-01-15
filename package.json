@@ -35,7 +35,7 @@
     "path": "^0.12.7",
     "rimraf": "^3.0.1",
     "sha256-file": "^1.0.0",
-    "shelljs": "^0.7.6"
+    "shelljs": "^0.8.5"
   },
   "productName": "ClipDeidentifier"
 }
