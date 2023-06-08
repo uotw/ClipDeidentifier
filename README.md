@@ -22,7 +22,7 @@ This software uses code of <a href=http://ffmpeg.org>FFmpeg</a> licensed under t
 - you must first [install Node](https://nodejs.org/en/download/)
 - `git clone https://github.com/uotw/ClipDeidentifier.git`
 - `cd ClipDeidentifier`
-- `npm install`
+- `npm i --force`
 - `npm start`
 
 To build for Windows and MacOS:
@@ -32,11 +32,11 @@ To build for Windows and MacOS:
 
 ## Change Log
 ### 0.0.0.8
--upgraded to electron v25 to improve speed and stability
--added native support for Apple Silicon (arm64)
--added code signed builds
--bundling FF apps now
--removed smooth progress bar to improve speed
+- upgraded to electron v25 to improve speed and stability
+- added native support for Apple Silicon (arm64)
+- added code signed builds
+- bundling FF apps now
+- removed smooth progress bar to improve speed
 
 ### 0.0.0.7
 - fixed bug where crop preview wasn't working
