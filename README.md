@@ -3,8 +3,8 @@ The purpose of ClipDeidentifier is to take a ultrasound media in a traditional f
 
 ## Install (v0.0.0.8)
 Download and install for your OS:
-- [Mac x64](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.8.x64.dmg) (dmg, 79.1 MB)
-- [Mac arm64](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.8.arm64.dmg) (dmg, 79.1 MB)
+- [Mac x64](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.8.x64.dmg) (dmg, 143 MB)
+- [Mac arm64](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.8.arm64.dmg) (dmg, 115 MB)
 
 ## Install (v0.0.0.7)
 Download and install for your OS:
