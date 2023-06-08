@@ -1,4 +1,10 @@
-var remote = require('electron').remote;
+const ffmpeg = require('@ffmpeg-installer/ffmpeg');
+var ffmpegpath = ffmpeg.path;
+const ffprobe = require('@ffprobe-installer/ffprobe');
+var ffprobepath = ffprobe.path;
+console.log(ffmpeg.path, ffmpeg.version);
+//var remote = require('electron').remote;
+var remote = require('@electron/remote')
 //window.devicePixelRatio=2;
 var $ = require('jQuery');
 var jQuery = $;
@@ -6,12 +12,14 @@ const {
     shell
 } = require('electron');
 var appRootDir = require('app-root-dir').get();
-const app = remote.app;
-var userdir =  app.getPath('userData');
+// const app = remote.app;
+//var userdir =  '.';
+var userdir =  remote.app.getPath('userData');
 
 
 var os = require("os");
 var pid = remote.process.pid;
+//console.log(remote)
 if (os.platform() == "darwin") {
     var ismac = 1;
 } else {
@@ -20,14 +28,14 @@ if (os.platform() == "darwin") {
 
 
 if (os.platform() == "win32") {
-    var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
-    var ffprobepath = userdir+"\\ff\\ffprobe.exe";
-    var ffpath = userdir+"\\ff";
+    // var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
+    // var ffprobepath = userdir+"\\ff\\ffprobe.exe";
+    // var ffpath = userdir+"\\ff";
     var ds ="\\";
 } else {
-    var ffmpegpath = userdir+"/ff/ffmpeg";
-    var ffprobepath = userdir+"/ff/ffprobe";
-    var ffpath = userdir + "/ff";
+    // var ffmpegpath = userdir+"/ff/ffmpeg";
+    // var ffprobepath = userdir+"/ff/ffprobe";
+    // var ffpath = userdir + "/ff";
     var ds ="/";
 }
 
@@ -362,7 +370,7 @@ function progress(i) {
         var elem = document.getElementById("myBar");
         start = lastperc;
         var width = start;
-        var id = setInterval(frame, 30);
+        var id = setInterval(frame, 0);
 
         function frame() {
             if (width >= stop) {

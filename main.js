@@ -6,24 +6,33 @@ const rimraf = require('rimraf')
 const BrowserWindow = electron.BrowserWindow
 const windowStateKeeper = require('electron-window-state');
 let win;
-var checksum = require('sha256-file');
+// var checksum = require('sha256-file');
 var fs = require('fs');
 var os = require("os");
+//var process = require("process");
 var ffjson = require('./ffcs.json');
-function checkFF(os,file){
-    var query = {"os":os,"file":file};
-    //console.log(query);
-    var result = ffjson.filter(search, query);
+var exec = require('child_process').exec, arch;
+require('@electron/remote/main').initialize()
 
-    function search(user){
-      return Object.keys(this).every((key) => user[key] === this[key]);
-    }
-    if(result[0]){
-        return result[0].cs;
-    } else {
-        return null;
-    }
-}
+exec('uname -m', function (error, stdout, stderr) {
+  if (error) throw error;
+  arch = stdout;
+  console.log(arch);
+});
+// function checkFF(os,file){
+//     var query = {"os":os,"file":file};
+//     //console.log(query);
+//     var result = ffjson.filter(search, query);
+
+//     function search(user){
+//       return Object.keys(this).every((key) => user[key] === this[key]);
+//     }
+//     if(result[0]){
+//         return result[0].cs;
+//     } else {
+//         return null;
+//     }
+// }
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -48,13 +57,15 @@ function createWindow() {
         'minHeight': 590,
         webPreferences: {
             nodeIntegration: true,
-            nodeIntegrationInWorker: true,
-	    enableRemoteModule: true
+            enableRemoteModule: true,
+            contextIsolation: false
         }
     });
 
+    // require("@electron/remote/main").enable(mainWindow.webContents.getOSProcessId())
     mainWindow.webContents.on('did-finish-load', function() {
         mainWindow.show();
+        // require("@electron/remote/main").enable(mainWindow.webContents)
     });
 
     // Let us register listeners on the window, so we can update the state
@@ -70,31 +81,33 @@ function createWindow() {
     // CHECK IF FF FILES EXIST AND CS IS CORRECT
     var userdir =  app.getPath('userData');
 
-    if (os.platform() == "win32") {
-        var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
-        var ffprobepath = userdir+"\\ff\\ffprobe.exe";
-        var ffpath = userdir+"\\ff";
-    } else {
-        var ffmpegpath = userdir+"/ff/ffmpeg";
-        var ffprobepath = userdir+"/ff/ffprobe";
-        var ffpath = userdir + "/ff";
-    }
-    try {
-      if (fs.existsSync(ffmpegpath) && fs.existsSync(ffprobepath)) {
-        var ffmpegCS = checkFF(os.platform(),"ffmpeg");
-        var ffprobeCS = checkFF(os.platform(),"ffprobe");
-        if(ffmpegCS.search(checksum(ffmpegpath))>-1 && ffprobeCS.search(checksum(ffprobepath))>-1){
-            mainWindow.loadURL(`file://${__dirname}/index.html`);
-        } else {
-            mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
-        }
-      } else {
-         mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
-      }
-    } catch(err) {
+    // if (os.platform() == "win32") {
+    //     var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
+    //     var ffprobepath = userdir+"\\ff\\ffprobe.exe";
+    //     var ffpath = userdir+"\\ff";
+    // } else {
+    //     var ffmpegpath = userdir+"/ff/ffmpeg";
+    //     var ffprobepath = userdir+"/ff/ffprobe";
+    //     var ffpath = userdir + "/ff";
+    // }
+    // try {
+    //   if (fs.existsSync(ffmpegpath) && fs.existsSync(ffprobepath)) {
+    //     var ffmpegCS = checkFF(os.platform(),"ffmpeg");
+    //     var ffprobeCS = checkFF(os.platform(),"ffprobe");
+	// console.log(checksum(ffprobepath));
+    //     if(ffmpegCS.search(checksum(ffmpegpath))>-1 && ffprobeCS.search(checksum(ffprobepath))>-1){
+    //         mainWindow.loadURL(`file://${__dirname}/index.html`);
+    //     } else {
+    //         mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
+    //     }
+    //   } else {
+    //      mainWindow.loadURL(`file://${__dirname}/firstrun.html`);
+    //   }
+    // } catch(err) {
 
-      console.error(err)
-    }
+    //   console.error(err)
+    // }
+    mainWindow.loadURL(`file://${__dirname}/index.html`);
 
     sethtmlsize();
 
@@ -113,7 +126,7 @@ function createWindow() {
     });
 
     // Open the DevTools.
-    //mainWindow.webContents.openDevTools() //SET IF DEBUGGING
+    // mainWindow.webContents.openDevTools() //SET IF DEBUGGING
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
@@ -153,7 +166,8 @@ app.on('ready', function() {
                         'resizable': true,
                         webPreferences: {
                             nodeIntegration: true,
-                            nodeIntegrationInWorker: true
+                            contextIsolation: false,
+                            enableRemoteModule: true
                         }
                     });
                     aboutWindow.loadURL(`file://${__dirname}/about.html`);
@@ -199,4 +213,10 @@ app.on('activate', function() {
     if (mainWindow === null) {
         createWindow()
     }
+})
+app.on('browser-window-created', (_, win) => {
+    console.log('launched');
+    require("@electron/remote/main").enable(win.webContents)
+    const ElectronStore = require('electron-store');
+    ElectronStore.initRenderer();
 })

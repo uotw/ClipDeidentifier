@@ -1,0 +1,18 @@
+{
+    "files": [
+      "!**/@ffmpeg-installer/win32-ia32${/*}", 
+      "!**/@ffmpeg-installer/darwin-arm64${/*}",
+      "!**/@ffprobe-installer/win32-ia32${/*}", 
+      "!**/@ffprobe-installer/darwin-arm64${/*}",
+    ],
+    "asar": false,
+    "appId": "clipDeidentifier",
+    "mac": {
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "gatekeeperAssess": false,
+      "category": "public.app-category.developer-tools"
+    }
+
+}

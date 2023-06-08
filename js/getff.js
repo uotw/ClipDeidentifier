@@ -4,9 +4,17 @@ var internetCheckInterval;
 var checksum = require('sha256-file');
 var os = require("os");
 var ffjson = require('./ffcs.json');
-const remote = require('electron').remote;
-const app = remote.app;
-var userdir =  app.getPath('userData');
+//const remote = require('electron').remote;
+//const { app } = remote;
+//console.log(remote);
+//const app = remote.app;
+//const {app} = require('electron');
+//const { remote } = require('@electron/remote')
+// const app = require('@electron/remote').app
+// var userdir =  app.getPath('userData');
+var remote = require('@electron/remote')
+var userdir =  remote.app.getPath('userData');
+//var userdir =  '.';
 
 if (os.platform() == "win32") {
     var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
@@ -62,7 +70,7 @@ function downloadFFmpeg(callback) {
         quiet: false,
         destination: ffpath,
         tickerFn: tickerFn,
-        tickerInterval: 500,
+        tickerInterval: 5000,
         version: version
     };
 

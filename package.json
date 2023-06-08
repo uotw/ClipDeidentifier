@@ -1,14 +1,15 @@
 {
   "name": "ClipDeidentifier",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": true,
-  "description": "remove PHI from any ultrasound media",
+  "description": "remove PHI from ultrasound media",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build-mac-x64": "electron-packager . 'Clip Deidentifier' --platform=darwin --arch=x64 --icon=./img/icon.icns --out=build --overwrite --ignore='(build|bin/win)' && open \"build/Clip Deidentifier-darwin-x64\"",
-    "build-win": "electron-packager . \"ClipDeidentifier\" --platform=win32 --arch=ia32  --icon=./img/icon.icns --out=build --overwrite --ignore=\"(build|bin/mac)\"",
-    "build-mac-arm64": "electron-packager . 'Clip Deidentifier' --platform=darwin --arch=arm64 --icon=./img/icon.icns --out=build --overwrite --ignore='(build|bin/win)' && open \"build/Clip Deidentifier-darwin-arm64\""
+    "pack": "build --dir",
+    "dist-arm64": "electron-builder --arm64 --config buildarm.json",
+    "dist-mac": "electron-builder --x64 --config buildmac.json",
+    "dist-win": "electron-builder --win --config buildwin.json"
   },
   "keywords": [
     "Electron"
@@ -20,15 +21,23 @@
   },
   "homepage": "https://www.ultrasoundoftheweek.com/ClipDeidentifier",
   "devDependencies": {
-    "electron": "^11.0.3",
-    "electron-packager": "^15.1.0"
+    "electron": "25.1.0",
+    "electron-builder": "^24.4.0",
+    "electron-packager": "^16.0.0"
   },
   "directories.bin": "node_modules/.bin/",
   "dependencies": {
+    "@electron/remote": "^2.0.10",
+    "@ffmpeg-installer/darwin-x64": "^4.1.0",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffmpeg-installer/win32-ia32": "^4.1.0",
+    "@ffprobe-installer/darwin-x64": "^5.1.0",
+    "@ffprobe-installer/ffprobe": "^2.0.0",
+    "@ffprobe-installer/win32-ia32": "^5.1.0",
     "app-root-dir": "^1.0.2",
-    "electron-store": "^5.1.0",
+    "electron-store": "^8.1.0",
     "electron-window-state": "^4.1.1",
-    "ffbinaries": "^1.1.4",
+    "ffbinaries": "^1.1.5",
     "jquery": "^3.5.0",
     "jquery-ui": "^1.12.1",
     "jquery-ui-bundle": "^1.12.1",
@@ -36,7 +45,18 @@
     "path": "^0.12.7",
     "rimraf": "^3.0.1",
     "sha256-file": "^1.0.0",
-    "shelljs": "^0.7.6"
+    "shelljs": "^0.8.5"
   },
-  "productName": "ClipDeidentifier"
+  "productName": "ClipDeidentifier",
+  "build": {
+    "asar": false,
+    "appId": "clipDeidentifier",
+    "mac": {
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "gatekeeperAssess": false,
+      "category": "public.app-category.developer-tools"
+    }
+  }
 }
