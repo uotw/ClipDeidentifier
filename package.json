@@ -22,8 +22,7 @@
   "homepage": "https://www.ultrasoundoftheweek.com/ClipDeidentifier",
   "devDependencies": {
     "electron": "25.1.0",
-    "electron-builder": "^24.4.0",
-    "electron-packager": "^16.0.0"
+    "electron-builder": "^24.4.0"
   },
   "directories.bin": "node_modules/.bin/",
   "dependencies": {
@@ -37,26 +36,13 @@
     "app-root-dir": "^1.0.2",
     "electron-store": "^8.1.0",
     "electron-window-state": "^4.1.1",
-    "ffbinaries": "^1.1.5",
     "jquery": "^3.5.0",
     "jquery-ui": "^1.12.1",
     "jquery-ui-bundle": "^1.12.1",
     "os-tmpdir": "^1.0.2",
     "path": "^0.12.7",
     "rimraf": "^3.0.1",
-    "sha256-file": "^1.0.0",
     "shelljs": "^0.8.5"
   },
-  "productName": "ClipDeidentifier",
-  "build": {
-    "asar": false,
-    "appId": "clipDeidentifier",
-    "mac": {
-      "hardenedRuntime": true,
-      "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist",
-      "gatekeeperAssess": false,
-      "category": "public.app-category.developer-tools"
-    }
-  }
+  "productName": "ClipDeidentifier"
 }
