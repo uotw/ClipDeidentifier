@@ -1,8 +1,8 @@
-const ffmpeg = require('@ffmpeg-installer/ffmpeg');
-var ffmpegpath = ffmpeg.path;
-const ffprobe = require('@ffprobe-installer/ffprobe');
-var ffprobepath = ffprobe.path;
-console.log(ffmpeg.path, ffmpeg.version);
+const ffmpeginstaller = require('@ffmpeg-installer/ffmpeg');
+var ffmpegpath = ffmpeginstaller.path;
+const ffprobeinstaller = require('@ffprobe-installer/ffprobe');
+var ffprobepath = ffprobeinstaller.path;
+// console.log(ffmpeg.path, ffmpeg.version);
 //var remote = require('electron').remote;
 var remote = require('@electron/remote')
 //window.devicePixelRatio=2;
@@ -597,6 +597,7 @@ $('#manualbtn').click(function() {
     var time = new Date().toLocaleString();
     var timestamp = encodeURI(time);
     $('#myCanvas').css("background-image", "url(" + previewfile + "?" + timestamp + ")");
+    // $('.cropsample').attr('src', )
     canvasheight = 500 * canvasaspect;
     $('#myCanvas').attr('height', canvasheight);
     $('#canvaswrap').fadeIn();
