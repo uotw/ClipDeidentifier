@@ -12,6 +12,8 @@ Download and install for your OS:
 
 On first launch, ClipDeidentifier will download additional necessary files, ~45MB. After initial launch, no internet connection is required to run ClipDeidentifier.
 
+## Support Us
+We provide this software free of charge for the ultrasound education community. Please consider supporting us by subscribing to one of [our courses](https://courses.coreultrasound.com/). We have group rates for institutions with more than 10 users.
 
 ## Disclaimer
 This application provides no guarantee that all Protected Health Information (PHI) has been removed from its resultant images. It is the responsibility of the user to verify that all PHI has been removed from the ultrasound media, including but not limited to 1) hard coding of PHI into the images and 2) any PHI that has been placed in the images' metadata. For full liability and license information [go here](https://github.com/uotw/ClipDeidentifier/blob/master/LICENSE.md). 
