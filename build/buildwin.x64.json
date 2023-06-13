@@ -8,13 +8,5 @@
       "!**/@ffprobe-installer/win32-ia32${/*}"
     ],
     "asar": false,
-    "appId": "SonoClipShareUploader",
-    "mac": {
-      "hardenedRuntime": true,
-      "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist",
-      "gatekeeperAssess": false,
-      "category": "public.app-category.developer-tools"
-    }
-
+    "appId": "ClipDeidentifier"
 }

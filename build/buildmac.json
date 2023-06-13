@@ -8,7 +8,7 @@
       "!**/@ffprobe-installer/darwin-arm64${/*}",
     ],
     "asar": false,
-    "appId": "SonoClipShareUploader",
+    "appId": "ClipDeidentifier",
     "mac": {
       "hardenedRuntime": true,
       "entitlements": "build/entitlements.mac.plist",
