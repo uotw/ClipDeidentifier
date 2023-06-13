@@ -1,6 +1,3 @@
-
-
-
 var caliperSize = 15;
 
 function round(value, decimals) {
@@ -9,8 +6,9 @@ function round(value, decimals) {
 
 
 var painting, startX, startY, xOffset, yOffset, c, ctx;
-$("#myCanvas").mousedown(function(e) {
-  c = document.getElementById("myCanvas");
+c = document.getElementById("myCanvas");
+c.addEventListener('mousedown', function(e) {
+  // c = document.getElementById("myCanvas");
   ctx = c.getContext("2d");
   ctx.fillStyle = "rgb(128,128,128,0.6)";
   ctx.strokeStyle = "#ffff00";
@@ -26,8 +24,8 @@ $("#myCanvas").mousedown(function(e) {
 
 });
 
-
-$(document).mousemove(function(e) {
+document.addEventListener('mousemove', function(e) {
+// $(document).mousemove(function(e) {
   if (painting) {
     ctx.clearRect(0, 0, c.width, c.height);
     var endX = e.pageX - xOffset;
@@ -63,16 +61,21 @@ $(document).mousemove(function(e) {
     window.cropW = Math.abs(round((endX - startX) / c.width, 4));
     window.cropH = Math.abs(round((endY - startY) / c.height, 4))
 
-    console.log(window.cropX,window.cropY, window.cropW, window.cropH);
+    //console.log(window.cropX,window.cropY, window.cropW, window.cropH);
 
   }
 });
 
-$(document).mouseup(function() {
+document.addEventListener('mouseup', function(e) {
   painting = false;
 });
 
 function drawcorners(x1, y1, x2, y2) {
+  if (Math.abs(x2 - x1) < 30 || Math.abs(y2 - y1) < 30) {
+    caliperSize = Math.min(Math.abs(x2 - x1)/2-1,Math.abs(y2 - y1)/2-1);
+  } else {
+    caliperSize=15;
+  }
   if (x2 > x1 && y2 > y1) {
     drawline(x1, y1, caliperSize, caliperSize);
     drawline(x2, y2, -caliperSize, -caliperSize);
@@ -109,5 +112,5 @@ function drawline(x1, y1, xoff, yoff) {
   ctx.stroke();
 }
 
-$("#myCanvas").mouseout(function(e) {
-});
+// $("#myCanvas").mouseout(function(e) {
+// });

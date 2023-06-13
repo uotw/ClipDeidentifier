@@ -1,0 +1,12 @@
+{
+    "files": [
+      "!**/@ffmpeg-installer/win32-ia32${/*}", 
+      "!**/@ffmpeg-installer/darwin-x64${/*}",
+      "!**/@ffprobe-installer/win32-ia32${/*}", 
+      "!**/@ffprobe-installer/darwin-x64${/*}",
+      "!**/@ffmpeg-installer/win32-x64${/*}",
+      "!**/@ffprobe-installer/win32-x64${/*}",
+    ],
+    "asar": false,
+    "appId": "SonoClipShareUploader"
+}

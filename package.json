@@ -7,9 +7,9 @@
   "scripts": {
     "start": "electron .",
     "pack": "build --dir",
-    "dist-arm64": "electron-builder --arm64 --config buildarm.json",
-    "dist-mac": "electron-builder --x64 --config buildmac.json",
-    "dist-win": "electron-builder --win --config buildwin.json"
+    "dist-arm64": "electron-builder --arm64 --config ./build/buildarm.json",
+    "dist-mac": "electron-builder --x64 --config ./build/buildmac.json",
+    "dist-win": "electron-builder --win --x64 --ia32 --config ./build/buildwin.json"
   },
   "keywords": [
     "Electron"
@@ -30,9 +30,11 @@
     "@ffmpeg-installer/darwin-x64": "^4.1.0",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@ffmpeg-installer/win32-ia32": "^4.1.0",
+    "@ffmpeg-installer/win32-x64": "^4.1.0",
     "@ffprobe-installer/darwin-x64": "^5.1.0",
     "@ffprobe-installer/ffprobe": "^2.0.0",
     "@ffprobe-installer/win32-ia32": "^5.1.0",
+    "@ffprobe-installer/win32-x64": "^5.1.0",
     "app-root-dir": "^1.0.2",
     "electron-store": "^8.1.0",
     "electron-window-state": "^4.1.1",

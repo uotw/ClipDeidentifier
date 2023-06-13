@@ -243,13 +243,16 @@ $(document).on('drop', function(e) {
 });
 
 function canvasbg(filelist) {
-    if(ismac){
         ffmpeg = spawnsync(ffmpegpath, ['-i', filelist[0], '-an', '-vf', 'scale=500:-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-map_metadata', '-1', '-y', previewfile]);
         ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-i', filelist[0]]);
-    } else {
-        ffmpeg = spawnsync('cmd.exe', ['/c', ffmpegpath, '-i', filelist[0], '-an', '-vf', 'scale=500:-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-map_metadata', '-1', '-y', previewfile]);
-        ffprobe = spawnsync('cmd.exe', ['/c', ffprobepath, '-print_format', 'json', '-show_streams', '-i', filelist[0]]);
-    }
+
+    // if(ismac){
+    //     ffmpeg = spawnsync(ffmpegpath, ['-i', filelist[0], '-an', '-vf', 'scale=500:-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-map_metadata', '-1', '-y', previewfile]);
+    //     ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-i', filelist[0]]);
+    // } else {
+    //     ffmpeg = spawnsync('cmd.exe', ['/c', ffmpegpath, '-i', filelist[0], '-an', '-vf', 'scale=500:-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-map_metadata', '-1', '-y', previewfile]);
+    //     ffprobe = spawnsync('cmd.exe', ['/c', ffprobepath, '-print_format', 'json', '-show_streams', '-i', filelist[0]]);
+    // }
     ffprobeOb = JSON.parse(ffprobe.stdout);
     return (ffprobeOb);
 
@@ -304,20 +307,20 @@ function queue(tasks) {
 function customSpawn(command, args) {
     return () => new Promise((resolve, reject) => {
         console.log(command + args.join(" "));
-        if (!ismac) {
-            var newargs = args.slice(0);
-            newargs.unshift('"' + command + '"');
-            newargs.unshift('/c');
-            console.log(newargs.join(" "));
-            child = spawn('cmd.exe', newargs, {
-                windowsVerbatimArguments: true
-            });
-        } else {
-            child = spawn(command, args);
-        }
-        // const child = spawn(command, args, {
-        //     windowsVerbatimArguments: true
-        // });
+        // if (!ismac) {
+        //     var newargs = args.slice(0);
+        //     newargs.unshift('"' + command + '"');
+        //     newargs.unshift('/c');
+        //     console.log(newargs.join(" "));
+        //     child = spawn('cmd.exe', newargs, {
+        //         windowsVerbatimArguments: true
+        //     });
+        // } else {
+        //     child = spawn(command, args);
+        // }
+        const child = spawn(command, args, {
+            windowsVerbatimArguments: true
+        });
         child.stderr.on('data', (data) => {
             console.log(command + " " + args.join(" ") + `stderr: ${data}`);
         });
@@ -349,23 +352,24 @@ function updatetn(i) {
 
 function progress(i) {
     return () => new Promise((resolve, reject) => {
-        if (!ismac) {
-            //console.log(croppedfilelist);
-            var fullpath = originals[i];
-            var dir = path.dirname(fullpath);
-            var ext = path.extname(fullpath);
-            var basename = path.basename(fullpath, ext);
-            var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
-            console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
-            if (fs.existsSync(finalcroppedfile)) {
-                fs.unlinkSync(finalcroppedfile);
-            }
-            var sourcefile = croppedfilelist[i];
-            fs.copyFileSync(sourcefile,finalcroppedfile);
-            $('#croplist').append(originals[i] + '=>' + finalcroppedfile + '<br>');
-        } else {
-            $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
-        }
+        // if (!ismac) {
+        //     //console.log(croppedfilelist);
+        //     var fullpath = originals[i];
+        //     var dir = path.dirname(fullpath);
+        //     var ext = path.extname(fullpath);
+        //     var basename = path.basename(fullpath, ext);
+        //     var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
+        //     console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
+        //     if (fs.existsSync(finalcroppedfile)) {
+        //         fs.unlinkSync(finalcroppedfile);
+        //     }
+        //     var sourcefile = croppedfilelist[i];
+        //     fs.copyFileSync(sourcefile,finalcroppedfile);
+        //     $('#croplist').append(originals[i] + '=>' + finalcroppedfile + '<br>');
+        // } else {
+        //     $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
+        // }
+        $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
         stop = Math.round(100 * (i + 1) / filelist.length);
         var elem = document.getElementById("myBar");
         start = lastperc;
@@ -457,19 +461,21 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
         if (isclip(filelist[i])) {
             var cropfile = croppath + ds + basename + '_crop.mp4';
             var outfile = workdir + ds + nexti + '.mp4';
-            if (ismac) {
-                myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]));
-            } else {
-                myqueue.push(customSpawn('"' + ffmpegpath + '"', ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-vcodec', 'libx264', '-pix_fmt', 'yuv420p', '-y', cropfile]));
-            }
+            myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]));
+            // if (ismac) {
+            //     myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]));
+            // } else {
+            //     myqueue.push(customSpawn('"' + ffmpegpath + '"', ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-vcodec', 'libx264', '-pix_fmt', 'yuv420p', '-y', cropfile]));
+            // }
         } else {
             var cropfile = croppath + ds + basename + '_crop.png';
             var outfile = workdir + ds + nexti + '.png';
-            if (ismac) {
-                myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-y', '-pix_fmt', 'rgb24', cropfile]));
-            } else {
-                myqueue.push(customSpawn('"' + ffmpegpath + '"', ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-pix_fmt', 'rgb24', '-y', cropfile]));
-            }
+            myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-y', '-pix_fmt', 'rgb24', cropfile]));
+            // if (ismac) {
+            //     myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-y', '-pix_fmt', 'rgb24', cropfile]));
+            // } else {
+            //     myqueue.push(customSpawn('"' + ffmpegpath + '"', ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-pix_fmt', 'rgb24', '-y', cropfile]));
+            // }
         }
         croppedfilelist.push(cropfile);
         myqueue.push(progress(i));
@@ -506,16 +512,18 @@ function preview() {
         folderonly = folderonly.join("\\");
         filecrop = folderonly + '\\' + basename + '_crop.' + ext;
         filepaths.push(filecrop);
-        if (!ismac) {
-            fs.writeFileSync(workdir + '\\' + 'original_' + i + '.' + ext, fs.readFileSync(filelist[i]));
-            filelist[i] = workdir + '\\' + 'original_' + i + '.' + ext;
-        }
+        // if (!ismac) {
+        //     fs.writeFileSync(workdir + '\\' + 'original_' + i + '.' + ext, fs.readFileSync(filelist[i]));
+        //     filelist[i] = workdir + '\\' + 'original_' + i + '.' + ext;
+        // }
         var nexti = i + 1;
-        if (ismac) {
-            var ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-select_streams', 'v', '-i', filelist[i]]);
-        } else {
-            ffprobe = spawnsync('cmd.exe', ['/c', ffprobepath, '-print_format', 'json', '-show_streams', '-i', filelist[i]]);
-        }
+        var ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-select_streams', 'v', '-i', filelist[i]]);
+
+        // if (ismac) {
+        //     var ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-select_streams', 'v', '-i', filelist[i]]);
+        // } else {
+        //     ffprobe = spawnsync('cmd.exe', ['/c', ffprobepath, '-print_format', 'json', '-show_streams', '-i', filelist[i]]);
+        // }
         if (ffprobe.status.toString() == 0) {
             var ffprobeOb = JSON.parse(ffprobe.stdout);
             width = ffprobeOb.streams[0].width;
