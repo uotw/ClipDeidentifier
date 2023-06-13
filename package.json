@@ -7,9 +7,10 @@
   "scripts": {
     "start": "electron .",
     "pack": "build --dir",
-    "dist-arm64": "electron-builder --arm64 --config ./build/buildarm.json",
-    "dist-mac": "electron-builder --x64 --config ./build/buildmac.json",
-    "dist-win": "electron-builder --win --x64 --ia32 --config ./build/buildwin.json"
+    "dist-macarm": "electron-builder --arm64 --config ./build/buildarm.json",
+    "dist-mac64": "electron-builder --x64 --config ./build/buildmac.json",
+    "dist-win32": "electron-builder --ia32 --win --config ./build/buildwin.x86.json",
+    "dist-win64": "electron-builder --x64 --win --config ./build/buildwin.x64.json"
   },
   "keywords": [
     "Electron"
@@ -35,7 +36,7 @@
     "@ffprobe-installer/ffprobe": "^2.0.0",
     "@ffprobe-installer/win32-ia32": "^5.1.0",
     "@ffprobe-installer/win32-x64": "^5.1.0",
-    "app-root-dir": "^1.0.2",
+    "cross-spawn": "^7.0.3",
     "electron-store": "^8.1.0",
     "electron-window-state": "^4.1.1",
     "jquery": "^3.5.0",

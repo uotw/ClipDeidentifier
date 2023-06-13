@@ -1,16 +1,24 @@
 const electron = require('electron')
 const Menu = electron.Menu
 // Module to control application life.
-const app = electron.app
+// const app = electron.app
+
+const {
+  app,
+  BrowserWindow,
+  ipcMain
+} = require('electron')
+
+
 const rimraf = require('rimraf')
-const BrowserWindow = electron.BrowserWindow
+// const BrowserWindow = electron.BrowserWindow
 const windowStateKeeper = require('electron-window-state');
 let win;
 // var checksum = require('sha256-file');
 var fs = require('fs');
 var os = require("os");
 //var process = require("process");
-var ffjson = require('./ffcs.json');
+// var ffjson = require('./ffcs.json');
 var exec = require('child_process').exec, arch;
 require('@electron/remote/main').initialize()
 
@@ -219,4 +227,11 @@ app.on('browser-window-created', (_, win) => {
     require("@electron/remote/main").enable(win.webContents)
     const ElectronStore = require('electron-store');
     ElectronStore.initRenderer();
+})
+
+ipcMain.on('focusnow', event => {
+  mainWindow.setAlwaysOnTop(true);
+  mainWindow.show();
+  mainWindow.setAlwaysOnTop(false);
+  app.focus();
 })

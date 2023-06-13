@@ -1,69 +1,26 @@
+var fs = require('fs');
+var path = require('path');
 const ffmpeginstaller = require('@ffmpeg-installer/ffmpeg');
 var ffmpegpath = ffmpeginstaller.path;
 const ffprobeinstaller = require('@ffprobe-installer/ffprobe');
 var ffprobepath = ffprobeinstaller.path;
-// console.log(ffmpeg.path, ffmpeg.version);
-//var remote = require('electron').remote;
 var remote = require('@electron/remote')
-//window.devicePixelRatio=2;
+const {
+    ipcRenderer
+} = require('electron');
 var $ = require('jQuery');
 var jQuery = $;
 const {
     shell
 } = require('electron');
-var appRootDir = require('app-root-dir').get();
-// const app = remote.app;
-//var userdir =  '.';
 var userdir =  remote.app.getPath('userData');
 
+const os = require('os');
+const ostemp = os.tmpdir();
 
-var os = require("os");
-var pid = remote.process.pid;
-//console.log(remote)
-if (os.platform() == "darwin") {
-    var ismac = 1;
-} else {
-    var ismac = 0;
-}
-
-
-if (os.platform() == "win32") {
-    // var ffmpegpath = userdir+"\\ff\\ffmpeg.exe";
-    // var ffprobepath = userdir+"\\ff\\ffprobe.exe";
-    // var ffpath = userdir+"\\ff";
-    var ds ="\\";
-} else {
-    // var ffmpegpath = userdir+"/ff/ffmpeg";
-    // var ffprobepath = userdir+"/ff/ffprobe";
-    // var ffpath = userdir + "/ff";
-    var ds ="/";
-}
-
-var osTmpdir = require('os-tmpdir');
-var temp = osTmpdir();
-var workdir = temp + ds + maketemp();
+workdir = path.join(ostemp, maketemp())
 remote.getGlobal('workdirObj').prop1 = workdir;
 console.log(workdir);
-
-var appswitchpath = appRootDir + '/bin/appswitch';
-var sendkeysbatpath = appRootDir + '\\bin\\sendKeys.bat';
-
-
-function focusThisApp() {
-    if (ismac) {
-        var focus = spawn(appswitchpath, ['-p', pid]);
-    } else {
-        var focus = spawn('cmd.exe', ['/c', 'call', '"' + sendkeysbatpath + '"', '"Clip Deidentifier"', '""'], {
-            windowsVerbatimArguments: true
-        });
-    }
-    focus.stdout.on('data', (data) => {
-        console.log(`stdout: ${data}`);
-    });
-    focus.stderr.on('data', (data) => {
-        console.log(`stderr: ${data}`);
-    });
-}
 
 
 var filelist = [];
@@ -71,8 +28,6 @@ var widtharr = [];
 var heightarr = [];
 var croppixelarr = [];
 var canvasaspect;
-
-
 
 var previewfile = workdir + '\\preview.png';
 String.prototype.replaceAll = function(str1, str2, ignore) {
@@ -84,13 +39,11 @@ var addfiledelay = 0;
 var previewindex = 0;
 var lastperc = 0;
 var lastpercUL = 0;
-var fs = require('fs');
-var path = require('path');
 var croppedfilelist = [];
 var title, folder, finallink;
-window.croppixelperc = 0.09;
-const spawn = require('child_process').spawn;
-const spawnsync = require('child_process').spawnSync;
+const spawn = require('cross-spawn');
+const spawnsync = spawn.sync;
+
 const Store = require('electron-store');
 const store = new Store();
 
@@ -110,17 +63,6 @@ function maketemp() {
     return text;
 }
 
-// function run_cmd(cmd, args, callBack) {
-//     var spawn = require('child_process').spawn;
-//     var child = spawn(cmd, args);
-//     var resp = "";
-//     child.stdout.on('data', function(buffer) {
-//         resp += buffer.toString()
-//     });
-//     child.stdout.on('end', function() {
-//         callBack(resp)
-//     });
-// } // ()
 function isclip(filename) {
     var clipext = ['mp4', 'm4v', 'avi', 'wmv', 'mov', 'flv', 'mpg', 'mpeg'];
     for (var i = 0; i < clipext.length; i++) {
@@ -186,7 +128,8 @@ $("#filelistwrap").on('dragover', function(event) {
 });
 $("#filelistwrap").on('drop', function(event) {
     event.preventDefault();
-    focusThisApp();
+    // focusThisApp();
+    ipcRenderer.send('focusnow', 'focus')
     var path = require('path');
     var files = event.originalEvent.dataTransfer.files;
     for (var i = 0; i < files.length; i++) {
@@ -352,23 +295,6 @@ function updatetn(i) {
 
 function progress(i) {
     return () => new Promise((resolve, reject) => {
-        // if (!ismac) {
-        //     //console.log(croppedfilelist);
-        //     var fullpath = originals[i];
-        //     var dir = path.dirname(fullpath);
-        //     var ext = path.extname(fullpath);
-        //     var basename = path.basename(fullpath, ext);
-        //     var finalcroppedfile = dir + "\\" + basename + "_crop" + ext;
-        //     console.log("trying to write: " + croppedfilelist[i] + " => " + finalcroppedfile);
-        //     if (fs.existsSync(finalcroppedfile)) {
-        //         fs.unlinkSync(finalcroppedfile);
-        //     }
-        //     var sourcefile = croppedfilelist[i];
-        //     fs.copyFileSync(sourcefile,finalcroppedfile);
-        //     $('#croplist').append(originals[i] + '=>' + finalcroppedfile + '<br>');
-        // } else {
-        //     $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
-        // }
         $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
         stop = Math.round(100 * (i + 1) / filelist.length);
         var elem = document.getElementById("myBar");
@@ -459,24 +385,15 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
             var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=' + cropWidth + ':' + cropHeight + ':' + cropXstart + ':' + cropYstart;
         }
         if (isclip(filelist[i])) {
-            var cropfile = croppath + ds + basename + '_crop.mp4';
-            var outfile = workdir + ds + nexti + '.mp4';
+            var cropfile = path.join(croppath, basename + '_crop.mp4');
+            var outfile = path.join(workdir, nexti + '.mp4');
             myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]));
-            // if (ismac) {
-            //     myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]));
-            // } else {
-            //     myqueue.push(customSpawn('"' + ffmpegpath + '"', ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-vcodec', 'libx264', '-pix_fmt', 'yuv420p', '-y', cropfile]));
-            // }
         } else {
-            var cropfile = croppath + ds + basename + '_crop.png';
-            var outfile = workdir + ds + nexti + '.png';
+            var cropfile = path.join(croppath, basename + '_crop.png');
+            var outfile = path.join(workdir, nexti + '.png');
             myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-y', '-pix_fmt', 'rgb24', cropfile]));
-            // if (ismac) {
-            //     myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-y', '-pix_fmt', 'rgb24', cropfile]));
-            // } else {
-            //     myqueue.push(customSpawn('"' + ffmpegpath + '"', ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-pix_fmt', 'rgb24', '-y', cropfile]));
-            // }
         }
+
         croppedfilelist.push(cropfile);
         myqueue.push(progress(i));
     }
