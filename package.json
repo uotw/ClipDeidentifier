@@ -18,9 +18,9 @@
   "author": "Ben C. Smith, MD, FACEP",
   "license": "CC0-1.0",
   "bugs": {
-    "url": "https://www.ultrasoundoftheweek.com/ClipDeidentifier"
+    "url": "https://github.com/uotw/ClipDeidentifier/issues"
   },
-  "homepage": "https://www.ultrasoundoftheweek.com/ClipDeidentifier",
+  "homepage": "https://github.com/uotw/ClipDeidentifier",
   "devDependencies": {
     "electron": "25.1.0",
     "electron-builder": "^24.4.0"

@@ -22,25 +22,6 @@ var os = require("os");
 var exec = require('child_process').exec, arch;
 require('@electron/remote/main').initialize()
 
-exec('uname -m', function (error, stdout, stderr) {
-  if (error) throw error;
-  arch = stdout;
-  console.log(arch);
-});
-// function checkFF(os,file){
-//     var query = {"os":os,"file":file};
-//     //console.log(query);
-//     var result = ffjson.filter(search, query);
-
-//     function search(user){
-//       return Object.keys(this).every((key) => user[key] === this[key]);
-//     }
-//     if(result[0]){
-//         return result[0].cs;
-//     } else {
-//         return null;
-//     }
-// }
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
