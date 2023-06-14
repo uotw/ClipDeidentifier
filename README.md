@@ -24,9 +24,10 @@ This software uses code of <a href=http://ffmpeg.org>FFmpeg</a> licensed under t
 - `npm start`
 
 To build for Windows and MacOS:
-- `npm run dist-win`
-- `npm run dist-arm64`
-- `npm run dist-mac`
+- `npm run dist-win64`
+- `npm run dist-win32`
+- `npm run dist-macarm`
+- `npm run dist-mac64`
 
 ## Change Log
 ### 0.0.0.8
