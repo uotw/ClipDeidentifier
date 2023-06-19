@@ -11,7 +11,6 @@
     "dist-mac64": "electron-builder --x64 --config ./build/buildmac.json",
     "dist-win32": "electron-builder --ia32 --win --config ./build/buildwin.x86.json",
     "dist-win64": "electron-builder --x64 --win --config ./build/buildwin.x64.json",
-    "dist-linux32": "electron-builder --ia32 --linux --config ./build/buildlinux.x86.json",
     "dist-linux64": "electron-builder --x64 --linux --config ./build/buildlinux.x64.json"
   },
   "keywords": [
