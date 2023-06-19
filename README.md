@@ -7,7 +7,7 @@ Download and install for your OS:
 - [Mac arm64 (M1/M2)](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.8.arm64.dmg) (dmg, 114 MB)
 - [Windows 64-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.v0.0.8.x64.exe) (exe, 106 MB)
 - [Windows 32-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.v0.0.8.ia32.exe) (exe, 103 MB)
-- [Linux 64-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/ClipDeidentifier_0.0.8_amd64.snap)(snap, 126 MB)
+- [Linux 64-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/ClipDeidentifier_0.0.8_amd64.snap) (snap, 126 MB)
 
 ## Support Us
 We provide this software free of charge for the ultrasound education community. Please consider supporting us by subscribing to one of [our courses](https://courses.coreultrasound.com/). We have [group rates](https://analytics.coreultrasound.com/grouprate/) for institutions with more than 10 users.
