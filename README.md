@@ -5,11 +5,12 @@ The purpose of ClipDeidentifier is to take a ultrasound media in a traditional f
 Download and install for your OS:
 - [Mac x64](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.8.x64.dmg) (dmg, 141 MB)
 - [Mac arm64 (M1/M2)](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.8.arm64.dmg) (dmg, 114 MB)
-- [Windows 64-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.v0.0.8.x64.exe) (exe, 106MB)
-- [Windows 32-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.v0.0.8.ia32.exe) (exe, 103MB)
+- [Windows 64-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.v0.0.8.x64.exe) (exe, 106 MB)
+- [Windows 32-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.v0.0.8.ia32.exe) (exe, 103 MB)
+- [Linux 64-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/ClipDeidentifier_0.0.8_amd64.snap)(snap, 126 MB)
 
 ## Support Us
-We provide this software free of charge for the ultrasound education community. Please consider supporting us by subscribing to one of [our courses](https://courses.coreultrasound.com/). We have group rates for institutions with more than 10 users.
+We provide this software free of charge for the ultrasound education community. Please consider supporting us by subscribing to one of [our courses](https://courses.coreultrasound.com/). We have [group rates](https://analytics.coreultrasound.com/grouprate/) for institutions with more than 10 users.
 
 ## Disclaimer
 This application provides no guarantee that all Protected Health Information (PHI) has been removed from its resultant images. It is the responsibility of the user to verify that all PHI has been removed from the ultrasound media, including but not limited to 1) hard coding of PHI into the images and 2) any PHI that has been placed in the images' metadata. For full liability and license information [go here](https://github.com/uotw/ClipDeidentifier/blob/master/LICENSE.md). 
@@ -23,11 +24,12 @@ This software uses code of <a href=http://ffmpeg.org>FFmpeg</a> licensed under t
 - `npm i --force`
 - `npm start`
 
-To build for Windows and MacOS:
+To build for Windows, MacOS, Linux:
 - `npm run dist-win64`
 - `npm run dist-win32`
 - `npm run dist-macarm`
 - `npm run dist-mac64`
+- `npm run dist-linux64`
 
 ## Change Log
 ### 0.0.0.8
