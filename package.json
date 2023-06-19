@@ -10,7 +10,9 @@
     "dist-macarm": "electron-builder --arm64 --config ./build/buildarm.json",
     "dist-mac64": "electron-builder --x64 --config ./build/buildmac.json",
     "dist-win32": "electron-builder --ia32 --win --config ./build/buildwin.x86.json",
-    "dist-win64": "electron-builder --x64 --win --config ./build/buildwin.x64.json"
+    "dist-win64": "electron-builder --x64 --win --config ./build/buildwin.x64.json",
+    "dist-linux32": "electron-builder --ia32 --linux --config ./build/buildlinux.x86.json",
+    "dist-linux64": "electron-builder --x64 --linux --config ./build/buildlinux.x64.json"
   },
   "keywords": [
     "Electron"
@@ -31,11 +33,15 @@
     "@ffmpeg-installer/darwin-arm64": "^4.1.5",
     "@ffmpeg-installer/darwin-x64": "^4.1.0",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffmpeg-installer/linux-ia32": "^4.1.0",
+    "@ffmpeg-installer/linux-x64": "^4.1.0",
     "@ffmpeg-installer/win32-ia32": "^4.1.0",
     "@ffmpeg-installer/win32-x64": "^4.1.0",
     "@ffprobe-installer/darwin-arm64": "^5.0.1",
     "@ffprobe-installer/darwin-x64": "^5.1.0",
     "@ffprobe-installer/ffprobe": "^2.0.0",
+    "@ffprobe-installer/linux-ia32": "^5.1.0",
+    "@ffprobe-installer/linux-x64": "^5.1.0",
     "@ffprobe-installer/win32-ia32": "^5.1.0",
     "@ffprobe-installer/win32-x64": "^5.1.0",
     "cross-spawn": "^7.0.3",
