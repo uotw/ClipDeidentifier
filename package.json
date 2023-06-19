@@ -39,6 +39,7 @@
     "@ffprobe-installer/win32-ia32": "^5.1.0",
     "@ffprobe-installer/win32-x64": "^5.1.0",
     "cross-spawn": "^7.0.3",
+    "electron-log": "^4.4.8",
     "electron-store": "^8.1.0",
     "electron-window-state": "^4.1.1",
     "jquery": "^3.5.0",
