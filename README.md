@@ -32,6 +32,9 @@ To build for Windows, MacOS, Linux:
 - `npm run dist-linux64`
 
 ## Change Log
+### 0.0.0.9
+- fixed initial launch bug
+
 ### 0.0.0.8
 - upgraded to electron v25 to improve speed and stability
 - added native support for Apple Silicon (arm64)
