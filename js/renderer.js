@@ -22,7 +22,7 @@ workdir = path.join(ostemp, maketemp())
 remote.getGlobal('workdirObj').prop1 = workdir;
 console.log(workdir);
 
-
+window.croppixelperc = 0.09;
 var filelist = [];
 var widtharr = [];
 var heightarr = [];
@@ -375,7 +375,7 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
         //basename.splice(-1,1);
         //console.log('BASE:' + basename);
         var croppixel = croppixelarr[i];
-        if (!window.cropW) {
+        if (!window.cropW || !window.cropH || !window.cropX || !window.cropY) {
             var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=in_w:in_h-' + croppixel + ':0:' + croppixel;
         } else {
             var cropWidth = Math.round(widtharr[i] * window.cropW);
@@ -462,7 +462,7 @@ function preview() {
             widtharr.push(width);
             heightarr.push(height);
             croppixelarr.push(croppixel);
-            if (!window.cropW) {
+            if (!window.cropW || !window.cropH || !window.cropX || !window.cropY) {
                 var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=in_w:in_h-' + croppixel + ':0:' + croppixel + ',scale=650:-1';
             } else {
                 var cropWidth = Math.round(widtharr[i] * window.cropW);

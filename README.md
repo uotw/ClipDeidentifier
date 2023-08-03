@@ -1,10 +1,10 @@
 # Clip Deidentifier
 The purpose of ClipDeidentifier is to take a ultrasound media in a traditional format (mp4, mov, avi, jpg, bmp, png...) and output a clip (mp4) or still (png) void of Protected Health Information (PHI). ClipDeidentifier is built as an [Electron app](https://electronjs.org/) written as a frontend for [ffmpeg](https://www.ffmpeg.org/). In short, ClipDeidentifier crops the portion of the images containing the hard-coded PHI, and also strips metadata from the media, rendering it generally safe to distribute without exposing the patients' PHI.
 
-## Install (v0.0.0.8)
+## Install (v0.0.0.9)
 Download and install for your OS:
-- [Mac x64](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.8.x64.dmg) (dmg, 141 MB)
-- [Mac arm64 (M1/M2)](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.8.arm64.dmg) (dmg, 114 MB)
+- [Mac x64](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.9.x64.dmg) (dmg, 141 MB)
+- [Mac arm64 (M1/M2)](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.9.arm64.dmg) (dmg, 114 MB)
 - [Windows 64-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.v0.0.8.x64.exe) (exe, 106 MB)
 - [Windows 32-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.v0.0.8.ia32.exe) (exe, 103 MB)
 - [Linux 64-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/ClipDeidentifier_0.0.8_amd64.snap) (snap, 126 MB)
