@@ -8,5 +8,15 @@
       "!**/@ffprobe-installer/win32-ia32${/*}"
     ],
     "asar": false,
-    "appId": "ClipDeidentifier"
+    "appId": "ClipDeidentifier",
+    "copyright": "Copyright © 2026 Ben C. Smith, MD, FACEP",
+    "win": {
+      "target": "nsis",
+      "azureSignOptions": {
+        "publisherName": "Core Ultrasound, LLC",
+        "endpoint": "https://eus.codesigning.azure.net/",
+        "codeSigningAccountName": "coreultrasound",
+        "certificateProfileName": "SonoClipShareApps"
+      }
+    }
 }

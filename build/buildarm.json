@@ -6,15 +6,22 @@
       "!**/@ffprobe-installer/darwin-x64${/*}",
       "!**/@ffmpeg-installer/win32-x64${/*}",
       "!**/@ffprobe-installer/win32-x64${/*}",
+      "!**/@ffmpeg-installer/linux-ia32${/*}",
+      "!**/@ffmpeg-installer/linux-x64${/*}",
+      "!**/@ffprobe-installer/linux-ia32${/*}",
+      "!**/@ffprobe-installer/linux-x64${/*}",
     ],
     "asar": false,
     "appId": "ClipDeidentifier",
+    "copyright": "Copyright © 2026 Ben C. Smith, MD, FACEP",
     "mac": {
       "hardenedRuntime": true,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
       "gatekeeperAssess": false,
       "category": "public.app-category.developer-tools",
-      "target": "dir"
+      "identity": "Core Ultrasound, LLC (6VK3JZ7LRU)",
+      "notarize": false,
+      "target": "dmg"
     }
 }
