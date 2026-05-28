@@ -38,7 +38,8 @@ jobs:
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-        run: npm run dist-win64
+        # --publish never: build+sign only; don't auto-publish to GitHub Releases
+        run: npm run dist-win64 -- --publish never
 
       - name: Upload installer
         uses: actions/upload-artifact@v4
