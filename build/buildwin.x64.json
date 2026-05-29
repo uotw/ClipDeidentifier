@@ -10,6 +10,7 @@
     "asar": false,
     "appId": "ClipDeidentifier",
     "copyright": "Copyright © 2026 Ben C. Smith, MD, FACEP",
+    "artifactName": "${productName}-Setup-${arch}.${ext}",
     "win": {
       "target": "nsis",
       "azureSignOptions": {

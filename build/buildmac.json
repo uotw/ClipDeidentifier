@@ -14,6 +14,7 @@
     "asar": false,
     "appId": "ClipDeidentifier",
     "copyright": "Copyright © 2026 Ben C. Smith, MD, FACEP",
+    "artifactName": "${productName}-${arch}.${ext}",
     "mac": {
       "hardenedRuntime": true,
       "entitlements": "build/entitlements.mac.plist",

@@ -1,14 +1,13 @@
 # Clip Deidentifier
 The purpose of ClipDeidentifier is to take a ultrasound media in a traditional format (mp4, mov, avi, jpg, bmp, png...) and output a clip (mp4) or still (png) void of Protected Health Information (PHI). ClipDeidentifier is built as an [Electron app](https://electronjs.org/) written as a frontend for [ffmpeg](https://www.ffmpeg.org/). In short, ClipDeidentifier crops the portion of the images containing the hard-coded PHI, and also strips metadata from the media, rendering it generally safe to distribute without exposing the patients' PHI.
 
-## Install (v0.0.0.9)
-Download and install for your OS:
-- [Mac x64](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.9.x64.dmg) (dmg, 141 MB)
-- [Mac arm64 (M1/M2)](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.Installer.v0.9.arm64.dmg) (dmg, 114 MB)
+## Install
+Download the latest signed build for your OS:
+- [Mac — Apple Silicon (M-series)](https://github.com/uotw/ClipDeidentifier/releases/latest/download/ClipDeidentifier-arm64.dmg) (dmg)
+- [Mac — Intel](https://github.com/uotw/ClipDeidentifier/releases/latest/download/ClipDeidentifier-x64.dmg) (dmg)
+- [Windows 64-bit](https://github.com/uotw/ClipDeidentifier/releases/latest/download/ClipDeidentifier-Setup-x64.exe) (exe)
 
-## Install (v0.0.0.7)
-Download and install for your OS:
-- [Windows 64-bit](https://d25ixnv6uinqzi.cloudfront.net/Anonymizer/CD.installer.0.0.0.7.exe) (exe, 44.2 MB)
+These links always point to the newest release. All builds are code-signed (Apple Developer ID + notarized, and Azure Trusted Signing on Windows). Browse [all releases](https://github.com/uotw/ClipDeidentifier/releases).
 
 ## Support Us
 We provide this software free of charge for the ultrasound education community. Please consider supporting us by subscribing to one of [our courses](https://courses.coreultrasound.com/). We have [group rates](https://analytics.coreultrasound.com/grouprate/) for institutions with more than 10 users.
@@ -31,6 +30,16 @@ To build for Windows, MacOS, Linux:
 - `npm run dist-macarm`
 - `npm run dist-mac64`
 - `npm run dist-linux64`
+
+### Code signing
+macOS builds are signed with the Apple Developer ID certificate and notarized. Windows installers are built and signed by the **Build & Sign Windows** GitHub Actions workflow (`.github/workflows/windows.yml`) using Azure Trusted Signing, authenticated by the `AZURE_TENANT_ID` / `AZURE_CLIENT_ID` / `AZURE_CLIENT_SECRET` repository secrets.
+
+**Rotate `AZURE_CLIENT_SECRET` before it expires** (give it a ~24-month lifetime) or the Windows signing job will fail. Already-distributed installers are unaffected — Trusted Signing timestamps each signature. To rotate:
+
+```sh
+az ad app credential reset --id <AZURE_CLIENT_ID> --display-name "github-signing-$(date +%Y%m%d)" --years 1 --append --query password -o tsv
+gh secret set AZURE_CLIENT_SECRET --repo uotw/ClipDeidentifier --body "<new-secret>"
+```
 
 ## Change Log
 ### 0.0.0.9
