@@ -66,6 +66,7 @@
       <div id="highlight"><span>click/drag to highlight what you want to keep</span></div>
       <div id="confirm"><span>confirm all patient info is removed</span></div>
       <div id="done"><span>All done! Here's a summary of what we did.</span></div>
+      <div id="appversion"></div>
    </body>
    <script src="./js/renderer.js"></script>
    <script>
@@ -74,4 +75,9 @@
    </script>
    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
    <script>if (window.module) module = window.module; var $ = require('jQuery');</script>
+   <script>
+      try {
+         document.getElementById('appversion').textContent = 'v' + require('@electron/remote').app.getVersion();
+      } catch (e) { /* version label is non-critical */ }
+   </script>
 </html>

@@ -261,9 +261,7 @@ function customSpawn(command, args) {
         // } else {
         //     child = spawn(command, args);
         // }
-        const child = spawn(command, args, {
-            windowsVerbatimArguments: true
-        });
+        const child = spawn(command, args);
         child.stderr.on('data', (data) => {
             console.log(command + " " + args.join(" ") + `stderr: ${data}`);
         });

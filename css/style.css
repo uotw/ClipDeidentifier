@@ -483,6 +483,17 @@ td {
     left: 30px;
     bottom: 30px;
 }
+#appversion {
+    position: fixed;
+    left: 8px;
+    bottom: 4px;
+    z-index: 99999;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    font-size: 11px;
+    color: #b0b0b0;
+    pointer-events: none;
+    user-select: none;
+}
 #addfilestatus {
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     color: black;
