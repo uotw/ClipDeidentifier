@@ -1,11 +1,8 @@
 {
     "files": [
-      "!**/@ffmpeg-installer/darwin-arm64${/*}", 
-      "!**/@ffmpeg-installer/darwin-x64${/*}",
-      "!**/@ffmpeg-installer/win32-x64${/*}",
-      "!**/@ffprobe-installer/darwin-arm64${/*}", 
-      "!**/@ffprobe-installer/darwin-x64${/*}",
-      "!**/@ffprobe-installer/win32-x64${/*}",
+      "!**/node_modules/ffprobe-static/bin/darwin/**/*",
+      "!**/node_modules/ffprobe-static/bin/linux/**/*",
+      "!**/node_modules/ffprobe-static/bin/win32/x64/**/*"
     ],
     "asar": false,
     "appId": "ClipDeidentifier"

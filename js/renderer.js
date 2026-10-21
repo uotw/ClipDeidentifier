@@ -1,9 +1,8 @@
 var fs = require('fs');
 var path = require('path');
-const ffmpeginstaller = require('@ffmpeg-installer/ffmpeg');
-var ffmpegpath = ffmpeginstaller.path;
-const ffprobeinstaller = require('@ffprobe-installer/ffprobe');
-var ffprobepath = ffprobeinstaller.path;
+const ffpaths = require('./js/ffmpeg-paths');
+var ffmpegpath = ffpaths.ffmpegPath;
+var ffprobepath = ffpaths.ffprobePath;
 var remote = require('@electron/remote')
 const {
     ipcRenderer

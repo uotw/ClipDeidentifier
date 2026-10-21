@@ -12,6 +12,11 @@ permissions:
 jobs:
   mac:
     runs-on: macos-latest
+    # Copy node_modules into the app instead of hardlinking — otherwise the x64
+    # ffmpeg swap below would mutate files already sealed inside the signed
+    # arm64 bundle and break its code signature ("sealed resource is invalid").
+    env:
+      USE_HARD_LINKS: "false"
     steps:
       - uses: actions/checkout@v4
 
@@ -19,18 +24,54 @@ jobs:
         with:
           node-version: "20"
 
-      # --force pulls all darwin ffmpeg/ffprobe binaries so we can build BOTH
-      # arm64 and x64 from this arm64 runner (they're optionalDependencies).
       - name: Install dependencies
-        run: npm install --force
+        run: npm install
 
-      - name: Build & sign (arm64 + x64)
+      # ffprobe-static ships an x86_64 binary in its darwin/arm64 slot, so the
+      # arm64 app uses the native one from @ffprobe-installer/darwin-arm64 (an
+      # optionalDependency, installed on this arm64 runner) instead. Make sure
+      # it's there and really arm64 before building.
+      - name: Check the native arm64 ffprobe
+        run: |
+          a=$(lipo -archs node_modules/@ffprobe-installer/darwin-arm64/ffprobe)
+          echo "arm64 ffprobe arch: $a"
+          [ "$a" = "arm64" ] || { echo "::error::arm64 ffprobe is not arm64 ($a)"; exit 1; }
+
+      # ffmpeg-static ships a single binary for the host arch (arm64 on the
+      # macos-latest runner). ffprobe-static bundles every platform, so only
+      # ffmpeg needs swapping between the two mac builds.
+      - name: Build & sign arm64
         env:
           CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+        run: npm run dist-macarm -- --publish never
+
+      - name: Swap in x64 ffmpeg binary
         run: |
-          npm run dist-macarm -- --publish never
-          npm run dist-mac64 -- --publish never
+          rm -f node_modules/ffmpeg-static/ffmpeg
+          npm_config_arch=x64 node node_modules/ffmpeg-static/install.js
+          a=$(lipo -archs node_modules/ffmpeg-static/ffmpeg)
+          echo "x64 ffmpeg arch: $a"
+          [ "$a" = "x86_64" ] || { echo "::error::x64 ffmpeg is not x86_64 ($a)"; exit 1; }
+
+      - name: Build & sign x64
+        env:
+          CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+        run: npm run dist-mac64 -- --publish never
+
+      # Fail immediately if signing was silently skipped (e.g. bad cert secret),
+      # instead of wasting a notarization round-trip on an unsigned app.
+      - name: Verify Developer ID signing
+        run: |
+          for app in "dist/mac-arm64/"*.app "dist/mac/"*.app; do
+            echo "Checking: $app"
+            codesign -dvv "$app" 2>&1 | grep -q "Authority=Developer ID Application" \
+              || { echo "::error::$app is NOT Developer ID signed (check MAC_CSC_LINK / MAC_CSC_KEY_PASSWORD)"; exit 1; }
+            codesign --verify --deep --strict --verbose=2 "$app" \
+              || { echo "::error::signature verification failed for $app"; exit 1; }
+            echo "✓ signed: $app"
+          done
 
       - name: Notarize & staple
         env:
