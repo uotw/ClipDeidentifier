@@ -24,7 +24,7 @@
   "homepage": "https://github.com/uotw/ClipDeidentifier",
   "devDependencies": {
     "electron": "25.1.0",
-    "electron-builder": "^24.4.0"
+    "electron-builder": "^24.13.3"
   },
   "directories.bin": "node_modules/.bin/",
   "dependencies": {
