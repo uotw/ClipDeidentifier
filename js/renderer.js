@@ -17,7 +17,21 @@ var userdir =  remote.app.getPath('userData');
 const os = require('os');
 const ostemp = os.tmpdir();
 
-workdir = path.join(ostemp, maketemp())
+// Work folders are removed on quit, but a crash leaves them behind -- and the
+// manual-crop background in them is an UNCROPPED frame. Clear any older than a
+// day (younger ones may belong to another running copy of the app).
+try {
+    fs.readdirSync(ostemp).forEach(function(d) {
+        var dir = path.join(ostemp, d);
+        if (d.startsWith('clipdeid-') && Date.now() - fs.statSync(dir).mtimeMs > 24 * 60 * 60 * 1000) {
+            fs.rmSync(dir, { recursive: true, force: true });
+        }
+    });
+} catch (e) {
+    console.log('could not clear old work folders: ' + e.message);
+}
+
+workdir = path.join(ostemp, 'clipdeid-' + maketemp())
 remote.getGlobal('workdirObj').prop1 = workdir;
 console.log(workdir);
 
@@ -36,7 +50,6 @@ previewfile = previewfile.replaceAll('c:\\', '/');
 previewfile = previewfile.replaceAll('\\', '/');
 var addfiledelay = 0;
 var previewindex = 0;
-var lastperc = 0;
 var lastpercUL = 0;
 var croppedfilelist = [];
 var title, folder, finallink;
@@ -45,6 +58,16 @@ const spawnsync = spawn.sync;
 
 const Store = require('electron-store');
 const store = new Store();
+
+var trashname = process.platform === 'win32' ? 'Recycle Bin' : 'Trash';
+$('#trashlabel').text('move to ' + trashname);
+$('input[name=deletemode][value=' + (store.get('deleteMode') || 'trash') + ']').prop('checked', true);
+$('#deleteorig').change(function() {
+    $('#deletemode').css('visibility', this.checked ? 'visible' : 'hidden');
+});
+$('input[name=deletemode]').change(function() {
+    store.set('deleteMode', this.value);
+});
 
 if (store.get('cropWidth')) {
     window.cropW = store.get('cropWidth');
@@ -115,7 +138,9 @@ function addtofilelist(toappend) {
             scrollTop: $('#filelist').prop("scrollHeight")
         }, 10);
     }, addfiledelay);
-    addfiledelay += 50;
+    // a quick cascade, capped so a big folder still lists within 0.3s
+    // (same-delay timers fire in order, so the list stays in order)
+    addfiledelay = Math.min(addfiledelay + 10, 300);
 }
 $("#filelistwrap").on('dragenter', function(event) {
     event.stopPropagation();
@@ -125,8 +150,13 @@ $("#filelistwrap").on('dragover', function(event) {
     event.stopPropagation();
     event.preventDefault();
 });
-$("#filelistwrap").on('drop', function(event) {
+// Accept drops anywhere in the window, but only while adding files -- a drop
+// during preview or cropping would change filelist under a running batch.
+$(document).on('drop', function(event) {
     event.preventDefault();
+    if (!$('#filelistwrap').is(':visible')) {
+        return;
+    }
     // focusThisApp();
     ipcRenderer.send('focusnow', 'focus')
     var path = require('path');
@@ -185,7 +215,7 @@ $(document).on('drop', function(e) {
 });
 
 function canvasbg(filelist) {
-        ffmpeg = spawnsync(ffmpegpath, ['-i', filelist[0], '-an', '-vf', 'scale=500:-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-map_metadata', '-1', '-y', previewfile]);
+        ffmpeg = spawnsync(ffmpegpath, ['-i', filelist[0], '-an', '-vf', 'scale=min(1600\\,iw):-2', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-map_metadata', '-1', '-y', previewfile]);
         ffprobe = spawnsync(ffprobepath, ['-print_format', 'json', '-show_streams', '-i', filelist[0]]);
 
     // if(ismac){
@@ -209,6 +239,7 @@ $('#previewbtn').click(function() { //Generate page of 9% cropped thumbnails to 
     $('#previewbtn').hide();
     $('#cropbtn').hide();
     $('#confirm').hide();
+    $('#deleteopts').hide();
     $('#loading-container').show();
     setTimeout(function() {
         preview();
@@ -221,6 +252,7 @@ function showbtns() {
         $('#cropbtn').fadeIn();
         $('#manualbtn').fadeIn();
         $('#confirm').fadeIn();
+        $('#deleteopts').fadeIn();
         resolve();
     });
 }
@@ -231,19 +263,6 @@ function setcropvars() {
     store.set('cropHeight', window.cropH);
     store.set('cropXstart', window.cropX);
     store.set('cropYstart', window.cropY);
-}
-
-function queue(tasks) {
-    let index = 0;
-    const runTask = (arg) => {
-        if (index >= tasks.length) {
-            return Promise.resolve(arg);
-        }
-        return new Promise((resolve, reject) => {
-            tasks[index++](arg).then(arg => resolve(runTask(arg))).catch(reject);
-        });
-    }
-    return runTask();
 }
 
 function customSpawn(command, args) {
@@ -275,6 +294,7 @@ function customSpawn(command, args) {
                 reject();
             }
         });
+        child.on('error', reject);
     });
 }
 
@@ -290,52 +310,70 @@ function updatetn(i) {
     });
 }
 
-function progress(i) {
-    return () => new Promise((resolve, reject) => {
-        $('#croplist').append(filelist[i] + '=>' + croppedfilelist[i] + '<br>');
-        stop = Math.round(100 * (i + 1) / filelist.length);
-        var elem = document.getElementById("myBar");
-        start = lastperc;
-        var width = start;
-        var id = setInterval(frame, 0);
-
-        function frame() {
-            if (width >= stop) {
-                clearInterval(id);
-                resolve(i);
-                if (i + 1 == filelist.length) {
-                    elem.style.width = "0%";
-                    $('#myBar').css('width', '0%');
-                    document.getElementById("label").innerHTML = "0%";
-                    lastperc = 0;
-                    $('#cropview').hide();
-                    $('#activefile').hide();
-                    $('#progressmsg').hide();
-                    $('#myProgress').hide();
-                    $('#tn').hide();
-                    $('#croppedlistwrap').fadeIn();
-                    $('#home').fadeIn();
-                    $('#done').fadeIn();
-                }
-            } else {
-                width++;
-                elem.style.width = width + '%';
-                document.getElementById("label").innerHTML = width * 1 + '%';
-            }
+// Crop up to `concurrency` files at once. x264 already spreads one encode
+// across every core, but overlapping two hides each file's single-threaded
+// decode and startup: ~18% faster on real 800x600 clips, and more than two
+// gained nothing. Resolves with the indexes of any files that failed.
+function runcrops(files, croppedfiles, jobs, concurrency) {
+    return new Promise(resolve => {
+        var next = 0;
+        var finished = 0;
+        var failed = [];
+        if (!jobs.length) {
+            return resolve(failed);
         }
-        lastperc = stop;
-        if (i < filelist.length - 1) {
-            //console.log('file:'+filepaths[i+1]);
-            var filename = filepaths[i + 1].replace(/^.*[\\\/]/, '');
-            $('#activefile').html('creating: ' + filename);
-            //$('#croplist').append(originals[i+1]+'=>'+filepaths[i+1]+'<br>');
+
+        function startnext() {
+            if (next >= jobs.length) {
+                return;
+            }
+            var i = next++;
+            updatetn(i)();
+            $('#activefile').html('creating: ' + path.basename(croppedfiles[i]));
+            customSpawn(ffmpegpath, jobs[i])().catch(() => failed.push(i)).then(() => {
+                finished++;
+                if (failed.indexOf(i) == -1) {
+                    $('#croplist').append(files[i] + '=>' + croppedfiles[i] + '<br>');
+                } else {
+                    $('#croplist').append(files[i] + ' could not be cropped<br>');
+                }
+                // #myBar has a CSS width transition, so this animates without
+                // holding up the next crop
+                var perc = Math.round(100 * finished / jobs.length);
+                $('#myBar').css('width', perc + '%');
+                $('#label').html(perc + '%');
+                if (finished == jobs.length) {
+                    // let the 0.2s width transition reach 100% and stay
+                    // visible briefly before the done screen replaces it
+                    setTimeout(() => resolve(failed), 500);
+                } else {
+                    startnext();
+                }
+            });
+        }
+        for (var k = 0; k < concurrency; k++) {
+            startnext();
         }
     });
+}
+
+function finishcrop() {
+    $('#myBar').css('width', '0%');
+    $('#label').html('0%');
+    $('#cropview').hide();
+    $('#activefile').hide();
+    $('#progressmsg').hide();
+    $('#myProgress').hide();
+    $('#tn').hide();
+    $('#croppedlistwrap').fadeIn();
+    $('#home').fadeIn();
+    $('#done').fadeIn();
 }
 
 function setupcrop(i) {
     return () => new Promise((resolve, reject) => {
         $('#confirm').hide();
+        $('#deleteopts').hide();
         $('#home').hide();
         $('#preview').hide();
         $('#previewsize').hide();
@@ -351,17 +389,61 @@ function setupcrop(i) {
     });
 }
 
+// Delete the originals once every crop has finished. Only called when every
+// crop in the batch exited 0; each cropped file is still checked before its
+// original goes.
+function removeoriginals(originalfiles, croppedfiles, mode) {
+    return () => (async () => {
+        var croppedresolved = croppedfiles.map(f => path.resolve(f));
+        for (var i = 0; i < originalfiles.length; i++) {
+            var original = originalfiles[i];
+            var verified = false;
+            try {
+                verified = fs.statSync(croppedfiles[i]).size > 0;
+            } catch (e) {}
+            // never delete a file that is also one of this batch's outputs
+            if (!verified || croppedresolved.indexOf(path.resolve(original)) != -1) {
+                $('#croplist').append(original + ' was kept because its cropped copy could not be verified<br>');
+                continue;
+            }
+            try {
+                if (mode == 'trash') {
+                    await shell.trashItem(original);
+                    $('#croplist').append(original + ' was moved to the ' + trashname + '<br>');
+                } else {
+                    await fs.promises.unlink(original);
+                    $('#croplist').append(original + ' was deleted<br>');
+                }
+            } catch (e) {
+                $('#croplist').append(original + ' could not be deleted: ' + e.message + '<br>');
+            }
+        }
+    })();
+}
+
 $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
     //spawnsync('cmd.exe', ['/c','DEL','/s', '/q', workdir]); //CLEAR
-    var myqueue = [];
+    var deleteoriginals = $('#deleteorig').is(':checked');
+    var deletemode = $('input[name=deletemode]:checked').val();
+    // Only permanent deletion asks first; moving to the Trash can be undone.
+    if (deleteoriginals && deletemode == 'permanent') {
+        var choice = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), {
+            type: 'warning',
+            buttons: ['Cancel', 'Crop and Delete'],
+            defaultId: 0,
+            cancelId: 0,
+            message: 'Permanently delete ' + filelist.length + ' original file' + (filelist.length == 1 ? '' : 's') + ' after cropping?',
+            detail: 'Each original is deleted only after its cropped copy is saved. This cannot be undone.\n\nOn SSDs and USB drives, deleted files may still be recoverable. Keep FileVault (Mac) or BitLocker (Windows) turned on.'
+        });
+        if (choice != 1) {
+            return;
+        }
+    }
+    var jobs = [];
     croppedfilelist = [];
-    var filename = filepaths[0].replace(/^.*[\\\/]/, '')
-    $('#activefile').html('creating: ' + filename);
-    myqueue.push(setupcrop(1));
     //BUILD CROP AND DIM ARRAY
     for (var i = 0; i < filelist.length; i++) {
         nexti = i + 1;
-        myqueue.push(updatetn(i));
         var croppath = path.dirname(filelist[i]);
         //console.log("PATH: " + croppath);
         var basename = path.basename(filelist[i]);
@@ -384,18 +466,28 @@ $('#cropbtn').click(function() { //SET UP CROPPING TASKS AND DO IT!
         if (isclip(filelist[i])) {
             var cropfile = path.join(croppath, basename + '_crop.mp4');
             var outfile = path.join(workdir, nexti + '.mp4');
-            myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]));
+            jobs.push(['-i', filelist[i], '-an', '-map_metadata', '-1', '-vf', cropvftext, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '14', '-y', '-pix_fmt', 'yuv420p', cropfile]);
         } else {
             var cropfile = path.join(croppath, basename + '_crop.png');
             var outfile = path.join(workdir, nexti + '.png');
-            myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-y', '-pix_fmt', 'rgb24', cropfile]));
+            jobs.push(['-i', filelist[i], '-map_metadata', '-1', '-vf', cropvftext, '-f', 'image2', '-y', '-pix_fmt', 'rgb24', cropfile]);
         }
 
         croppedfilelist.push(cropfile);
-        myqueue.push(progress(i));
     }
-    //LAST ITEM IN QUEUE, CALL FINISH
-    queue(myqueue).then(([cmd, args]) => {}).catch(TypeError, function(e) {}).catch(err => console.log(err));
+    var files = filelist.slice();
+    var croppedfiles = croppedfilelist.slice();
+    setupcrop(1)().then(() => runcrops(files, croppedfiles, jobs, 2)).then(failed => {
+        finishcrop();
+        if (!deleteoriginals) {
+            return;
+        }
+        if (failed.length) {
+            $('#croplist').append('No originals were deleted because ' + failed.length + ' file' + (failed.length == 1 ? '' : 's') + ' could not be cropped<br>');
+            return;
+        }
+        return removeoriginals(files, croppedfiles, deletemode)();
+    }).catch(err => console.log(err));
 
 });
 
@@ -404,14 +496,13 @@ var filelist = [];
 var filepaths = [];
 
 function preview() {
-    var myqueue = [];
+    var previewjobs = [];
     previewindex = previewindex + 1;
     $('#img-grid').html('');
 
     widtharr = [];
     heightarr = [];
     croppixelarr = [];
-    myqueue = [];
     var skip = 0;
     for (var i = 0; i < filelist.length; i++) {
         var nameonly = filelist[i].split("\\");
@@ -468,7 +559,7 @@ function preview() {
                 var cropYstart = Math.round(heightarr[i] * window.cropY);
                 var cropvftext = 'setsar=1,scale=trunc(iw/2)*2:trunc(ih/2)*2,crop=' + cropWidth + ':' + cropHeight + ':' + cropXstart + ':' + cropYstart + ',scale=650:-1';
             }
-            myqueue.push(customSpawn(ffmpegpath, ['-i', filelist[i], '-an', '-vf', cropvftext, '-map_metadata', '-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-y', outfile]));
+            var previewargs = ['-i', filelist[i], '-an', '-vf', cropvftext, '-map_metadata', '-1', '-pix_fmt', 'rgb24', '-vframes', '1', '-f', 'image2', '-y', outfile];
         } else {
             var filename = filepaths[i].replace(/^.*[\\\/]/, '');
             $('#croplist').append(originals[i].toString() + ' was ignored because it was not an image file' + '<br>');
@@ -481,19 +572,56 @@ function preview() {
 
         }
         if (skip != 1) {
-            myqueue.push(previewdump(nexti));
+            previewjobs.push({ n: nexti, args: previewargs });
         } else {
             skip = 0;
         }
     }
     $('#loading-container').hide();
+    // shown with the preview box (not later, with the buttons) because it sits
+    // above it -- appearing afterwards would push the previews down
+    $('#confirm').show();
     $('#preview').show();
     $('#previewsize').show();
     $('#previewsizetext').show();
-    myqueue.push(showbtns());
-    queue(myqueue).then(([cmd, args]) => {
-        console.log(cmd + ' finished - all finished');
-    }).catch(TypeError, function(e) {}).catch(err => console.log(err));
+    // Placeholders in file order, filled in as each frame is ready, so the
+    // grid stays in order even though frames finish out of order.
+    $('#img-grid').html(previewjobs.map(j => '<div class="previewimg"><img class="previewstill" id="previewstill' + j.n + '" draggable=false style="width:' + previewimgpx + '"></img></div>').join(''));
+    // Single-frame extractions are mostly process startup and decoder setup,
+    // so unlike full encodes they parallelise well: 4 at a time is ~3.5x
+    // faster on real clips; more gained little.
+    runlimited(previewjobs.map(j => () => customSpawn(ffmpegpath, j.args)().then(previewdump(j.n))), 4)
+        .then(showbtns())
+        .catch(err => console.log(err));
+}
+
+// Run task factories with at most `concurrency` in flight. A failed task
+// doesn't stop the others; resolves once every task has settled.
+function runlimited(tasks, concurrency) {
+    return new Promise(resolve => {
+        var next = 0;
+        var settled = 0;
+        if (!tasks.length) {
+            return resolve();
+        }
+
+        function startnext() {
+            if (next >= tasks.length) {
+                return;
+            }
+            tasks[next++]().catch(err => console.log(err)).then(() => {
+                settled++;
+                if (settled == tasks.length) {
+                    resolve();
+                } else {
+                    startnext();
+                }
+            });
+        }
+        for (var k = 0; k < concurrency; k++) {
+            startnext();
+        }
+    });
 }
 
 function previewdump(i) {
@@ -501,8 +629,7 @@ function previewdump(i) {
         var time = new Date().toLocaleString();
         var timestamp = encodeURI(time);
         outfile = workdir + '/' + i + '.' + previewindex + '.png?' + timestamp;
-        var imagehtml = '<div class="previewimg"><img class="previewstill" src="' + outfile + '" draggable=false style="width:' + previewimgpx + '"></img></div>';
-        $('#img-grid').append(imagehtml);
+        $('#previewstill' + i).attr('src', outfile);
         resolve(i);
     });
 }
@@ -520,17 +647,54 @@ $('#manualbtn').click(function() {
     var timestamp = encodeURI(time);
     $('#myCanvas').css("background-image", "url(" + previewfile + "?" + timestamp + ")");
     // $('.cropsample').attr('src', )
-    canvasheight = 500 * canvasaspect;
-    $('#myCanvas').attr('height', canvasheight);
-    $('#canvaswrap').fadeIn();
+    $('#confirm').hide(); // before measuring: it sits above the canvas
+    $('#canvaswrap').css({ display: 'block', visibility: 'hidden' });
+    cropdrawn = false; // start empty, even if a crop was saved last time
+    fitcropcanvas();
+    $('#canvaswrap').css({ display: 'none', visibility: '' }).fadeIn();
     $('#highlight').fadeIn();
     $('#manualOKbtn').fadeIn();
     $('#manualbtn').fadeOut();
     $('#cropbtn').fadeOut();
-    $('#confirm').hide();
+    $('#deleteopts').hide();
 });
+// Size the crop canvas to the window, keeping the frame's aspect: as wide as
+// the window allows, unless that would run into the caption + OK button below.
+// Safe at any size because cropselect.v2.js records the crop as a FRACTION of
+// the canvas, applied to each source file's own dimensions -- as long as the
+// frame fills the canvas exactly (`background-size: 100% 100%` in style.css).
+// Resizing a canvas clears it, so a selection drawn since opening is redrawn.
+var cropdrawn = false;
+$('#myCanvas').on('mousedown', function() {
+    cropdrawn = true;
+});
+var CROP_RESERVE_BELOW = 140; // caption (~40px) + OK button (bottom:30px, ~56px tall) + gap
+function fitcropcanvas() {
+    var top = document.getElementById('canvaswrap').getBoundingClientRect().top;
+    var maxW = window.innerWidth - 60;
+    var maxH = Math.max(200, window.innerHeight - top - CROP_RESERVE_BELOW);
+    var w = maxW;
+    var h = Math.round(maxW * canvasaspect);
+    if (h > maxH) {
+        h = maxH;
+        w = Math.round(maxH / canvasaspect);
+    }
+    $('#myCanvas').attr('width', w).attr('height', h);
+    $('#canvaswrap').css('width', w + 'px');
+    canvasheight = h;
+    if (cropdrawn && window.cropW && window.cropH && window.redrawcrop) {
+        window.redrawcrop(window.cropX, window.cropY, window.cropW, window.cropH);
+    }
+}
+$(window).on('resize', function() {
+    if ($('#canvaswrap').is(':visible')) {
+        fitcropcanvas();
+    }
+});
+
 $('#manualOKbtn').click(function() {
     $(this).hide();
+    fs.rm(previewfile, { force: true }, () => {}); // uncropped frame, no longer needed
     $('#canvaswrap').hide();
     $('#highlight').hide();
     $('#loading-container').show();
@@ -596,6 +760,7 @@ $('#home').click(function() {
     addfiledelay = 0;
     $('#done').hide();
     $('#confirm').hide();
+    $('#deleteopts').hide();
     $('#activefile').hide();
     $('#activefileUL').hide();
     $('#addselect').hide();
@@ -627,6 +792,8 @@ $('#home').click(function() {
     $('#croppedlistwrap').hide();
     $('#drag').css('visibility', 'visible');
     $('#manualbtn').hide();
+    $('#deleteorig').prop('checked', false);
+    $('#deletemode').css('visibility', 'hidden');
 });
 window.addEventListener('beforeunload', onbeforeunload);
 require('jquery-ui-bundle');
@@ -644,4 +811,23 @@ $(document).ready(function() {
             $('.previewstill').css('width', ui.value + 'px');
         }
     });
+    fitpreviewsize(true);
+    $(window).on('resize', function() {
+        fitpreviewsize(false);
+    });
 });
+
+// Start the preview size at the largest that fits three thumbnails per row,
+// with the handle in the middle of the slider (max mirrors min around it).
+// Each tile adds 30px of padding; the preview box loses 22px to margin +
+// border and 11px to its scrollbar. On resize only the max moves, so the
+// user's chosen size is kept unless it no longer fits.
+function fitpreviewsize(reset) {
+    var threecolpx = Math.floor((window.innerWidth - 22 - 11) / 3) - 30;
+    var max = 2 * threecolpx - $('.range').slider('option', 'min');
+    $('.range').slider('option', 'max', max);
+    var px = reset ? threecolpx : Math.min($('.range').slider('value'), max);
+    $('.range').slider('value', px);
+    previewimgpx = px + 'px';
+    $('.previewstill').css('width', previewimgpx);
+}

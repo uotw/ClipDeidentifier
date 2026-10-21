@@ -325,13 +325,35 @@ td {
     color: black;
     font-size: 1.5em;
     margin: auto;
-    width: 230px;
+    width: 420px;
     display: none;
     /* position: fixed; */
     bottom: 45px;
     z-index: 1;
     background-color: white;
-    margin-top: 30px;
+    line-height: 32px;
+}
+#deleteopts {
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 30px;
+    margin: auto;
+    width: 400px;
+    text-align: center;
+    color: black;
+    font-size: 1.1em;
+    line-height: 1.6em;
+    z-index: 1000;
+    display: none;
+}
+#deletemode {
+    visibility: hidden;
+    font-size: 0.9em;
+}
+#deletemode label {
+    margin: 0 8px;
 }
 #done {
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
@@ -436,7 +458,7 @@ td {
 }
 #preview {
     display: none;
-    height: calc(100% - 330px);
+    height: calc(100% - 362px);
     overflow: scroll;
     border: 1px solid black;
     margin: 10px;
@@ -462,7 +484,6 @@ td {
 }
 #canvaswrap {
     display: none;
-    width: 500px;
     margin: auto;
 }
 #myCanvas:hover {
@@ -472,6 +493,9 @@ td {
 #myCanvas {
     background-image: url("");
     background-repeat: no-repeat;
+    /* the frame must fill the canvas exactly: the crop is stored as a
+       fraction of the canvas (see fitcropcanvas in renderer.js) */
+    background-size: 100% 100%;
 }
 .rightbtn {
     position: fixed;

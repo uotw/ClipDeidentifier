@@ -114,3 +114,18 @@ function drawline(x1, y1, xoff, yoff) {
 
 // $("#myCanvas").mouseout(function(e) {
 // });
+
+// Redraw a stored selection (fractions of the canvas, as recorded above) --
+// resizing the canvas clears it. On window because this file is loaded with
+// require(), so its other names are private to it.
+window.redrawcrop = function(fx, fy, fw, fh) {
+  ctx = c.getContext("2d");
+  ctx.fillStyle = "rgb(128,128,128,0.6)";
+  ctx.strokeStyle = "#ffff00";
+  ctx.lineWidth = 2;
+  var x1 = fx * c.width, y1 = fy * c.height;
+  var x2 = x1 + fw * c.width, y2 = y1 + fh * c.height;
+  ctx.fillRect(0, 0, c.width, c.height);
+  ctx.clearRect(x1, y1, x2 - x1, y2 - y1);
+  drawcorners(x1, y1, x2, y2);
+};

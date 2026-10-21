@@ -50,6 +50,7 @@
         </div>
         <div id="activefile"></div>
       </div>
+      <div id="confirm"><span>confirm all patient info is removed</span></div>
       <div id="previewsizetext">preview size</div>
       <div class="range" id="previewsize"></div>
       <div id="preview">
@@ -64,7 +65,13 @@
          <canvas id="myCanvas" width="500" height="200"></canvas>
       </div>
       <div id="highlight"><span>click/drag to highlight what you want to keep</span></div>
-      <div id="confirm"><span>confirm all patient info is removed</span></div>
+      <div id="deleteopts">
+         <label><input type="checkbox" id="deleteorig"> delete original files after cropping</label>
+         <div id="deletemode">
+            <label><input type="radio" name="deletemode" value="trash" checked> <span id="trashlabel">move to Trash</span></label>
+            <label><input type="radio" name="deletemode" value="permanent"> delete permanently</label>
+         </div>
+      </div>
       <div id="done"><span>All done! Here's a summary of what we did.</span></div>
       <div id="appversion"></div>
    </body>
