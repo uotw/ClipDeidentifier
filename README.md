@@ -32,7 +32,7 @@ To build for Windows, MacOS, Linux:
 - `npm run dist-linux64`
 
 ### Code signing
-macOS builds are signed with the Apple Developer ID certificate and notarized. Windows installers are built and signed by the **Build & Sign Windows** GitHub Actions workflow (`.github/workflows/windows.yml`) using Azure Trusted Signing, authenticated by the `AZURE_TENANT_ID` / `AZURE_CLIENT_ID` / `AZURE_CLIENT_SECRET` repository secrets.
+macOS builds are signed with the Apple Developer ID certificate and notarized. Both are built and signed by the **Release** GitHub Actions workflow (`.github/workflows/release.yml`) when a `v*` tag is pushed. Windows installers use Azure Trusted Signing, authenticated by the `AZURE_TENANT_ID` / `AZURE_CLIENT_ID` / `AZURE_CLIENT_SECRET` repository secrets.
 
 **Rotate `AZURE_CLIENT_SECRET` before it expires** (give it a ~24-month lifetime) or the Windows signing job will fail. Already-distributed installers are unaffected — Trusted Signing timestamps each signature. To rotate:
 
@@ -42,6 +42,26 @@ gh secret set AZURE_CLIENT_SECRET --repo uotw/ClipDeidentifier --body "<new-secr
 ```
 
 ## Change Log
+### 0.2.0
+- new option to delete the original files after cropping: move to Trash/Recycle Bin, or delete permanently (asks to confirm first). Originals are kept if any file in the batch fails to crop
+- about 2x faster overall: clips crop in parallel, previews generate in parallel, and clips encode with a faster x264 preset at the same file size and near-identical quality
+- larger Change Crop window that scales with the app window and starts with an empty selection
+- preview size slider starts at 3 columns and can go larger or smaller
+- drop files anywhere in the window; file list fills faster
+- progress bar now reaches 100% before closing
+- switched to ffmpeg-static/ffprobe-static (FFmpeg 6.0), with a native Apple Silicon ffprobe
+- temporary preview files are cleaned up automatically
+
+### 0.1.2
+- Windows installer is DPI-aware (fixes blurry text and icon)
+
+### 0.1.1
+- fixed crop failing on Windows when the file path contains spaces
+- added version label
+
+### 0.1.0
+- first fully code-signed, CI-built release: macOS (Developer ID + notarized) and Windows (Azure Trusted Signing)
+
 ### 0.0.0.9
 - fixed initial launch bug
 
